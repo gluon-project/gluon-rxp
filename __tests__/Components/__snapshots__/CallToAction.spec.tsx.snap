@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<button
+  aria-disabled={undefined}
+  aria-hidden={undefined}
+  aria-label={undefined}
+  aria-selected={undefined}
+  disabled={undefined}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onContextMenu={[Function]}
+  onFocus={[Function]}
+  onKeyDown={undefined}
+  onMouseDown={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  role="button"
+  style={
+    Object {
+      "alignItems": "center",
+      "alignSelf": "stretch",
+      "appRegion": "no-drag",
+      "backgroundColor": "#BD10E0",
+      "borderColor": "transparent",
+      "borderRadius": 8,
+      "borderStyle": "solid",
+      "borderWidth": "0",
+      "cursor": "pointer",
+      "display": "flex",
+      "flexDirection": "row",
+      "flexGrow": 0,
+      "flexShrink": 0,
+      "height": 44,
+      "justifyContent": "center",
+      "marginBottom": 15,
+      "marginTop": 15,
+      "overflow": "hidden",
+      "padding": "0",
+      "position": "relative",
+      "textAlign": "left",
+      "webkitFlexDirection": "row",
+    }
+  }
+  tabIndex={undefined}
+  title={undefined}
+>
+  <div
+    aria-hidden={undefined}
+    data-text-as-pseudo-element="Send money"
+    onClick={undefined}
+    style={
+      Object {
+        "color": "white",
+        "cursor": "inherit",
+        "display": "inline",
+        "flexDirection": "column",
+        "flexGrow": 0,
+        "flexShrink": 0,
+        "fontSize": 18,
+        "msHyphens": "auto",
+        "overflow": "hidden",
+        "overflowWrap": "break-word",
+        "position": "relative",
+        "webkitFlexDirection": "column",
+        "whiteSpace": "pre-wrap",
+      }
+    }
+  />
+</button>
+`;
