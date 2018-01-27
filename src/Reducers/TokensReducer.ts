@@ -15,7 +15,7 @@ const initialState: TokensState = {
       name: 'Mircea Token',
       code: 'MRT',
       logo: '',
-      address: '0x34015bfCb36D716610D69Cf036f29882909bDae3',
+      address: '0xd018a40a8876b21aa8f679bbaf8970f5d70f49fc',
     },
   ],
 }
