@@ -1,6 +1,6 @@
 const shell = require('shelljs')
 
-const appName = 'Gluon'
+const appName = 'Gluon-Space'
 
 let tagName = process.env.CI_BUILD_REF_NAME
   ? process.env.CI_BUILD_REF_NAME
@@ -23,10 +23,10 @@ if (!deploymentName) {
 if (process.env.CI_BUILD_REF_NAME) {
   shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push login --accessKey ${process.env.CODEPUSH_KEY}`)
   shell.exec(`npm run build`)
-  shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-ios ios -d ${deploymentName} --description ${tagName}`)
-  shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-android android -d ${deploymentName} --description ${tagName}`)
+  shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-iOS ios -d ${deploymentName} --description ${tagName}`)
+  shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-Android android -d ${deploymentName} --description ${tagName}`)
   shell.exec(`NODE_TLS_REJECT_UNAUTHORIZED=0 code-push logout`)
 } else {
-  shell.exec(`yarn run tsc && NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-ios ios -d ${deploymentName} --description ${tagName}`)
-  shell.exec(`yarn run tsc && NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-android android -d ${deploymentName} --description ${tagName}`)
+  shell.exec(`yarn run tsc && NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-iOS ios -d ${deploymentName} --description ${tagName}`)
+  shell.exec(`yarn run tsc && NODE_TLS_REJECT_UNAUTHORIZED=0 code-push release-react ${appName}-Android android -d ${deploymentName} --description ${tagName}`)
 }

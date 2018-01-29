@@ -1,0 +1,6 @@
+git_url "https://simonas_notcat@bitbucket.org/notcat/lookforwardrn-certs.git"
+app_identifier "cat.not.gluon"
+username "simonas@karuzas.com" # Your Apple Developer Portal username
+
+# For all available options run `match --help`
+# Remove the # in the beginning of the line to enable the other options

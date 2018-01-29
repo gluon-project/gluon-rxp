@@ -1,0 +1,2 @@
+Device ID	Device Name
+d5fd6752018f4e9c0db8b75f5645aa4c11d6c2a7	Simonas iPhone 8
