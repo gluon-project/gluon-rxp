@@ -1,0 +1,12 @@
+# iOS
+app_identifier "cat.not.gluon" # The bundle identifier of your app
+apple_id "simonas@karuzas.com" # Your Apple email address
+team_id "2HLHDSJTQ6"  # Developer Portal Team ID
+itc_team_id "1564960"
+
+# Android
+# json_key_file "./google-play-api-secret.json" # Path to the json secret file - Follow https://github.com/fastlane/supply#setup to get one
+# package_name "com.infinitered.myapp" # You Android app package
+
+# you can even provide different app identifiers, Apple IDs and team names per lane:
+# More information: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Appfile.md

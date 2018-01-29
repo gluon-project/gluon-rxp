@@ -2,21 +2,21 @@ export default {
   ios: [
     {
       name: 'Production',
-      key: '2Mkievo9ne6LyBW21-g2oHab9-367db3b258-a4e2-421a-8bfd-10b41a89f193',
+      key: 'wUDdOA83z9MeoU17ADB5CXnmGs-if0d4e5f9-d6e1-49b7-834c-43e8891c018d',
     },
     {
       name: 'Staging',
-      key: 'tg8lsSlMurleZynvog7IqoG93p0v7db3b258-a4e2-421a-8bfd-10b41a89f193',
+      key: 'yV-0LiooKu9RTN2sRFXNFD0Sx4x-f0d4e5f9-d6e1-49b7-834c-43e8891c018d',
     },
   ],
   android: [
     {
       name: 'Production',
-      key: 'rRMdKhGZz1PswXa_TTol3VpNrOCs7db3b258-a4e2-421a-8bfd-10b41a89f193',
+      key: 'HFuaSf_FaPxlmMXvQGF-GRRtS0ovf0d4e5f9-d6e1-49b7-834c-43e8891c018d',
     },
     {
       name: 'Staging',
-      key: 'BYEqjqsIXsvJIT_wmd1d2wo0yeH_7db3b258-a4e2-421a-8bfd-10b41a89f193',
+      key: 'V8astQkFXQlr3s9LucjpO7LpF8Xnf0d4e5f9-d6e1-49b7-834c-43e8891c018d',
     },
   ],
 }
