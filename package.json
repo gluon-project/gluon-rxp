@@ -16,7 +16,7 @@
     "rn-link": "./node_modules/.bin/react-native link",
     "run-ios": "./node_modules/.bin/react-native run-ios",
     "run-android": "./node_modules/.bin/react-native run-android",
-    "codepush": "node scripts/deploy.js local"
+    "codepush": "ts-node bin/deploy.ts local"
   },
   "devDependencies": {
     "@types/jest": "^20.0.1",
