@@ -198,7 +198,6 @@ const Styles = {
     flexDirection: 'row',
   }),
   modalMessagePanel: RX.Styles.createViewStyle({
-    flex: 1,
     backgroundColor: Colors.background,
     borderRadius: Metrics.borderRadius,
     margin: Metrics.baseMargin,
@@ -221,11 +220,9 @@ const Styles = {
     backgroundColor: Colors.successBackground,
   }),
   modalMessageBody: RX.Styles.createViewStyle({
-    alignItems: 'stretch',
     paddingLeft: Metrics.mediumMargin,
     paddingRight: Metrics.mediumMargin,
     paddingTop: Metrics.mediumMargin,
-    flex: 1,
   }),
   modalMessageLabel: RX.Styles.createTextStyle({
     textAlign: 'center',

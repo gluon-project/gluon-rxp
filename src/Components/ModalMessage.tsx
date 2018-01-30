@@ -45,7 +45,7 @@ export default class ModalMessage extends RX.Component<Props, null> {
           <RX.View style={Theme.Styles.modalMessageBody}>
             <RX.Text style={Theme.Styles.modalMessageLabel}>{this.props.config.message}</RX.Text>
             {this.props.config.inputText && <TextInput
-              defaultValue={this.props.config.inputText}
+              value={this.props.config.inputText}
             />}
             <CallToAction
               onPress={this.props.onClose}
