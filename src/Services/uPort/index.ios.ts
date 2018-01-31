@@ -62,7 +62,6 @@ uport.topicFactory = (name: string) => {
 const requestCredentials = () => {
   return uport.requestCredentials({
     requested: ['name', 'avatar'],
-    notifications: true,
   }).then((result: any) => {
     return {
       ...result,
