@@ -2,7 +2,6 @@ import Config from '../../Config'
 import erc223abi from './erc223abi'
 import erc223TokenFactoryAbi from './erc223TokenFactoryAbi'
 import Uport from '../uPort'
-import { setInterval, clearInterval } from 'timers'
 const Web3 = require('ethjs-query')
 const bs58 = require('bs58')
 import * as moment from 'moment'
@@ -69,7 +68,7 @@ const sendTransaction = (transaction: Transaction): Promise<Transaction> => {
       } else {
         if (txHash) {
           console.log('Transaction sent')
-          console.dir(txHash)
+          console.log(txHash)
           const interval = setInterval(() => {
             ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
               if (error) {
@@ -103,7 +102,7 @@ const createNewToken = (token: Token, creator: User): Promise<Token> => {
       } else {
         if (txHash) {
           console.log('Transaction created')
-          console.dir(txHash)
+          console.log(txHash)
           const interval = setInterval(() => {
             ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
               if (error) {
