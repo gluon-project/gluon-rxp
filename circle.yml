@@ -1,0 +1,99 @@
+# since this will be a multiplatform build,
+# build commands should be preceded by `cd ./ios && ..` and `cd ./android && ...`
+general:
+  artifacts:
+      - "android/app/build/reports"
+      - "android/app/build/outputs/apk"
+
+machine:
+  xcode:
+    version: "9.1"
+  environment:
+    YARN_VERSION: 1.2.1
+    ANDROID_HOME:  /usr/local/share/android-sdk
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xms256m -Xmx2048m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.parallel=true'
+    TERM: dumb
+    REACT_NATIVE_MAX_WORKERS: 1
+    LC_ALL: en_US.UTF-8
+    LANG: en_US.UTF-8
+dependencies:
+  pre:
+#    - gem install bundler
+    - brew install vault
+    # ios
+    - sudo gem install fastlane
+#    - sudo gem install cocoapods # updates to latest version
+    # js
+    - brew install watchman
+    - npm install -g node-gyp
+    - npm install -g react-native-cli
+    - yarn global add react-native-cli
+    - yarn global add rnpm
+    - yarn global add babel-cli
+    # android
+    - curl https://dl.google.com/android/repository/sdk-tools-darwin-3859397.zip > ~/android-sdk.zip
+    - mkdir -p $ANDROID_HOME
+    - unzip ~/android-sdk.zip -d $ANDROID_HOME
+    - rm ~/android-sdk.zip
+    - mkdir -p ${HOME}/.android && touch ${HOME}/.android/repositories.cfg
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager --update
+  override:
+    - bundle check || bundle install --path vendor/bundle
+    # ios dependencies
+    - cd ios && xcrun instruments -w "iPhone 7 Plus" || true
+    - pod repo update # get latest pods to integrate with which we need
+    # js dependencies
+    - yarn install
+    # android dependencies
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager "tools" "platform-tools"
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.3"
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-25"
+    #this should force a dependency lookup and download
+    - cd android && ./gradlew clean assembleDebug
+  post:
+    # circleCI has been given a periodic token. Prolong its life
+    - vault token-renew > /dev/null
+  cache_directories:
+    - ~/.android
+    - ~/.gradle
+    - ./android/.gradle
+    - .bundle
+    - vendor/bundle
+
+compile:
+#  pre:
+#    - vault read -field=value secret/android/google_services | base64 --decode > android/app/google-services.json
+  override:
+    # create android release apks
+    - yarn build
+    - cd android && ./gradlew :app:assembleRelease
+    # create iOS artifacts targeting App Store submission
+    # TBD
+#
+#test:
+#  pre:
+#  # open the iOS simulator per circleci recommendation
+#    - xcrun instruments -w "iPhone 7 Plus" || true
+#  override:
+#  # android testing section
+#    - cd android && ./gradlew :app:lint :app:test
+#
+#  # js testing section
+#    - yarn test --ci --coverage
+#
+#  # run iOS native unit tests
+#  #TBD
+#  post:
+#    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+#    - find . -type f -regex ".*/build/test-results/.*ml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+#    - bash <(curl -s https://codecov.io/bash)
+
+deployment:
+  all_branches:
+    branch: master # master for release only or the regesx /.*?/ for all branches
+    commands:
+    # android
+      - bash bin/pull_service_key.sh
+      - cd android && fastlane android beta
+      - rm -f google-play-keys.json

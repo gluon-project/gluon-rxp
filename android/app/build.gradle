@@ -1,3 +1,18 @@
+buildscript {
+    repositories {
+        maven {
+            url "http://dl.bintray.com/kunickiaj/maven"
+        }
+    }
+}
+
+plugins {
+    id "io.errorlab.gradle.vault" version "0.1.0"
+}
+
+apply from: "../signing.gradle"
+
+
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -85,13 +100,13 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "space.gluon"
         minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 2
+        targetSdkVersion 23
+        versionCode 3
         versionName "1.0.${versionCode}"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -108,12 +123,12 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("")
-            storePassword ""
-            keyAlias "gluon"
-            keyPassword ""
-            v1SigningEnabled true
-            v2SigningEnabled true
+                storeFile getReleaseKeystore()
+                storePassword getReleaseKeystorePassword()
+                keyAlias getReleaseKeyAlias()
+                keyPassword getReleaseKeyPassword()
+                v1SigningEnabled true
+                v2SigningEnabled true
         }
     }
 
@@ -129,11 +144,11 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+                        versionCodes.get(abi) * 1000000 + defaultConfig.versionCode
             }
         }
     }
