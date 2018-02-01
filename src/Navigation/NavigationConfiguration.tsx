@@ -15,7 +15,7 @@ const LeftButton = ({navigation}: { navigation: any }) => {
     let backLabel = RX.Platform.getType() === 'android' ? '' : 'Back'
     switch (state.routeName) {
       case 'Feed':
-        backLabel = 'Filter'
+        backLabel = RX.Platform.getType() === 'android' ? '' : 'Filter'
     }
     return (
       <RX.Button
