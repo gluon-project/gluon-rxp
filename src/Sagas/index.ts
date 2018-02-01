@@ -20,6 +20,7 @@ export default function* root() {
   yield fork(UportSaga.watchStartLogin)
   yield fork(Web3Saga.watchAddToken)
   yield fork(Web3Saga.watchCreateNewToken)
+  yield fork(Web3Saga.watchGetTokenInfo)
   yield fork(Web3Saga.watchRefreshBalances)
   yield fork(Web3Saga.watchStartSavingTransaction)
 }

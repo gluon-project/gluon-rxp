@@ -13,7 +13,9 @@ interface Props extends RX.CommonProps {
   addToken?: (token: Token) => void
   createNewToken?: (token: Token) => void
   setToken?: (token: string) => void
+  getTokenInfo?: (address: string) => void
   isProcessing?: boolean
+  formValues?: Token
 }
 
 interface State {
@@ -36,6 +38,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
       code: '',
       isNew: true,
     }
+    this.handleAddressChange = this.handleAddressChange.bind(this)
   }
 
   private handleSave = () => {
@@ -61,6 +64,10 @@ class TokensFormScreen extends RX.Component<Props, State> {
     if (this.props.isProcessing && !newProps.isProcessing) {
       this.props.navigateBack()
     }
+
+    if (!this.props.formValues && newProps.formValues) {
+      this.setState(newProps.formValues)
+    }
   }
 
   private isValid = () => {
@@ -68,6 +75,13 @@ class TokensFormScreen extends RX.Component<Props, State> {
       return this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.totalSupply > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && this.state.address !== ''
+    }
+  }
+
+  handleAddressChange (value: string) {
+    this.setState({ address: value })
+    if (value.length === 42) {
+      this.props.getTokenInfo(value)
     }
   }
 
@@ -83,7 +97,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
           {!this.state.isNew && <TextInput
             label='Address'
             value={this.state.address}
-            onChangeText={(value) => this.setState({ address: value })}
+            onChangeText={this.handleAddressChange}
             />}
           <TextInput
             label='Name (BecKoin)'
@@ -123,6 +137,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     isProcessing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.CreateNewToken),
+    formValues: Selectors.Tokens.getNew(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
@@ -131,6 +146,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setToken: (token: string) => dispatch(Actions.Transactions.setToken(token)),
     addToken: (token: Token) => dispatch(Actions.Tokens.addToken(token)),
     createNewToken: (token: Token) => dispatch(Actions.Tokens.createNewToken(token)),
+    getTokenInfo: (address: string) => dispatch(Actions.Tokens.getTokenInfo(address)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TokensFormScreen)

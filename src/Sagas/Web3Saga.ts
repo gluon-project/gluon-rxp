@@ -95,7 +95,22 @@ export function* watchCreateNewToken(): SagaIterator {
 export function* watchAddToken(): SagaIterator {
   while (true) {
     yield take(Actions.Tokens.addToken)
+    yield put(Actions.Tokens.setNew(null))
     yield put(Actions.User.refreshBalances())
     yield put(Actions.Feed.fetchTransactions())
+  }
+}
+
+export function* watchGetTokenInfo(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Tokens.getTokenInfo)
+    try {
+      const token = yield call(Web3.getTokenInfo, action.payload)
+      yield put(Actions.Tokens.setNew(token))
+
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+
   }
 }
