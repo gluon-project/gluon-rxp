@@ -1,6 +1,7 @@
 import {
   delay,
   SagaIterator,
+  eventChannel,
 } from 'redux-saga'
 import {
   call,
@@ -9,16 +10,18 @@ import {
   spawn,
   take,
 } from 'redux-saga/effects'
-
+const URL = require('url-parse')
+import RX = require('reactxp')
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
-import { CodePush, Web3 } from '../Services'
+import { CodePush, Web3, uPort } from '../Services'
 import * as Enums from '../Enums'
 import Config from '../Config'
 import utils from '../Utils'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
+  yield call(Web3.ethSingleton.setProvider, uPort.provider)
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
   yield  call(delay, 500)
   yield put(Actions.App.setVersion(deploymentMetaData.version))
@@ -45,8 +48,84 @@ export function* watchStoreReady(): SagaIterator {
 
 }
 
+export function * watchUrlChanges () {
+  const uriChannel = yield eventChannel(emitter => {
+    RX.Linking.deepLinkRequestEvent.subscribe(emitter)
+    return () => RX.Linking.deepLinkRequestEvent.unsubscribe(emitter)
+  })
+
+  while (true) {
+    const uri = yield take(uriChannel)
+    yield call(handleRequest, uri)
+  }
+}
+
+function* handleInitialUrl(): SagaIterator {
+  let uri = null
+  if (RX.Platform.getType() === 'web') {
+    uri = (<any>window.document.location.href)
+  } else {
+    uri = yield call(RX.Linking.getInitialUrl)
+  }
+  if (uri) {
+    yield call(handleRequest, uri)
+  }
+}
+
+function* handleRequest(uri: string): SagaIterator {
+  const url = URL(uri, true)
+  console.log(url)
+  switch (url.pathname) {
+    case '/token/':
+      const tokenAddress = url.query.t
+      const token = yield call(Web3.getTokenInfo, tokenAddress)
+      const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
+      if (!existingToken) {
+        yield put(Actions.Tokens.addToken(token))
+      }
+      yield put(Actions.Feed.selectToken(tokenAddress))
+      yield put(Actions.Navigation.navigate('Feed'))
+      break
+    case '/send/':
+      if (url.query.r) {
+        const existingContact = yield select(Selectors.Contacts.getAccountByAddress, url.query.r)
+        if (!existingContact.avatar) {
+          yield put(Actions.Contacts.addContact({
+            name: url.query.n ? url.query.n : utils.address.short(url.query.r),
+            address: url.query.r,
+            avatar: null,
+          }))
+        }
+        yield put(Actions.Transactions.setReceiver(url.query.r))
+      }
+      if (url.query.t) {
+        const tokenAddress = url.query.t
+        const token = yield call(Web3.getTokenInfo, tokenAddress)
+        const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
+        if (!existingToken) {
+          yield put(Actions.Tokens.addToken(token))
+        }
+        yield put(Actions.Transactions.setToken(url.query.t))
+      }
+      if (url.query.a) {
+        yield put(Actions.Transactions.setAmount(parseInt(url.query.a, 10)))
+      }
+      if (url.query.at) {
+        const existingAttachment = yield select(Selectors.Attachment.getFromCache, url.query.at)
+        if (!existingAttachment) {
+          yield put(Actions.Attachment.getFromIpfs(url.query.at))
+        }
+        yield put(Actions.Transactions.setAttachment(url.query.at))
+      }
+      yield put(Actions.Navigation.navigate('SendTab'))
+      break
+  }
+}
+
 function* loadInitialState(): SagaIterator {
   yield put(Actions.App.initialDataStartedLoading())
+
+  yield call(handleInitialUrl)
 
   try {
     const accounts = yield call(Web3.getAccounts)
@@ -104,13 +183,15 @@ export function* watchHandleError(): SagaIterator {
       } else if (action.payload.message) {
         msg = action.payload.message
       }
-
-      yield put(Actions.ModalMessage.setModalMessage({
-        title: action.payload.type || 'Error',
-        ctaTitle: 'Close',
-        message: msg,
-        type: Enums.MessageType.Error,
-      } as ModalMessageConfig))
+      //@TODO figure out why this is happening
+      if (msg !== 'Uport Web3 SubProvider does not support synchronous requests.') {
+        yield put(Actions.ModalMessage.setModalMessage({
+          title: action.payload.type || 'Error',
+          ctaTitle: 'Close',
+          message: msg,
+          type: Enums.MessageType.Error,
+        } as ModalMessageConfig))
+      }
     } catch (e) {
       console.log(e)
     }

@@ -11,7 +11,6 @@ interface Props extends RX.CommonProps {
 export default class ScrollView extends RX.Component<Props, null> {
 
   render() {
-    console.log('this.props.visualBoxType', this.props.visualBoxType)
     return (
       <RX.ScrollView style={Theme.Styles.containerFull}>
         {this.props.visualBoxType !== undefined && this.props.visualBoxType !== null && <VisualBox

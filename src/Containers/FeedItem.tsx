@@ -101,7 +101,7 @@ class FeedItem extends RX.Component<Props, null> {
                 type: Enums.MessageType.Success,
                 title: 'Share',
                 message: 'Share this URL with your friends',
-                inputText: `https://gluon.space/token/${this.props.token.address}`,
+                inputText: `https://gluon.space/token/?t=${this.props.token.address}`,
                 ctaTitle: 'Close',
               } as ModalMessageConfig)}>
                 <RX.Text style={Theme.Styles.feed.actionButton}>Share post</RX.Text>

@@ -12,6 +12,7 @@ export default function* root() {
   yield fork(AppSaga.watchResetToInitialState)
   yield fork(AppSaga.watchStoreReady)
   yield fork(AppSaga.watchSyncCodePushDeployment)
+  yield fork(AppSaga.watchUrlChanges)
   yield fork(AttachmentSaga.watchGetFromIpfs)
   yield fork(AttachmentSaga.watchSaveAttachment)
   yield fork(AttachmentSaga.watchStartDownload)
