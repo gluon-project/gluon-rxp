@@ -56,6 +56,66 @@ const getNewBalances = (address: string, tokens: Token[]) => {
   return Promise.all(promises)
 }
 
+const getTokenInfo = (address: string) => {
+  let promises: Promise<any>[] = []
+
+  const tokenContract = ethSingleton.getErc223(address)
+
+  // name
+  promises.push(new Promise<string>((resolve, reject) => {
+    tokenContract.name.call(function (err: any, value: string) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // symbol
+  promises.push(new Promise<string>((resolve, reject) => {
+    tokenContract.symbol.call(function (err: any, value: string) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // decimals
+  promises.push(new Promise<number>((resolve, reject) => {
+    tokenContract.decimals.call(function (err: any, value: number) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // totalSupply
+  promises.push(new Promise<number>((resolve, reject) => {
+    tokenContract.totalSupply.call(function (err: any, value: number) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  return Promise.all(promises).then((data: any[]) => {
+    return {
+      address,
+      name: data[0],
+      code: data[1],
+      decimals: data[2],
+      initialAmount: data[3],
+    } as Token
+  })
+}
+
 const sendTransaction = (transaction: Transaction): Promise<Transaction> => {
   const token = ethSingleton.getErc223(transaction.token)
   const hex = transaction.attachment && transaction.attachment ? bs58.decode(transaction.attachment).toString('hex') : '00'
@@ -140,5 +200,6 @@ export default {
   ethSingleton,
   getAccount,
   getAccounts,
+  getTokenInfo,
   createNewToken,
 }

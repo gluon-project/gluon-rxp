@@ -6,10 +6,12 @@ import { resetToInitialState } from './AppReducer'
 import Config from '../Config'
 
 export interface TokensState {
+  new: Token,
   list: Token[],
 }
 
 const initialState: TokensState = {
+  new: null,
   list: [
     {
       name: 'Mircea Token',
@@ -32,5 +34,15 @@ reducer.on(addToken, (state: TokensState, payload?: Token) => {
     list: [ ...state.list, payload ],
   }
 })
+
+export const setNew = createAction('Set new Token values')
+reducer.on(setNew, (state: TokensState, payload?: Token) => {
+  return {
+    ...state,
+    new: payload,
+  }
+})
+
+export const getTokenInfo = createAction('Get Token info')
 
 export const createNewToken = createAction('Create new token')
