@@ -84,7 +84,8 @@ function* handleRequest(uri: string): SagaIterator {
         yield put(Actions.Tokens.addToken(token))
       }
       yield put(Actions.Feed.selectToken(tokenAddress))
-      yield put(Actions.Navigation.navigate('Feed'))
+      yield put(Actions.Navigation.navigate('FeedTab'))
+      // yield put(Actions.Navigation.navigate('Feed'))
       break
     case '/send/':
       if (url.query.r) {

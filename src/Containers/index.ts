@@ -6,6 +6,7 @@ import AboutMasterScreen from './AboutMasterScreen'
 import AmountScreen from './AmountScreen'
 import AttachmentScreen from './AttachmentScreen'
 import CompactAboutMainScreen from './CompactAboutMainScreen'
+import CompactFeedMainScreen from './CompactFeedMainScreen'
 import CompactRequestMainScreen from './CompactRequestMainScreen'
 import CompactSendMainScreen from './CompactSendMainScreen'
 import FeedItem from './FeedItem'
@@ -32,6 +33,7 @@ export {
   AmountScreen,
   AttachmentScreen,
   CompactAboutMainScreen,
+  CompactFeedMainScreen,
   CompactRequestMainScreen,
   CompactSendMainScreen,
   FeedItem,
