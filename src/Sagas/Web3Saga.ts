@@ -27,7 +27,7 @@ export function* watchStartSavingTransaction(): SagaIterator {
     try {
       const newTransaction = yield call(Web3.sendTransaction, transaction)
       yield put(Actions.Feed.addTransaction(newTransaction))
-      yield put(Actions.Navigation.navigate('Feed'))
+      yield put(Actions.Navigation.navigate('FeedTab'))
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }

@@ -2,6 +2,7 @@ import AboutDetails from './AboutDetails'
 import AccountIcon from './AccountIcon'
 import AttachmentCard from './AttachmentCard'
 import CallToAction from './CallToAction'
+import FeedDetails from './FeedDetails'
 import Icons from './Icons'
 import KeyPad from './KeyPad'
 import ListItem from './ListItem'
@@ -22,6 +23,7 @@ export {
   AccountIcon,
   AttachmentCard,
   CallToAction,
+  FeedDetails,
   Icons,
   KeyPad,
   ListItem,

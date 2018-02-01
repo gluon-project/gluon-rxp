@@ -12,7 +12,11 @@ const LeftButton = ({navigation}: { navigation: any }) => {
   if (state.key.substring(0, 4) === 'Init') {
     return <RX.View/>
   } else {
-    const backLabel = RX.Platform.getType() === 'android' ? '' : 'Back'
+    let backLabel = RX.Platform.getType() === 'android' ? '' : 'Back'
+    switch (state.routeName) {
+      case 'Feed':
+        backLabel = 'Filter'
+    }
     return (
       <RX.Button
         style={Theme.Styles.navBarItem}
@@ -84,9 +88,10 @@ const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Send'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Send'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
+const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}
 
 export const WideNavigationConfiguration = {
-  Feed: {
+  FeedTab: {
     masterScreen: Screens.FeedMasterScreen,
     screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
   },
@@ -130,10 +135,12 @@ export const WideNavigationConfiguration = {
   Settings: { screen: StackNavigator({ Settings }, navigationOptions) },
 } as any
 
-export const moreStack = { More, Settings }
+export const moreStack = {  }
 
 export const CompactNavigationConfiguration = {
-  Feed: { screen: StackNavigator({ Feed, ContactForm }, navigationOptions)},
+  FeedTab: {
+    screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
+  },
   SendTab: {
     screen: StackNavigator(
       { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Attachment },

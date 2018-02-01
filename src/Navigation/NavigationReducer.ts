@@ -9,7 +9,7 @@ const topRoutes = _.map(moreStack, (value, key) => { return key })
 
 const initialAction = {
   type: 'Navigation/NAVIGATE',
-  routeName: 'HomeTab',
+  routeName: 'Feed',
 }
 
 const wideInitialState = WideRouter.getStateForAction(initialAction)
@@ -33,7 +33,7 @@ export const CompactReducer = (state = compactInitialState, action: any) => {
   let nextState = CompactRouter.getStateForAction(action, state)
 
   if (state && action.type === 'Navigation/NAVIGATE'
-    && (action.routeName === 'More' || action.routeName === 'SendTab')) {
+    && ( action.routeName === 'SendTab' || action.routeName === 'RequestTab')) {
     nextState.routes[nextState.index].routes = [nextState.routes[nextState.index].routes[0]]
     nextState.routes[nextState.index].index = 0
   } else if (action.type === 'Navigation/NAVIGATE'
