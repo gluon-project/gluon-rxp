@@ -244,6 +244,16 @@ const Styles = {
     marginRight: Metrics.smallMargin,
     overflow: 'hidden',
   }),
+  accountIconSmallAbsolute: RX.Styles.createImageStyle({
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: Metrics.smallMargin,
+    overflow: 'hidden',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+  }),
   accountIconMedium: RX.Styles.createImageStyle({
     width: 48,
     height: 48,

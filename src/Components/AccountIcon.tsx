@@ -46,7 +46,7 @@ class AccountIcon extends RX.Component<Props, null> {
           seed={this.props.account.address}
           />
       )
-    } else {
+    } else if (this.props.type === AccountIconType.Small) {
       return (
         <RX.View style={Theme.Styles.row}>
           <RX.Image
@@ -56,6 +56,20 @@ class AccountIcon extends RX.Component<Props, null> {
           <Blockies
             style={style}
             width={size}
+            seed={this.props.account.address}
+            />
+        </RX.View>
+      )
+    } else {
+      return (
+        <RX.View style={Theme.Styles.row}>
+          <RX.Image
+            style={style}
+            source={this.props.account.avatar}
+            />
+          <Blockies
+            style={Theme.Styles.accountIconSmallAbsolute}
+            width={20}
             seed={this.props.account.address}
             />
         </RX.View>
