@@ -106,7 +106,7 @@ android {
         applicationId "space.gluon"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "1.0.${versionCode}"
         ndk {
             abiFilters "armeabi-v7a", "x86"

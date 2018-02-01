@@ -54,3 +54,4 @@ fastlane/screenshots
 
 dist/
 google-play-key-file.json
+**/fastlane/report.xml
