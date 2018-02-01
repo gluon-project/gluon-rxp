@@ -229,6 +229,7 @@ const Styles = {
     marginBottom: Metrics.baseMargin,
     color: Colors.light,
   }),
+
   accountIconMicro: RX.Styles.createImageStyle({
     width: 14,
     height: 14,

@@ -44,9 +44,16 @@ export default class ModalMessage extends RX.Component<Props, null> {
           </RX.View>
           <RX.View style={Theme.Styles.modalMessageBody}>
             <RX.Text style={Theme.Styles.modalMessageLabel}>{this.props.config.message}</RX.Text>
-            {this.props.config.inputText && <TextInput
-              value={this.props.config.inputText}
-            />}
+            {this.props.config.inputText && <RX.View>
+              <TextInput
+                value={this.props.config.inputText}
+              />
+              <CallToAction
+                onPress={() => RX.Clipboard.setText(this.props.config.inputText)}
+                type={CallToAction.type.Main}
+                title='Copy'
+              />
+              </RX.View>}
             <CallToAction
               onPress={this.props.onClose}
               type={CallToAction.type.Secondary}
