@@ -16,7 +16,8 @@
     "rn-link": "./node_modules/.bin/react-native link",
     "run-ios": "./node_modules/.bin/react-native run-ios",
     "run-android": "./node_modules/.bin/react-native run-android",
-    "codepush": "ts-node bin/deploy.ts local"
+    "codepush": "ts-node bin/deploy.ts local",
+    "android-publish": "tsc && bash bin/pull_service_key.sh && cd android && fastlane beta && cd -"
   },
   "devDependencies": {
     "@types/jest": "^20.0.1",
