@@ -221,6 +221,41 @@ const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> =>
   })
 }
 
+const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
+
+  return new Promise<Transaction>((resolve, reject) => {
+    ethSingleton.getEth().sendTransaction({
+        from: transaction.sender,
+        to: transaction.receiver,
+        value: transaction.amount,
+      }, function (err: any, txHash: string) {
+      if (err) {
+        reject(err)
+      } else {
+        if (txHash) {
+          console.log('Transaction sent')
+          console.log(txHash)
+          const interval = setInterval(() => {
+            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
+              if (error) {
+                reject(error)
+              }
+              if (response) {
+                clearInterval(interval)
+                resolve({
+                  ...transaction,
+                  hash: txHash,
+                  date: moment().toISOString(),
+                })
+              }
+            })
+          }, 1000)
+        }
+      }
+    })
+  })
+}
+
 const createNewToken = (token: Token, creator: User): Promise<Token> => {
   const tokenFactory = ethSingleton.getErc223Factory()
 
@@ -270,6 +305,7 @@ export default {
   getNewBalances,
   sendTransactionErc223,
   sendTransactionErc20,
+  sendTransactionETH,
   ethSingleton,
   getAccount,
   getAccounts,

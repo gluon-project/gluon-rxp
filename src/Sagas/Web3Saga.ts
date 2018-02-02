@@ -27,16 +27,24 @@ export function* watchStartSavingTransaction(): SagaIterator {
     const token: Token = yield select(Selectors.Tokens.getTokenByAddress, transaction.token)
     try {
       let newTransaction
-      if (token.type === Enums.TokenType.Erc223) {
-        newTransaction = yield call(Web3.sendTransactionErc223, transaction)
-      } else if (token.type === Enums.TokenType.Erc20) {
-        newTransaction = yield call(Web3.sendTransactionErc20, transaction)
-      }
+      if (token.type === Enums.TokenType.ETH) {
+        newTransaction = yield call(Web3.sendTransactionETH, transaction)
+        yield call(delay, 5000)
+        yield put(Actions.Transactions.resetNewTransaction(newTransaction))
+        yield put(Actions.User.refreshBalances())
+        yield put(Actions.Navigation.navigate('Tokens'))
+      } else {
+        if (token.type === Enums.TokenType.Erc223) {
+          newTransaction = yield call(Web3.sendTransactionErc223, transaction)
+        } else if (token.type === Enums.TokenType.Erc20) {
+          newTransaction = yield call(Web3.sendTransactionErc20, transaction)
+        }
 
-      yield put(Actions.Feed.addTransaction(newTransaction))
-      yield put(Actions.Feed.selectToken(newTransaction.token))
-      yield call(delay, 15000)
-      yield put(Actions.Navigation.navigate('FeedTab'))
+        yield put(Actions.Feed.addTransaction(newTransaction))
+        yield put(Actions.Feed.selectToken(newTransaction.token))
+        yield call(delay, 15000)
+        yield put(Actions.Navigation.navigate('FeedTab'))
+      }
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }
