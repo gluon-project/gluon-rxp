@@ -27,9 +27,9 @@ class Navigation extends RX.Component<Props, null> {
 
   componentWillReceiveProps(newProps: Props) {
     if (this.props.isAppProcessing && !newProps.isAppProcessing) {
-      RX.StatusBar.setNetworkActivityIndicatorVisible(true)
-    } else if (!this.props.isAppProcessing && newProps.isAppProcessing) {
       RX.StatusBar.setNetworkActivityIndicatorVisible(false)
+    } else if (!this.props.isAppProcessing && newProps.isAppProcessing) {
+      RX.StatusBar.setNetworkActivityIndicatorVisible(true)
     }
   }
 
