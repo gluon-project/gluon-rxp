@@ -1,10 +1,12 @@
 import Config from '../../Config'
 import erc223abi from './erc223abi'
+import erc20abi from './erc20abi'
 import erc223TokenFactoryAbi from './erc223TokenFactoryAbi'
 import Uport from '../uPort'
 const Web3 = require('ethjs-query')
 const bs58 = require('bs58')
 import * as moment from 'moment'
+import * as Enums from '../../Enums'
 
 let web3: any = null
 
@@ -24,6 +26,10 @@ const ethSingleton =  {
 
   getErc223: (address: string): any => {
     return web3.eth.contract(erc223abi).at(address)
+  },
+
+  getErc20: (address: string): any => {
+    return web3.eth.contract(erc20abi).at(address)
   },
 }
 
@@ -105,6 +111,17 @@ const getTokenInfo = (address: string) => {
     })
   }))
 
+  // MAX_UINT256 - ERC20 returns 0. This is a hacky way of checking if token is ERC20
+  promises.push(new Promise<number>((resolve, reject) => {
+    tokenContract.MAX_UINT256.call(function (err: any, value: number) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
   return Promise.all(promises).then((data: any[]) => {
     return {
       address,
@@ -112,16 +129,50 @@ const getTokenInfo = (address: string) => {
       code: data[1],
       decimals: data[2],
       initialAmount: data[3],
+      type: data[4].toString() === '0' ? Enums.TokenType.Erc20 : Enums.TokenType.Erc223,
     } as Token
   })
 }
 
-const sendTransaction = (transaction: Transaction): Promise<Transaction> => {
+const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> => {
   const token = ethSingleton.getErc223(transaction.token)
   const hex = transaction.attachment && transaction.attachment ? bs58.decode(transaction.attachment).toString('hex') : '00'
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(transaction.receiver, transaction.amount, `0x${hex}`,
+      { from: transaction.sender }, function (err: any, txHash: string) {
+      if (err) {
+        reject(err)
+      } else {
+        if (txHash) {
+          console.log('Transaction sent')
+          console.log(txHash)
+          const interval = setInterval(() => {
+            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
+              if (error) {
+                reject(error)
+              }
+              if (response) {
+                clearInterval(interval)
+                resolve({
+                  ...transaction,
+                  hash: txHash,
+                  date: moment().toISOString(),
+                })
+              }
+            })
+          }, 1000)
+        }
+      }
+    })
+  })
+}
+
+const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> => {
+  const token = ethSingleton.getErc20(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    token.transfer(transaction.receiver, transaction.amount,
       { from: transaction.sender }, function (err: any, txHash: string) {
       if (err) {
         reject(err)
@@ -196,7 +247,8 @@ const getAccounts = (): string => {
 
 export default {
   getNewBalances,
-  sendTransaction,
+  sendTransactionErc223,
+  sendTransactionErc20,
   ethSingleton,
   getAccount,
   getAccounts,

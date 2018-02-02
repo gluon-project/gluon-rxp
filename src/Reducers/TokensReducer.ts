@@ -4,6 +4,7 @@ import {
 } from 'redux-act'
 import { resetToInitialState } from './AppReducer'
 import Config from '../Config'
+import * as Enums from '../Enums'
 
 export interface TokensState {
   new: Token,
@@ -18,6 +19,7 @@ const initialState: TokensState = {
       code: 'MRT',
       logo: '',
       address: '0xd018a40a8876b21aa8f679bbaf8970f5d70f49fc',
+      type: Enums.TokenType.Erc223,
     },
   ],
 }

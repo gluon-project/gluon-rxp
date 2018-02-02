@@ -1,15 +1,16 @@
 import Config from '../../Config'
+import * as Enums from '../../Enums'
 import * as _ from 'lodash'
 import * as moment from 'moment'
 
 // var abiDecoder = require('abi-decoder')
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
-console.log('aaaa', abiDecoder)
 
 var bs58 = require('bs58')
-import erc233abi from '../Web3/erc223abi'
-
-abiDecoder.addABI(erc233abi)
+import erc223abi from '../Web3/erc223abi'
+import erc20abi from '../Web3/erc20abi'
+abiDecoder.addABI(erc20abi)
+abiDecoder.addABI(erc223abi)
 
 const toIPFSHash = (str: string) => {
   // remove leading 0x
@@ -26,8 +27,8 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
   const sender = _.find(event, {'name': 'from'}).value
   const receiver = _.find(event, {'name': 'to'}).value
   const amount = _.find(event, {'name': 'value'}).value
-  const data = _.find(event, {'name': 'data'}).value
-  const attachment = toIPFSHash(data)
+  const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
+  const attachment = data ? toIPFSHash(data) : null
 
   const date = moment(parseInt(ethTx.timeStamp.slice(2, ethTx.timeStamp.length), 16) * 1000).toISOString()
 

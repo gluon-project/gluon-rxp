@@ -23,3 +23,9 @@ export enum VisualType {
   About3,
   About4,
 }
+
+export enum TokenType {
+  Erc223,
+  Erc20,
+  ETH,
+}
