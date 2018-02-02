@@ -101,10 +101,12 @@ function* handleRequest(uri: string): SagaIterator {
       }
       if (url.query.t) {
         const tokenAddress = url.query.t
-        const token = yield call(Web3.getTokenInfo, tokenAddress)
-        const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
-        if (!existingToken) {
-          yield put(Actions.Tokens.addToken(token))
+        if (url.query.t !== '0x0000000000000000000000000000000000000000') {
+          const token = yield call(Web3.getTokenInfo, tokenAddress)
+          const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
+          if (!existingToken) {
+            yield put(Actions.Tokens.addToken(token))
+          }
         }
         yield put(Actions.Transactions.setToken(url.query.t))
       }
