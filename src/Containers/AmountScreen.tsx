@@ -5,6 +5,7 @@ import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -47,6 +48,7 @@ class AmountScreen extends RX.Component<Props, null> {
     this.props.setAmount(amount)
   }
   render() {
+
     return (
       <RX.View style={Theme.Styles.containerOpaque}>
         <RX.View style={Theme.Styles.containerFull}>
@@ -54,7 +56,7 @@ class AmountScreen extends RX.Component<Props, null> {
             <RX.View style={Theme.Styles.container}>
               <RX.Text
                 style={styles.textInput}
-              >{this.props.amount.toString()}</RX.Text>
+              >{Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)}</RX.Text>
               <RX.Text
                 style={Theme.Styles.amountCode}
               >{this.props.token && this.props.token.code}</RX.Text>

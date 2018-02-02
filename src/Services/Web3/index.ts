@@ -16,6 +16,10 @@ const ethSingleton =  {
     web3 = provider
   },
 
+  getWeb3: (): any => {
+    return web3
+  },
+
   getEth: (): any => {
     return web3 && web3.eth
   },
@@ -44,20 +48,36 @@ const getNewBalances = (address: string, tokens: Token[]) => {
   let promises: Promise<Balance>[] = []
 
   tokens.forEach(token => {
-    const tokenContract = ethSingleton.getErc223(token.address)
-    const promise = new Promise<Balance>((resolve, reject) => {
-      tokenContract.balanceOf.call(address, function (err: any, bal: any) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve({
-            token,
-            amount: bal,
-          })
-        }
+    if (token.type === Enums.TokenType.ETH) {
+      const promise = new Promise<Balance>((resolve, reject) => {
+        ethSingleton.getEth().getBalance(address, function (err: any, bal: any) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve({
+              token,
+              amount: ethSingleton.getWeb3().fromWei(bal).toNumber(),
+            })
+          }
+        })
       })
-    })
-    promises.push(promise)
+      promises.push(promise)
+    } else {
+      const tokenContract = ethSingleton.getErc223(token.address)
+      const promise = new Promise<Balance>((resolve, reject) => {
+        tokenContract.balanceOf.call(address, function (err: any, bal: any) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve({
+              token,
+              amount: bal,
+            })
+          }
+        })
+      })
+      promises.push(promise)
+    }
   })
   return Promise.all(promises)
 }
@@ -224,6 +244,7 @@ const createNewToken = (token: Token, creator: User): Promise<Token> => {
                 resolve({
                   ...token,
                   address: response.logs[0].address,
+                  type: Enums.TokenType.Erc223,
                 })
               }
             })
