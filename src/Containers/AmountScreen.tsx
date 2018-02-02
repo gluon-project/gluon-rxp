@@ -10,9 +10,9 @@ import Utils from '../Utils'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateBack?: () => void
-  setAmount?: (amount: number) => void
+  setAmount?: (amount: string) => void
   token?: Token
-  amount?: number
+  amount?: string
   uiTraits?: UITraits
 }
 
@@ -41,9 +41,9 @@ class AmountScreen extends RX.Component<Props, null> {
     this.handleAmountChange = this.handleAmountChange.bind(this)
   }
   handleAmountChange(value: string) {
-    let amount = parseInt(value, 10)
-    if (!amount || amount < 0 ) {
-      amount = 0
+    let amount = value
+    if (!amount || amount === '' ) {
+      amount = '0'
     }
     this.props.setAmount(amount)
   }
@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
-    setAmount: (amount: number) => dispatch(Actions.Transactions.setAmount(amount)),
+    setAmount: (amount: string) => dispatch(Actions.Transactions.setAmount(amount)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AmountScreen)

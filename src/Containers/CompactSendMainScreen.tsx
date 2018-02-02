@@ -20,7 +20,7 @@ interface Props extends RX.CommonProps {
   startLogin?: () => void
   receiver?: User
   sender?: User
-  amount?: number
+  amount?: string
   token?: Token
   attachment?: Attachment
 }

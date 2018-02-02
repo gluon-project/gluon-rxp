@@ -21,7 +21,7 @@ interface Props extends RX.CommonProps {
   createNewToken?: (token: Token) => void
   receiver?: User
   sender?: User
-  amount?: number
+  amount?: string
   token?: Token
   attachment?: Attachment
   setModalMessage?: (config: ModalMessageConfig) => void

@@ -12,7 +12,7 @@ export interface TransactionState {
 }
 
 const emptyTransaction = {
-  amount: 0,
+  amount: '0',
   token: null,
   receiver: null,
   sender: null,
@@ -41,7 +41,7 @@ reducer.on(setToken, (state: TransactionState, payload?: string) => {
 })
 
 export const setAmount = createAction('Set Amount')
-reducer.on(setAmount, (state: TransactionState, payload?: number) => {
+reducer.on(setAmount, (state: TransactionState, payload?: string) => {
   return {
     ...state,
     new: {

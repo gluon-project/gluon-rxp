@@ -56,7 +56,7 @@ const getNewBalances = (address: string, tokens: Token[]) => {
           } else {
             resolve({
               token,
-              amount: ethSingleton.getWeb3().fromWei(bal).toNumber(),
+              amount: bal.toString(),
             })
           }
         })
@@ -71,7 +71,7 @@ const getNewBalances = (address: string, tokens: Token[]) => {
           } else {
             resolve({
               token,
-              amount: bal,
+              amount: bal.toString(),
             })
           }
         })

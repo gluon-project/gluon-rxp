@@ -10,7 +10,7 @@ interface Props extends RX.CommonProps {
   routeName: string,
   sender?: User
   receiver?: User
-  amount?: number
+  amount?: string
   token?: Token
   attachment?: Attachment
   isProcessing?: boolean

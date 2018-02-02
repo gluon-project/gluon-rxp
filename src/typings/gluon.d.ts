@@ -38,7 +38,7 @@ declare interface Token {
   name?: string,
   code?: string,
   logo?: string,
-  initialAmount?: number,
+  initialAmount?: string,
   decimals?: number,
   type?: number,
 }
@@ -47,7 +47,7 @@ declare interface Transaction {
   hash?: string,
   sender?: string,
   receiver?: string,
-  amount?: number,
+  amount?: string,
   token?: string,
   date?: string,
   attachment?: string,
@@ -55,7 +55,7 @@ declare interface Transaction {
 
 declare interface Balance {
   token: Token
-  amount: number
+  amount: string
 }
 
 declare interface Attachment {
