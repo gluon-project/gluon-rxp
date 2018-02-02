@@ -21,12 +21,15 @@ interface Props extends RX.CommonProps {
   isProcessing?: boolean
   getDataFromIpfs?: (ipfsHash: string) => void
   setModalMessage?: (config: ModalMessageConfig) => void
+  setNewTransaction?: (transaction: Transaction) => void
 }
 
 class FeedItem extends RX.Component<Props, null> {
   constructor(props: Props) {
     super(props)
     this.handleContactPress = this.handleContactPress.bind(this)
+    this.handleSharePress = this.handleSharePress.bind(this)
+    this.handleSendPress = this.handleSendPress.bind(this)
   }
 
   componentDidMount() {
@@ -42,6 +45,26 @@ class FeedItem extends RX.Component<Props, null> {
   handleContactPress(contact: User) {
     this.props.setContactFormValue(contact)
     this.props.navigate('ContactForm')
+  }
+
+  handleSharePress() {
+    this.props.setModalMessage({
+      type: Enums.MessageType.Success,
+      title: 'Share',
+      message: 'Share this URL with your friends',
+      inputText: `https://gluon.space/token/?t=${this.props.token.address}&tx=${this.props.transaction.hash}`,
+      ctaTitle: 'Close',
+    } as ModalMessageConfig)
+  }
+
+  handleSendPress() {
+    this.props.setNewTransaction({
+      receiver: this.props.transaction.receiver,
+      amount: this.props.transaction.amount,
+      token: this.props.transaction.token,
+      attachment: this.props.transaction.attachment,
+    })
+    this.props.navigate('SendTab')
   }
 
   render() {
@@ -97,16 +120,10 @@ class FeedItem extends RX.Component<Props, null> {
             </RX.Button>}
             {/* <RX.Link url={`https://rinkeby.etherscan.io/tx/${this.props.transaction.hash}`}>Etherscan</RX.Link> */}
             <RX.View style={Theme.Styles.feed.actionRow}>
-              <RX.Button onPress={null}>
+              <RX.Button onPress={this.handleSendPress}>
                 <RX.Text style={Theme.Styles.feed.actionButton}>Send tokens</RX.Text>
               </RX.Button>
-              <RX.Button onPress={() => this.props.setModalMessage({
-                type: Enums.MessageType.Success,
-                title: 'Share',
-                message: 'Share this URL with your friends',
-                inputText: `https://gluon.space/token/?t=${this.props.token.address}`,
-                ctaTitle: 'Close',
-              } as ModalMessageConfig)}>
+              <RX.Button onPress={this.handleSharePress}>
                 <RX.Text style={Theme.Styles.feed.actionButton}>Share post</RX.Text>
               </RX.Button>
             </RX.View>
@@ -132,6 +149,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     getDataFromIpfs: (ipfsHash: string) => dispatch(Actions.Attachment.getFromIpfs(ipfsHash)),
     setContactFormValue: (contact: User) => dispatch(Actions.Contacts.setForEditing(contact)),
     setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),
+    setNewTransaction: (transaction: Transaction) => dispatch(Actions.Transactions.setNew(transaction)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FeedItem)

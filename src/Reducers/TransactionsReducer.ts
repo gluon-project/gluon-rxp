@@ -105,6 +105,17 @@ reducer.on(setHash, (state: TransactionState, payload?: string) => {
   }
 })
 
+export const setNew = createAction('Set new transaction params')
+reducer.on(setNew, (state: TransactionState, payload?: Transaction) => {
+  return {
+    ...state,
+    new: {
+      ...state.new,
+      ...payload,
+    },
+  }
+})
+
 export const startSaving = createAction('Start saving transaction')
 
 reducer.on(FeedActions.addTransaction, (state: TransactionState, payload?: Transaction) => {
