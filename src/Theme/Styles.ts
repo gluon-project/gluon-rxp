@@ -513,6 +513,12 @@ const Styles = {
       fontSize: Fonts.size.medium,
       marginBottom: Metrics.baseMargin,
     }),
+    warning: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.medium,
+      marginBottom: Metrics.baseMargin,
+      textAlign: 'center',
+    }),
   },
 }
 
