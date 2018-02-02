@@ -40,6 +40,7 @@ declare interface Token {
   logo?: string,
   initialAmount?: number,
   decimals?: number,
+  type?: number,
 }
 
 declare interface Transaction {

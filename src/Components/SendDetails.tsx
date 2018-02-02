@@ -1,6 +1,7 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
 import { ListItem, CallToAction } from '../Components'
+import * as Enums from '../Enums'
 
 interface Props extends RX.CommonProps {
   startLogin?: () => void
@@ -70,7 +71,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           account={this.props.receiver}
         />
 
-        <ListItem
+        {this.props.token && this.props.token.type === Enums.TokenType.Erc223 && <ListItem
           //disabled={!this.props.currentUser}
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Attachment'}
@@ -79,13 +80,14 @@ export default class SendDetails extends RX.Component<Props, null> {
           onPress={() => this.props.navigate('Attachment')}
           isOn={!!this.props.attachment}
           isOff={!this.props.attachment}
-        />
+        />}
 
       <RX.View style={styles.cta}><CallToAction
         disabled={!this.props.sender
           || !this.props.token
           || !this.props.amount
           || !this.props.receiver
+          || this.props.isProcessing
         }
         type={CallToAction.type.Main}
         title='Send'

@@ -110,6 +110,6 @@ export const startSaving = createAction('Start saving transaction')
 reducer.on(FeedActions.addTransaction, (state: TransactionState, payload?: Transaction) => {
   return {
     ...state,
-    new: emptyTransaction,
+    new: {...emptyTransaction, sender: payload.sender},
   }
 })

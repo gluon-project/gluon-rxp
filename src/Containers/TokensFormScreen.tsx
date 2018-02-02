@@ -24,7 +24,8 @@ interface State {
   decimals?: number,
   totalSupply?: number,
   code?: string
-  isNew?: boolean
+  isNew?: boolean,
+  type?: Enums.TokenType,
 }
 
 class TokensFormScreen extends RX.Component<Props, State> {
@@ -37,6 +38,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
       totalSupply: 1000000,
       code: '',
       isNew: true,
+      type: Enums.TokenType.Erc223,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
   }
@@ -47,6 +49,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         name: this.state.name,
         code: this.state.code,
         address: this.state.address,
+        type: this.state.type,
       })
       this.props.setToken(this.state.address)
       this.props.navigateBack()
@@ -105,7 +108,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
             onChangeText={(value) => this.setState({ name: value })}
             />
           <TextInput
-            label='Code (BCK)'
+            label='Symbol (BCK)'
             value={this.state.code}
             onChangeText={(value) => this.setState({ code: value })}
             />
