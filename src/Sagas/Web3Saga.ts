@@ -78,7 +78,8 @@ function* loadTokenFeed(token: Token): SagaIterator {
 export function* loadAllTokenFeeds(): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.LoadTransactions}))
   try {
-    const tokens: Token[] = yield select(Selectors.Tokens.getList)
+    yield call(delay, 1000)
+    const tokens: Token[] = yield select(Selectors.Tokens.getListForDownload)
     yield all(tokens.map(token => call(loadTokenFeed, token)))
   } catch (e) {
     yield put(Actions.App.handleError(e))

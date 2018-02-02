@@ -145,7 +145,6 @@ function* loadInitialState(): SagaIterator {
   } catch (e) {
     yield put(Actions.App.handleError(e))
   }
-  yield put(Actions.Feed.fetchTransactions())
   yield put(Actions.App.initialDataFinishedLoading())
 }
 
