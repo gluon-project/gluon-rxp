@@ -6,6 +6,7 @@ import Metrics from './Metrics'
 const Styles = {
   containerFull: RX.Styles.createViewStyle({
     flex: 1,
+    backgroundColor: Colors.background,
   }),
   container: RX.Styles.createViewStyle({
     flex: 1,
@@ -518,6 +519,9 @@ const Styles = {
       fontSize: Fonts.size.medium,
       marginBottom: Metrics.baseMargin,
       textAlign: 'center',
+    }),
+    link: RX.Styles.createTextStyle({
+      color: Colors.brand,
     }),
   },
 }

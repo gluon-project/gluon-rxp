@@ -46,7 +46,7 @@ class AccountIcon extends RX.Component<Props, null> {
           seed={this.props.account.address}
           />
       )
-    } else if (this.props.type === AccountIconType.Small) {
+    } else if (this.props.type === AccountIconType.Small || this.props.type === AccountIconType.Micro) {
       return (
         <RX.View style={Theme.Styles.row}>
           <RX.Image

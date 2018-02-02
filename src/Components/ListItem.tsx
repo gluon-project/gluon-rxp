@@ -1,7 +1,8 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { Icons, AccountIcon } from '../Components'
+import { Icons, AccountIcon, VisualBox } from '../Components'
 import * as _ from 'lodash'
+import * as Enums from '../Enums'
 
 interface Props extends RX.CommonProps {
   account?: User
@@ -16,6 +17,7 @@ interface Props extends RX.CommonProps {
   isOn?: boolean
   isOff?: boolean
   smallSeedIcon?: boolean
+  iconType?: Enums.VisualType
 }
 
 export enum ListItemType {
@@ -32,7 +34,7 @@ export default class ListItem extends RX.Component<Props, null> {
         onPress={this.props.onPress}
         disabled={this.props.disabled}>
         <RX.View style={Theme.Styles.listItemIconWrapper}>
-        {(this.props.isOn || this.props.isOff || (this.props.account && !this.props.smallSeedIcon))
+        {(this.props.iconType || this.props.isOn || this.props.isOff || (this.props.account && !this.props.smallSeedIcon))
           && <RX.View style={[Theme.Styles.listItemIcon]}>
             {this.props.account && !this.props.smallSeedIcon && <AccountIcon
               account={this.props.account}
@@ -40,6 +42,11 @@ export default class ListItem extends RX.Component<Props, null> {
               />}
             {this.props.isOn && <Icons.OnIcon />}
             {this.props.isOff && <Icons.OffIcon />}
+            {this.props.iconType && this.props.iconType === Enums.VisualType.About1 && <Icons.About1Icon />}
+            {this.props.iconType && this.props.iconType === Enums.VisualType.About2 && <Icons.About2Icon />}
+            {this.props.iconType && this.props.iconType === Enums.VisualType.About3 && <Icons.About3Icon />}
+            {this.props.iconType && this.props.iconType === Enums.VisualType.About4 && <Icons.About4Icon />}
+
           </RX.View>}
           <RX.View>
             <RX.View style={Theme.Styles.row}>

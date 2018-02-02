@@ -16,7 +16,7 @@ const metrics = {
   smallMargin: 5,
   buttonHeight: 44,
   listItemHeight: 76,
-  iconSize: 84,
+  iconSize: 46,
   borderWidth: 1,
   borderRadius: 8,
 }

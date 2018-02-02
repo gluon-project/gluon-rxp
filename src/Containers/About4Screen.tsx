@@ -26,6 +26,7 @@ class About4Screen extends RX.Component<Props, null> {
           </RX.Text>
           <RX.Text style={Theme.Styles.about.p}>
             New tokens are created using <RX.Link
+            style={Theme.Styles.about.link}
             url={'https://github.com/Dexaran/ERC223-token-standard/tree/Recommended'}>ERC223 standard</RX.Link>
           </RX.Text>
           <RX.Text style={Theme.Styles.about.p}>
