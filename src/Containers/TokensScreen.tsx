@@ -45,7 +45,7 @@ class TokensScreen extends RX.Component<Props, null> {
                 key={key}
                 account={account.token}
                 title={`${account.token.name}`}
-                details={`${account.amount}`}
+                details={utils.number.numberToString(account.amount, account.token.decimals)}
                 subTitle={utils.address.short(account.token.address)}
                 type={ListItem.type.Secondary}
                 selected={this.props.selectedToken

@@ -39,7 +39,7 @@ class FeedMasterScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     uiTraits: state.app.uiTraits,
-    tokens: Selectors.Tokens.getList(state),
+    tokens: Selectors.Tokens.getListForFeed(state),
     selectedToken: Selectors.Feed.getSelectedToken(state),
   }
 }

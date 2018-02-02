@@ -7,6 +7,7 @@ import Actions from '../Reducers/Actions'
 import * as moment from 'moment'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -59,7 +60,9 @@ class FeedItem extends RX.Component<Props, null> {
                     </RX.View>
                   </RX.Button>
                   <RX.View style={Theme.Styles.feed.txDetails}>
-                    <RX.Text style={Theme.Styles.feed.title}>{this.props.transaction.amount} {this.props.token.code}</RX.Text>
+                    <RX.Text style={Theme.Styles.feed.title}>
+                      {Utils.number.numberToString(this.props.transaction.amount, this.props.token.decimals)} {this.props.token.code}
+                    </RX.Text>
                   </RX.View>
                 </RX.View>
 

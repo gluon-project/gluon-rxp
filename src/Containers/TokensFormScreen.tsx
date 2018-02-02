@@ -59,7 +59,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         code: this.state.code,
         address: this.state.address,
         decimals: this.state.decimals,
-        initialAmount: this.state.totalSupply,
+        initialAmount: utils.number.powToString(this.state.totalSupply, this.state.decimals),
       })
     }
   }

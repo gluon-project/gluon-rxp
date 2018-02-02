@@ -5,13 +5,14 @@ import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateBack?: () => void
-  setAmount?: (amount: number) => void
+  setAmount?: (amount: string) => void
   token?: Token
-  amount?: number
+  amount?: string
   uiTraits?: UITraits
 }
 
@@ -40,13 +41,14 @@ class AmountScreen extends RX.Component<Props, null> {
     this.handleAmountChange = this.handleAmountChange.bind(this)
   }
   handleAmountChange(value: string) {
-    let amount = parseInt(value, 10)
-    if (!amount || amount < 0 ) {
-      amount = 0
+    let amount = value
+    if (!amount || amount === '' ) {
+      amount = '0'
     }
     this.props.setAmount(amount)
   }
   render() {
+
     return (
       <RX.View style={Theme.Styles.containerOpaque}>
         <RX.View style={Theme.Styles.containerFull}>
@@ -54,7 +56,7 @@ class AmountScreen extends RX.Component<Props, null> {
             <RX.View style={Theme.Styles.container}>
               <RX.Text
                 style={styles.textInput}
-              >{this.props.amount.toString()}</RX.Text>
+              >{Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)}</RX.Text>
               <RX.Text
                 style={Theme.Styles.amountCode}
               >{this.props.token && this.props.token.code}</RX.Text>
@@ -87,7 +89,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
-    setAmount: (amount: number) => dispatch(Actions.Transactions.setAmount(amount)),
+    setAmount: (amount: string) => dispatch(Actions.Transactions.setAmount(amount)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AmountScreen)

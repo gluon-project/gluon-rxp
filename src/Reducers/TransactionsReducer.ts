@@ -12,7 +12,7 @@ export interface TransactionState {
 }
 
 const emptyTransaction = {
-  amount: 0,
+  amount: '',
   token: null,
   receiver: null,
   sender: null,
@@ -41,7 +41,7 @@ reducer.on(setToken, (state: TransactionState, payload?: string) => {
 })
 
 export const setAmount = createAction('Set Amount')
-reducer.on(setAmount, (state: TransactionState, payload?: number) => {
+reducer.on(setAmount, (state: TransactionState, payload?: string) => {
   return {
     ...state,
     new: {
@@ -108,6 +108,14 @@ reducer.on(setHash, (state: TransactionState, payload?: string) => {
 export const startSaving = createAction('Start saving transaction')
 
 reducer.on(FeedActions.addTransaction, (state: TransactionState, payload?: Transaction) => {
+  return {
+    ...state,
+    new: {...emptyTransaction, sender: payload.sender},
+  }
+})
+
+export const resetNewTransaction = createAction('Start saving transaction')
+reducer.on(resetNewTransaction, (state: TransactionState, payload?: Transaction) => {
   return {
     ...state,
     new: {...emptyTransaction, sender: payload.sender},

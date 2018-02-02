@@ -15,10 +15,19 @@ const initialState: TokensState = {
   new: null,
   list: [
     {
+      name: 'Ether',
+      code: 'ETH',
+      logo: '',
+      address: '0x0000000000000000000000000000000000000000',
+      decimals: 18,
+      type: Enums.TokenType.ETH,
+    },
+    {
       name: 'Mircea Token',
       code: 'MRT',
       logo: '',
       address: '0xd018a40a8876b21aa8f679bbaf8970f5d70f49fc',
+      decimals: 0,
       type: Enums.TokenType.Erc223,
     },
   ],

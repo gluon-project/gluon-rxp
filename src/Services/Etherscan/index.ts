@@ -36,7 +36,7 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
     hash: ethTx.transactionHash,
     sender,
     receiver,
-    amount: parseInt(amount, 10),
+    amount: amount,
     token: token.address,
     date,
     attachment,

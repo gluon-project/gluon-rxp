@@ -2,6 +2,7 @@ import RX = require('reactxp')
 import * as Theme from '../Theme'
 import * as Enums from '../Enums'
 import { ListItem, CallToAction } from '../Components'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   startLogin?: () => void
@@ -9,7 +10,7 @@ interface Props extends RX.CommonProps {
   routeName: string,
   sender?: User
   receiver?: User
-  amount?: number
+  amount?: string
   token?: Token
   attachment?: Attachment
   isProcessing?: boolean
@@ -79,7 +80,8 @@ export default class RequestDetails extends RX.Component<Props, null> {
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Amount'}
           title={this.props.amount
-            ? `${this.props.amount} ${this.props.token ? this.props.token.code : ''}`
+            ? `${Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)} ${this.props.token ?
+              this.props.token.code : ''}`
             : 'Set amount'}
             subTitle={'How much will you send?'}
           isOn={!!this.props.amount}
