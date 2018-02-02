@@ -1,3 +1,5 @@
+![Gluon](https://raw.githubusercontent.com/gluon-project/gluon-rxp/master/web-static/web-title.jpg)
+
 # Gluon
 
 This app works on React Native (iOS, Android) and web.
