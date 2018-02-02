@@ -31,6 +31,7 @@ declare interface User {
   address?: string,
   name?: string,
   avatar?: string,
+  hidden?: boolean,
 }
 
 declare interface Token {

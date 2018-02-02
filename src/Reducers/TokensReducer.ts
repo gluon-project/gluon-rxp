@@ -23,10 +23,10 @@ const initialState: TokensState = {
       type: Enums.TokenType.ETH,
     },
     {
-      name: 'Mircea Token',
-      code: 'MRT',
+      name: 'Gluon',
+      code: 'GLU',
       logo: '',
-      address: '0xd018a40a8876b21aa8f679bbaf8970f5d70f49fc',
+      address: '0x4356ea7ffec8e481984c3a697351091cf51f87f6',
       decimals: 0,
       type: Enums.TokenType.Erc223,
     },

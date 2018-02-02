@@ -4,7 +4,7 @@ import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
 
-export const getList = (state: CombinedState) => state.contacts.list
+export const getList = (state: CombinedState) => _.filter(state.contacts.list, (item: User) => item.hidden !== true)
 export const getAccountByAddress = (state: CombinedState, address: string): User => {
   if (!address) {
     return null

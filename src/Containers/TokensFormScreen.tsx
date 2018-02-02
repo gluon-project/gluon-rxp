@@ -77,7 +77,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
 
   private isValid = () => {
     if (this.state.isNew) {
-      return this.props.network === 4
+      return this.props.network === '4'
         && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.totalSupply > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
