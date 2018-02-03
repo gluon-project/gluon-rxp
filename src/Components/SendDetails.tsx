@@ -34,7 +34,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           account={this.props.sender}
           />
         <ListItem
-          // disabled={!this.props.currentUser}
+          disabled={!this.props.sender}
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Tokens'}
           title={this.props.token

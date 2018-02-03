@@ -22,13 +22,17 @@ const styles = {
     fontWeight: 'bold',
     backgroundColor: 'transparent',
     color: 'white',
-    marginRight: -60,
-    marginLeft: -60,
-    paddingRight: -10,
-    paddingLeft: -10,
-    paddingTop: 30,
+    marginTop: 30,
+    height: 50,
     borderRadius: 3,
     textAlign: 'center',
+    justifyContent: 'center',
+  }),
+  medium: RX.Styles.createTextInputStyle({
+    fontSize: 35,
+  }),
+  small: RX.Styles.createTextInputStyle({
+    fontSize: 28,
   }),
   image: RX.Styles.createImageStyle({
     flex: 1,
@@ -48,15 +52,20 @@ class AmountScreen extends RX.Component<Props, null> {
     this.props.setAmount(amount)
   }
   render() {
-
+    const amount = Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)
     return (
       <RX.View style={Theme.Styles.containerOpaque}>
         <RX.View style={Theme.Styles.containerFull}>
           <RX.View style={Theme.Styles.containerWrapper}>
             <RX.View style={Theme.Styles.container}>
               <RX.Text
-                style={styles.textInput}
-              >{Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)}</RX.Text>
+                style={[
+                  styles.textInput,
+                  amount.length > 8 && amount.length < 13 && styles.medium,
+                  amount.length >= 13 && styles.small,
+                ]}
+                numberOfLines={1}
+              >{amount}</RX.Text>
               <RX.Text
                 style={Theme.Styles.amountCode}
               >{this.props.token && this.props.token.code}</RX.Text>
