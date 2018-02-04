@@ -86,7 +86,7 @@ const Attachment = {screen: Screens.AttachmentScreen, navigationOptions: {title:
 const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Send'}}
-const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Send'}}
+const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
 const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}
 

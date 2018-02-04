@@ -27,26 +27,28 @@ class SettingsScreen extends RX.Component<Props, null> {
   render() {
     return (
       <ScrollView>
-        <RX.Text style={Theme.Styles.sectionTitle}>
-        DEBUG
-        </RX.Text>
-        <CallToAction
-          type={CallToAction.type.Default}
-          title={'Reset to initial state'}
-          onPress={() => this.props.resetToInitialState()}
-        />
-        {/*<RX.Text style={Theme.Styles.sectionTitle}>
-          APP DEPLOYMENTS
-        </RX.Text>
-        {this.props.codePushDeployments.map(codePushDeployment => <CallToAction
-          type={CallToAction.type.Default}
-          key={codePushDeployment.key}
-          title={codePushDeployment.name}
-          onPress={() => this.props.syncCodePushDeployment(codePushDeployment)}
-        />)}
-        <RX.Text style={Theme.Styles.sectionTitle}>
-          {this.props.appVersion}
-        </RX.Text>*/}
+        <RX.View style={Theme.Styles.about.wrapper}>
+          <CallToAction
+            type={CallToAction.type.Default}
+            title={'Clear local cache'}
+            onPress={() => this.props.resetToInitialState()}
+          />
+          <RX.Text style={Theme.Styles.about.warning}>
+            All your contact and token lists are stored locally.
+          </RX.Text>
+          {/* {RX.Platform.getType() !== 'web' && <RX.View><RX.Text style={Theme.Styles.sectionTitle}>
+            APP DEPLOYMENTS
+          </RX.Text>
+          {this.props.codePushDeployments.map(codePushDeployment => <CallToAction
+            type={CallToAction.type.Default}
+            key={codePushDeployment.key}
+            title={codePushDeployment.name}
+            onPress={() => this.props.syncCodePushDeployment(codePushDeployment)}
+          />)}
+          <RX.Text style={Theme.Styles.sectionTitle}>
+            {this.props.appVersion}
+          </RX.Text></RX.View>} */}
+        </RX.View>
       </ScrollView>
     )
   }

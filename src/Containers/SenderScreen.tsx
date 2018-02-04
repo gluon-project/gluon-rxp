@@ -41,7 +41,9 @@ class SenderScreen extends RX.Component<Props, null> {
             onPress={() => this.handleSetReceiver(user)}
             />)}
           {this.props.accounts.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
-            <RX.Text style={Theme.Styles.infoBox.title}>No Web3 provider detected. Please use Metamask, Parity, Cipher or:</RX.Text>
+            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.infoBox.title}>
+              No Web3 provider detected. Please use Metamask, Parity, Cipher or:
+            </RX.Text>}
             <CallToAction
               type={CallToAction.type.Main}
               title='Login with uPort'

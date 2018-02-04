@@ -83,6 +83,26 @@ function* handleRequest(uri: string): SagaIterator {
       if (!existingToken) {
         yield put(Actions.Tokens.addToken(token))
       }
+      if (url.query.sa) {
+        const existingContact = yield select(Selectors.Contacts.getAccountByAddress, url.query.sa)
+        if (!existingContact.avatar) {
+          yield put(Actions.Contacts.addContact({
+            name: url.query.sn ? url.query.sn : utils.address.short(url.query.sa),
+            address: url.query.sa,
+            avatar: null,
+          }))
+        }
+      }
+      if (url.query.ra) {
+        const existingContact = yield select(Selectors.Contacts.getAccountByAddress, url.query.ra)
+        if (!existingContact.avatar) {
+          yield put(Actions.Contacts.addContact({
+            name: url.query.rn ? url.query.rn : utils.address.short(url.query.ra),
+            address: url.query.ra,
+            avatar: null,
+          }))
+        }
+      }
       yield put(Actions.Feed.selectToken(tokenAddress))
       yield put(Actions.Navigation.navigate('FeedTab'))
       // yield put(Actions.Navigation.navigate('Feed'))
