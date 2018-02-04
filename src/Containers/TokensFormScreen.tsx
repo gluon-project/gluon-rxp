@@ -17,7 +17,6 @@ interface Props extends RX.CommonProps {
   getTokenInfo?: (address: string) => void
   isProcessing?: boolean
   formValues?: Token
-  network?: any
 }
 
 interface State {
@@ -28,6 +27,7 @@ interface State {
   code?: string
   isNew?: boolean,
   type?: Enums.TokenType,
+  network?: string
 }
 
 class TokensFormScreen extends RX.Component<Props, State> {
@@ -41,8 +41,15 @@ class TokensFormScreen extends RX.Component<Props, State> {
       code: '',
       isNew: true,
       type: Enums.TokenType.Erc223,
+      network: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
+  }
+
+  componentDidMount() {
+    Services.Web3.ethSingleton.getWeb3().version.getNetwork((err: any, data: string) => {
+      this.setState({network: data})
+    })
   }
 
   private handleSave = () => {
@@ -77,7 +84,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
 
   private isValid = () => {
     if (this.state.isNew) {
-      return this.props.network === '4'
+      return this.state.network === '4'
         && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.totalSupply > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
@@ -92,7 +99,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
-    console.log(this.props.network)
+    console.log(this.state.network)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -135,7 +142,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
             disabled={!this.isValid()}
             inProgress={this.props.isProcessing}
           />
-          {this.state.isNew && this.props.network !== '4' && <RX.Text style={Theme.Styles.about.warning}>
+          {this.state.isNew && this.state.network !== '4' && <RX.Text style={Theme.Styles.about.warning}>
             Token creation currently supported only on Rinkeby network
           </RX.Text>}
         </ScrollView>
@@ -148,7 +155,6 @@ const mapStateToProps = (state: CombinedState): Props => {
   return {
     isProcessing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.CreateNewToken),
     formValues: Selectors.Tokens.getNew(state),
-    network: Services.Web3.ethSingleton.getWeb3().version.network,
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
