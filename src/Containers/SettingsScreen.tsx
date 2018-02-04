@@ -16,8 +16,6 @@ interface Props extends RX.CommonProps {
   syncCodePushDeployment?: (codePushDeployment: CodePushDeployment) => void
   codePushDeployments?: CodePushDeployment[]
   appVersion?: string
-  sampleFlag?: boolean,
-  setSampleFlag?: (value: boolean) => void
   resetToInitialState?: () => void
   environment?: string
   showEnvironmentPicker?: () => void
@@ -58,14 +56,12 @@ const mapStateToProps = (state: CombinedState): Props => {
   return {
     codePushDeployments: Selectors.App.getCodePushDeployments(state),
     appVersion: state.app.version,
-    sampleFlag: state.settings.sampleFlag,
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     syncCodePushDeployment: (codePushDeployment: CodePushDeployment) =>
       dispatch(AppReducer.syncCodePushDeployment(codePushDeployment)),
-    setSampleFlag: (value: boolean) => dispatch(Actions.Settings.setSampleFlag(value)),
     resetToInitialState: () => dispatch(Actions.App.resetToInitialState()),
   }
 }

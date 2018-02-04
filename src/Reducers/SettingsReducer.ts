@@ -4,18 +4,18 @@ import {
 } from 'redux-act'
 
 export interface SettingsState {
-  sampleFlag: boolean
+  showMainVisual: boolean
 }
 
 const initialState: SettingsState = {
-  sampleFlag: true,
+  showMainVisual: true,
 }
 export const reducer = createReducer({}, initialState)
 
-export const setSampleFlag = createAction('Set Sample Flag')
-reducer.on(setSampleFlag, (state: SettingsState, payload: boolean) => {
+export const setShowMainVisual = createAction('Set showMainVisual flag')
+reducer.on(setShowMainVisual, (state: SettingsState, payload: boolean) => {
   return {
     ...state,
-    sampleFlag: payload,
+    showMainVisual: payload,
   }
 })
