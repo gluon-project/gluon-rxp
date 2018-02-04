@@ -26,6 +26,15 @@ class SenderScreen extends RX.Component<Props, null> {
     }
   }
 
+  componentWillReceiveProps(newProps: Props) {
+
+    if (this.props.accounts.length === 0 && newProps.accounts.length > 0) {
+      if (this.props.uiTraits.horizontalIsCompact) {
+        this.props.navigateBack()
+      }
+    }
+  }
+
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
@@ -41,7 +50,7 @@ class SenderScreen extends RX.Component<Props, null> {
             onPress={() => this.handleSetReceiver(user)}
             />)}
           {this.props.accounts.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
-            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.infoBox.title}>
+            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
               No Web3 provider detected. Please use Metamask, Parity, Cipher or:
             </RX.Text>}
             <CallToAction
