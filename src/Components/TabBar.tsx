@@ -109,7 +109,7 @@ const styles = {
   }),
 
   horizontalTabBar: RX.Styles.createViewStyle({
-    height: Theme.Metrics.tabBar.height,
+    height: Theme.Metrics.tabBar.height + (RX.UserInterface.measureWindow().height === 812 ? 40 : 0),
     flexDirection: 'row',
   }),
 }

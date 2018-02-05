@@ -4,6 +4,10 @@ import Fonts from './Fonts'
 import Metrics from './Metrics'
 
 const Styles = {
+  statusBar: RX.Styles.createViewStyle({
+    backgroundColor: Colors.navBarBackground,
+    height: RX.UserInterface.measureWindow().height === 812 ? 20 : 0,
+  }),
   containerFull: RX.Styles.createViewStyle({
     flex: 1,
     backgroundColor: Colors.background,

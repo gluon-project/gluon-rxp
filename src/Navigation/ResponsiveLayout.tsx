@@ -35,6 +35,7 @@ class ResponsiveLayout extends RX.Component<Props, null> {
       <RX.View
         onLayout={this._onLayout}
         style={Theme.Styles.containerFull}>
+        <RX.View style={Theme.Styles.statusBar} />
         {this.props.children}
       </RX.View>
     )
