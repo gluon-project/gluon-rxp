@@ -58,9 +58,11 @@ export function* watchRefreshBalances(): SagaIterator {
     yield put(Actions.Process.start({type: Enums.ProcessType.BalanceUpdate}))
     try {
       const currentUser = yield select(Selectors.User.getCurrent)
-      const tokens = yield select(Selectors.Tokens.getList)
-      const newBalances = yield call(Web3.getNewBalances, currentUser.address, tokens)
-      yield put(Actions.User.setBalances(newBalances))
+      if (currentUser) {
+        const tokens = yield select(Selectors.Tokens.getList)
+        const newBalances = yield call(Web3.getNewBalances, currentUser.address, tokens)
+        yield put(Actions.User.setBalances(newBalances))
+      }
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }

@@ -110,11 +110,11 @@ class FeedItem extends RX.Component<Props, null> {
                 </RX.View>
               </RX.View>
             </RX.View>
-            {this.props.isProcessing && !this.props.attachment && <RX.ActivityIndicator
-              type={'small'}
-              style={Theme.Styles.attachment.spinner}
+            {this.props.isProcessing && !this.props.attachment && <RX.View style={Theme.Styles.activityIndicator}>
+            <RX.ActivityIndicator
+              size='small'
               color={Theme.Colors.light}
-              />}
+              /></RX.View>}
             {this.props.attachment
             && <RX.Text style={Theme.Styles.feed.message}>{this.props.attachment.message}</RX.Text>}
             {this.props.attachment && this.props.attachment.data

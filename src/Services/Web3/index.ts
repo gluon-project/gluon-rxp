@@ -147,8 +147,8 @@ const getTokenInfo = (address: string) => {
       address,
       name: data[0],
       code: data[1],
-      decimals: data[2],
-      initialAmount: data[3],
+      decimals: data[2].toNumber(),
+      initialAmount: data[3].toString(),
       type: data[4].toString() === '0' ? Enums.TokenType.Erc20 : Enums.TokenType.Erc223,
     } as Token
   })
