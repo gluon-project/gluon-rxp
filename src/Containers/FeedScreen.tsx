@@ -14,6 +14,7 @@ interface Props extends RX.CommonProps {
   loadFeed?: () => void
   transactions?: Transaction[]
   selectedToken?: string
+  isLoading?: boolean
 }
 
 class FeedScreen extends RX.Component<Props, null> {
@@ -28,6 +29,11 @@ class FeedScreen extends RX.Component<Props, null> {
           visualBoxType={!this.props.selectedToken ? Enums.VisualType.Main : null}
           navigate={this.props.navigate}
           >
+          {this.props.isLoading && <RX.View style={Theme.Styles.activityIndicator}>
+          <RX.ActivityIndicator
+            size='small'
+            color='white'
+            /></RX.View>}
           {this.props.transactions && this.props.transactions.map(item => (
             <FeedItem key={item.hash} transaction={item} />
           ))}
@@ -41,6 +47,7 @@ const mapStateToProps = (state: CombinedState): Props => {
   return {
     transactions: Selectors.Feed.getSelectedList(state),
     selectedToken: Selectors.Feed.getSelectedToken(state),
+    isLoading: Selectors.Process.isRunningProcess(state, Enums.ProcessType.LoadTransactions),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {

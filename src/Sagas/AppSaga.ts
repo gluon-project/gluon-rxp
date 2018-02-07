@@ -74,7 +74,6 @@ function* handleInitialUrl(): SagaIterator {
 
 function* handleRequest(uri: string): SagaIterator {
   const url = URL(uri, true)
-  console.log(url)
   switch (url.pathname) {
     case '/token/':
       const tokenAddress = url.query.t

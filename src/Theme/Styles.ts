@@ -528,6 +528,12 @@ const Styles = {
       color: Colors.brand,
     }),
   },
+  activityIndicator: RX.Styles.createViewStyle({
+    margin: Metrics.smallMargin,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  }),
 }
 
 export default Styles

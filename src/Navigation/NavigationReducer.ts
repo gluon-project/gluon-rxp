@@ -37,7 +37,7 @@ export const CompactReducer = (state = compactInitialState, action: any) => {
     nextState.routes[nextState.index].routes = [nextState.routes[nextState.index].routes[0]]
     nextState.routes[nextState.index].index = 0
   } else if (action.type === 'Navigation/NAVIGATE'
-    && nextState.routes[nextState.index].key === 'More'
+    && nextState && nextState.routes && nextState.routes[nextState.index].key === 'More'
     && _.findIndex(topRoutes, (route) => route === action.routeName) > -1) {
 
     const routesLength = nextState.routes[nextState.index].routes.length - 1
