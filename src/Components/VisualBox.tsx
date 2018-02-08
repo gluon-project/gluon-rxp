@@ -4,6 +4,7 @@ import * as Enums from '../Enums'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
+  hideMainVisual?: () => void
   type: Enums.VisualType
 }
 
@@ -35,6 +36,13 @@ export default class VisualBox extends RX.Component<Props, null> {
         source={source}
         resizeMode='cover'
         >
+
+        {this.props.type === Enums.VisualType.Main && <RX.Button
+          style={Theme.Styles.visual.closeButton}
+          onPress={this.props.hideMainVisual}>
+          <RX.Text style={Theme.Styles.visual.closeButtonLabel}>Close</RX.Text>
+        </RX.Button>}
+
         {(this.props.type === Enums.VisualType.Main || this.props.type === Enums.VisualType.About1)
           && <RX.View style={Theme.Styles.visual.info}>
           <RX.Button onPress={() => this.props.navigate('AboutTab')}>
