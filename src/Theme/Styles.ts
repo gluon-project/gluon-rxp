@@ -473,23 +473,37 @@ const Styles = {
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: Metrics.baseMargin,
+      flexDirection: 'column',
     }),
     info: RX.Styles.createViewStyle({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: Metrics.baseMargin,
     }),
     logo: RX.Styles.createImageStyle({
       height: 206,
       width: 180,
       marginBottom: Metrics.baseMargin,
-      marginTop: Metrics.baseMargin,
     }),
     button: RX.Styles.createTextStyle({
       color: Colors.brand,
       fontSize: Fonts.size.medium,
       textAlign: 'center',
       flex: 1,
+    }),
+    closeButton: RX.Styles.createButtonStyle({
+      flex: 1,
+      marginTop: Metrics.baseMargin,
+      alignSelf: 'stretch',
+    }),
+    closeButtonLabel: RX.Styles.createTextStyle({
+      color: Colors.brand,
+      fontSize: Fonts.size.medium,
+      flex: 1,
+      alignSelf: 'flex-end',
+      textAlign: 'left',
+      marginRight: Metrics.baseMargin,
     }),
   },
   about: {

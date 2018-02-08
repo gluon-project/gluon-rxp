@@ -12,9 +12,11 @@ import * as _ from 'lodash'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   loadFeed?: () => void
+  hideMainVisual?: () => void
   transactions?: Transaction[]
   selectedToken?: string
   isLoading?: boolean
+  showMainVisual?: boolean
 }
 
 class FeedScreen extends RX.Component<Props, null> {
@@ -26,7 +28,8 @@ class FeedScreen extends RX.Component<Props, null> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView
-          visualBoxType={!this.props.selectedToken ? Enums.VisualType.Main : null}
+          hideMainVisual={this.props.hideMainVisual}
+          visualBoxType={!this.props.selectedToken && this.props.showMainVisual ? Enums.VisualType.Main : null}
           navigate={this.props.navigate}
           >
           {this.props.isLoading && <RX.View style={Theme.Styles.activityIndicator}>
@@ -47,6 +50,7 @@ const mapStateToProps = (state: CombinedState): Props => {
   return {
     transactions: Selectors.Feed.getSelectedList(state),
     selectedToken: Selectors.Feed.getSelectedToken(state),
+    showMainVisual: Selectors.Settings.getShowMainVisual(state),
     isLoading: Selectors.Process.isRunningProcess(state, Enums.ProcessType.LoadTransactions),
   }
 }
@@ -54,6 +58,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     loadFeed: () => dispatch(Actions.Feed.fetchTransactions()),
+    hideMainVisual: () => dispatch(Actions.Settings.setShowMainVisual(false)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen)

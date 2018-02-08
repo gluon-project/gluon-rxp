@@ -5,6 +5,7 @@ import { VisualBox } from '../Components'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
+  hideMainVisual?: () => void
   visualBoxType?: Enums.VisualType
 }
 
@@ -14,6 +15,7 @@ export default class ScrollView extends RX.Component<Props, null> {
     return (
       <RX.ScrollView style={Theme.Styles.containerFull}>
         {this.props.visualBoxType !== undefined && this.props.visualBoxType !== null && <VisualBox
+          hideMainVisual={this.props.hideMainVisual}
           type={this.props.visualBoxType}
           navigate={this.props.navigate}
         />}
