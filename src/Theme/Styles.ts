@@ -308,10 +308,10 @@ const Styles = {
     image: RX.Styles.createImageStyle({
       flex: 1,
       height: 200,
-      marginBottom: Metrics.smallMargin,
     }),
     siteRow: RX.Styles.createViewStyle({
       flexDirection: 'row',
+      marginTop: Metrics.smallMargin,
       padding: Metrics.baseMargin,
       flex: 1,
     }),

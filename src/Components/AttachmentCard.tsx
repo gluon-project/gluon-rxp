@@ -20,7 +20,7 @@ export default class AttachmentCard extends RX.Component<Props, null> {
           source={this.props.attachment.data.links.thumbnail[0].href}
         />}
 
-        <RX.View style={Theme.Styles.attachment.siteRow}>
+        {this.props.attachment.data.meta && <RX.View style={Theme.Styles.attachment.siteRow}>
           {this.props.attachment.data.links.icon && <RX.Image
             style={Theme.Styles.attachment.icon}
             source={this.props.attachment.data.links.icon[0].href}
@@ -30,7 +30,7 @@ export default class AttachmentCard extends RX.Component<Props, null> {
             <RX.Text style={Theme.Styles.attachment.description}>{this.props.attachment.data.meta.description}</RX.Text>
             <RX.Text style={Theme.Styles.attachment.description}>{Utils.url.getHost(this.props.attachment.data.url)}</RX.Text>
           </RX.View>
-        </RX.View>
+        </RX.View>}
       </RX.View>
     )
   }

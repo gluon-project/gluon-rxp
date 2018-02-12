@@ -53,7 +53,6 @@ class ImagePicker extends RX.Component<Props, null> {
           type='file'
           ref={this._onInputRef}
           style={{display: 'none'}}
-          multiple
           accept='image/*'
           onChange={this.handleFiles}
         />

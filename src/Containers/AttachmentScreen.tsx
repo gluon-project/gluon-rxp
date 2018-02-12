@@ -16,6 +16,7 @@ interface Props extends RX.CommonProps {
   saveAttachment?: () => void
   setUrl?: (url: string) => void
   setMessage?: (message: string) => void
+  setParsedAttachmentData?: (data: AttachmentData) => void
   attachment?: Attachment
   transaction?: Transaction
   isProcessing?: boolean
@@ -55,6 +56,7 @@ class AttachmentScreen extends RX.Component<Props, null> {
   constructor(props: Props) {
     super(props)
     this.debouncedParseUrls = debounce(this.parseUrls, 1000)
+    this.handleImagePickerChange = this.handleImagePickerChange.bind(this)
   }
 
   private parseUrls = (message: string) => {
@@ -77,7 +79,15 @@ class AttachmentScreen extends RX.Component<Props, null> {
     }
   }
   handleImagePickerChange(files: ImagePickerFile[]) {
-    console.log(files)
+    const attachmentData: AttachmentData = {
+      url: 'https://gluon.space',
+      links: {
+        thumbnail: [
+          { href: files[0].dataUrl },
+        ],
+      },
+    }
+    this.props.setParsedAttachmentData(attachmentData)
   }
 
   render() {
@@ -130,6 +140,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setMessage: (message: string) => dispatch(Actions.Attachment.setMessage(message)),
     startDownload: () => dispatch(Actions.Attachment.startDownload()),
     saveAttachment: () => dispatch(Actions.Attachment.saveAttachment()),
+    setParsedAttachmentData: (data: AttachmentData) => dispatch(Actions.Attachment.setParsed(data)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AttachmentScreen)
