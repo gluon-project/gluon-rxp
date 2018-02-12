@@ -28,6 +28,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9513169F83FD4A53AA69EE7B /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5390057682B64740AD9749EC /* libCodePush.a */; };
 		A2E420AB385345A8957393CA /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26E07C9AC6D14655A39DF693 /* libRNFetchBlob.a */; };
+		C68F68C4799749E3A40E579A /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF51EFDE93E340029E1F4DC3 /* libRNImagePicker.a */; };
 		FF21BD11C52E411BA42A5429 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E34242ADFA4988B886EDF7 /* libRCTVideo.a */; };
 /* End PBXBuildFile section */
 
@@ -228,6 +229,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		70A8DFB9202DC8110076D5E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC1F9D5A181D4437ADDA55BB /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -278,7 +286,9 @@
 		74E34242ADFA4988B886EDF7 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		AC1F9D5A181D4437ADDA55BB /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		CF7082CC8E024E18A2FF1F2A /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		DF51EFDE93E340029E1F4DC3 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +320,7 @@
 				9513169F83FD4A53AA69EE7B /* libCodePush.a in Frameworks */,
 				0199DE23485F40B09FC6C996 /* libz.tbd in Frameworks */,
 				A2E420AB385345A8957393CA /* libRNFetchBlob.a in Frameworks */,
+				C68F68C4799749E3A40E579A /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,8 +481,17 @@
 				74E34242ADFA4988B886EDF7 /* libRCTVideo.a */,
 				5390057682B64740AD9749EC /* libCodePush.a */,
 				26E07C9AC6D14655A39DF693 /* libRNFetchBlob.a */,
+				DF51EFDE93E340029E1F4DC3 /* libRNImagePicker.a */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		70A8DFB6202DC8110076D5E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				70A8DFBA202DC8110076D5E5 /* libRNImagePicker.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -501,6 +521,7 @@
 				3DCA89A6E37C4159BA853305 /* RCTVideo.xcodeproj */,
 				06F37AC0AA104EB888204148 /* CodePush.xcodeproj */,
 				40009C04559C4343AB5FEA55 /* RNFetchBlob.xcodeproj */,
+				AC1F9D5A181D4437ADDA55BB /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -691,6 +712,10 @@
 				{
 					ProductGroup = 49EBA7C31F17986000D7BC3E /* Products */;
 					ProjectRef = 40009C04559C4343AB5FEA55 /* RNFetchBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = 70A8DFB6202DC8110076D5E5 /* Products */;
+					ProjectRef = AC1F9D5A181D4437ADDA55BB /* RNImagePicker.xcodeproj */;
 				},
 				{
 					ProductGroup = 07C03DED1EC381C500E549B0 /* Products */;
@@ -895,6 +920,13 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		70A8DFBA202DC8110076D5E5 /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = 70A8DFB9202DC8110076D5E5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1002,12 +1034,14 @@
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = GluonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1033,12 +1067,14 @@
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = GluonTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1068,6 +1104,7 @@
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = Gluon/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1101,6 +1138,7 @@
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = Gluon/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

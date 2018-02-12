@@ -2,7 +2,7 @@ import RX = require('reactxp')
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import Utils from '../Utils'
-import { CallToAction, ScrollView, AttachmentCard, TextInput } from '../Components'
+import { CallToAction, ScrollView, AttachmentCard, TextInput, ImagePicker } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Theme from '../Theme'
@@ -16,6 +16,7 @@ interface Props extends RX.CommonProps {
   saveAttachment?: () => void
   setUrl?: (url: string) => void
   setMessage?: (message: string) => void
+  setParsedAttachmentData?: (data: AttachmentData) => void
   attachment?: Attachment
   transaction?: Transaction
   isProcessing?: boolean
@@ -55,6 +56,7 @@ class AttachmentScreen extends RX.Component<Props, null> {
   constructor(props: Props) {
     super(props)
     this.debouncedParseUrls = debounce(this.parseUrls, 1000)
+    this.handleImagePickerChange = this.handleImagePickerChange.bind(this)
   }
 
   private parseUrls = (message: string) => {
@@ -76,6 +78,17 @@ class AttachmentScreen extends RX.Component<Props, null> {
       this.props.navigateBack()
     }
   }
+  handleImagePickerChange(files: ImagePickerFile[]) {
+    const attachmentData: AttachmentData = {
+      url: 'https://gluon.space',
+      links: {
+        thumbnail: [
+          { href: files[0].dataUrl },
+        ],
+      },
+    }
+    this.props.setParsedAttachmentData(attachmentData)
+  }
 
   render() {
     return (
@@ -94,12 +107,15 @@ class AttachmentScreen extends RX.Component<Props, null> {
           </RX.View>}
 
           {this.props.isProcessing && <RX.ActivityIndicator color={Theme.Colors.light} type={'large'}/>}
+          <ImagePicker
+            onChange={this.handleImagePickerChange}
+            />
           <CallToAction
             inProgress={this.props.isSaving}
             type={CallToAction.type.Main}
             title='Set Attachment'
             onPress={this.props.saveAttachment}
-            disabled={!this.props.attachment.message}
+            // disabled={!this.props.attachment.message}
             />
         </ScrollView>
       </RX.View>
@@ -124,6 +140,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setMessage: (message: string) => dispatch(Actions.Attachment.setMessage(message)),
     startDownload: () => dispatch(Actions.Attachment.startDownload()),
     saveAttachment: () => dispatch(Actions.Attachment.saveAttachment()),
+    setParsedAttachmentData: (data: AttachmentData) => dispatch(Actions.Attachment.setParsed(data)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AttachmentScreen)

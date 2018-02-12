@@ -117,3 +117,7 @@ declare interface Process {
 interface TokenTransactionsMap {
   [tokenAddress: string]: Transaction[]
 }
+
+declare interface ImagePickerFile {
+  dataUrl: any
+}
