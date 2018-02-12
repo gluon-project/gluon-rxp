@@ -115,7 +115,7 @@ class AttachmentScreen extends RX.Component<Props, null> {
             type={CallToAction.type.Main}
             title='Set Attachment'
             onPress={this.props.saveAttachment}
-            disabled={!this.props.attachment.message}
+            // disabled={!this.props.attachment.message}
             />
         </ScrollView>
       </RX.View>
