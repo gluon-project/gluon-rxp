@@ -5,8 +5,12 @@ import erc223TokenFactoryAbi from './erc223TokenFactoryAbi'
 import Uport from '../uPort'
 const Web3 = require('ethjs-query')
 const bs58 = require('bs58')
+import * as _ from 'lodash'
 import * as moment from 'moment'
 import * as Enums from '../../Enums'
+
+var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
+abiDecoder.addABI(erc223abi)
 
 let web3: any = null
 
@@ -256,6 +260,15 @@ const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
   })
 }
 
+const findTokenContractAddress = (logs: any[]): string => {
+  const decodedLogs = abiDecoder.decodeLogs(logs)
+  const filtered = _.filter(decodedLogs, (log: any) => {
+    return log && log.name === 'Transfer'
+  })
+
+  return filtered[0].address
+}
+
 const createNewToken = (token: Token, creator: User): Promise<Token> => {
   const tokenFactory = ethSingleton.getErc223Factory()
 
@@ -278,7 +291,7 @@ const createNewToken = (token: Token, creator: User): Promise<Token> => {
                 clearInterval(interval)
                 resolve({
                   ...token,
-                  address: response.logs[0].address,
+                  address: findTokenContractAddress(response.logs),
                   type: Enums.TokenType.Erc223,
                 })
               }
