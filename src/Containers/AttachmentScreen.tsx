@@ -1,9 +1,8 @@
 import RX = require('reactxp')
-import ImagePicker = require('react-native-image-picker')
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import Utils from '../Utils'
-import { CallToAction, ScrollView, AttachmentCard, TextInput } from '../Components'
+import { CallToAction, ScrollView, AttachmentCard, TextInput, ImagePicker } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Theme from '../Theme'
@@ -77,37 +76,8 @@ class AttachmentScreen extends RX.Component<Props, null> {
       this.props.navigateBack()
     }
   }
-
-  showImagePicker() {
-    var options = {
-      title: 'Select Photo',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    }
-
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info below in README)
-     */
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response)
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error)
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton)
-      } else {
-        let source = { uri: response.uri }
-
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-      }
-    })
+  handleImagePickerChange(files: ImagePickerFile[]) {
+    console.log(files)
   }
 
   render() {
@@ -127,10 +97,8 @@ class AttachmentScreen extends RX.Component<Props, null> {
           </RX.View>}
 
           {this.props.isProcessing && <RX.ActivityIndicator color={Theme.Colors.light} type={'large'}/>}
-          <CallToAction
-            type={CallToAction.type.Main}
-            title='Choose photo'
-            onPress={this.showImagePicker}
+          <ImagePicker
+            onChange={this.handleImagePickerChange}
             />
           <CallToAction
             inProgress={this.props.isSaving}
