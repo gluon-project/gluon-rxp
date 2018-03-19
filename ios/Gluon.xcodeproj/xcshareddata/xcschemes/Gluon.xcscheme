@@ -67,6 +67,16 @@
                ReferencedContainer = "container:Gluon.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7077F8DF2058122700BDDFEF"
+               BuildableName = "GluonUITests.xctest"
+               BlueprintName = "GluonUITests"
+               ReferencedContainer = "container:Gluon.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

@@ -24,6 +24,8 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		7077F8E32058122700BDDFEF /* GluonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077F8E22058122700BDDFEF /* GluonUITests.swift */; };
+		7077F909205813CE00BDDFEF /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077F908205813CE00BDDFEF /* SnapshotHelper.swift */; };
 		7DB561A61F4EFD9500D8A73A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9513169F83FD4A53AA69EE7B /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5390057682B64740AD9749EC /* libCodePush.a */; };
@@ -229,6 +231,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		7077F8E52058122700BDDFEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = Gluon;
+		};
 		70A8DFB9202DC8110076D5E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AC1F9D5A181D4437ADDA55BB /* RNImagePicker.xcodeproj */;
@@ -282,6 +291,10 @@
 		532E379C438B49B0924C034E /* iconfont_r3.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = iconfont_r3.ttf; path = ../src/Assets/Fonts/iconfont_r3.ttf; sourceTree = "<group>"; };
 		5390057682B64740AD9749EC /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		7077F8E02058122700BDDFEF /* GluonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GluonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7077F8E22058122700BDDFEF /* GluonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GluonUITests.swift; sourceTree = "<group>"; };
+		7077F8E42058122700BDDFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7077F908205813CE00BDDFEF /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		72382765D8E04DB1ADE203A1 /* iconfont_r3.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = iconfont_r3.ttf; path = ../src/Assets/fonts/iconfont_r3.ttf; sourceTree = "<group>"; };
 		74E34242ADFA4988B886EDF7 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -321,6 +334,13 @@
 				0199DE23485F40B09FC6C996 /* libz.tbd in Frameworks */,
 				A2E420AB385345A8957393CA /* libRNFetchBlob.a in Frameworks */,
 				C68F68C4799749E3A40E579A /* libRNImagePicker.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7077F8DD2058122700BDDFEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +506,16 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		7077F8E12058122700BDDFEF /* GluonUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7077F908205813CE00BDDFEF /* SnapshotHelper.swift */,
+				7077F8E22058122700BDDFEF /* GluonUITests.swift */,
+				7077F8E42058122700BDDFEF /* Info.plist */,
+			);
+			path = GluonUITests;
+			sourceTree = "<group>";
+		};
 		70A8DFB6202DC8110076D5E5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -541,6 +571,7 @@
 				13B07FAE1A68108700A75B9A /* Gluon */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GluonTests */,
+				7077F8E12058122700BDDFEF /* GluonUITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				ECD2D1933F4D4FFB99CC2E5B /* Frameworks */,
 				D6FFB0053EB8489EBF69F5BA /* Resources */,
@@ -555,6 +586,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Gluon.app */,
 				00E356EE1AD99517003FC87E /* GluonTests.xctest */,
+				7077F8E02058122700BDDFEF /* GluonUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -616,13 +648,31 @@
 			productReference = 13B07F961A680F5B00A75B9A /* Gluon.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7077F8DF2058122700BDDFEF /* GluonUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7077F9072058122700BDDFEF /* Build configuration list for PBXNativeTarget "GluonUITests" */;
+			buildPhases = (
+				7077F8DC2058122700BDDFEF /* Sources */,
+				7077F8DD2058122700BDDFEF /* Frameworks */,
+				7077F8DE2058122700BDDFEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7077F8E62058122700BDDFEF /* PBXTargetDependency */,
+			);
+			name = GluonUITests;
+			productName = GluonUITests;
+			productReference = 7077F8E02058122700BDDFEF /* GluonUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 830;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 830;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -642,6 +692,12 @@
 								enabled = 1;
 							};
 						};
+					};
+					7077F8DF2058122700BDDFEF = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 2HLHDSJTQ6;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
 			};
@@ -726,6 +782,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Gluon */,
 				00E356ED1AD99517003FC87E /* GluonTests */,
+				7077F8DF2058122700BDDFEF /* GluonUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -960,6 +1017,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7077F8DE2058122700BDDFEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -997,6 +1061,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7077F8DC2058122700BDDFEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7077F8E32058122700BDDFEF /* GluonUITests.swift in Sources */,
+				7077F909205813CE00BDDFEF /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1004,6 +1077,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Gluon */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		7077F8E62058122700BDDFEF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* Gluon */;
+			targetProxy = 7077F8E52058122700BDDFEF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1157,6 +1235,72 @@
 			};
 			name = Release;
 		};
+		7077F8E72058122700BDDFEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2HLHDSJTQ6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = GluonUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cat.not.GluonUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c3864089-0abd-4324-847f-9f9506cdd303";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Gluon;
+			};
+			name = Debug;
+		};
+		7077F8E82058122700BDDFEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2HLHDSJTQ6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = GluonUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cat.not.GluonUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c3864089-0abd-4324-847f-9f9506cdd303";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Gluon;
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1257,6 +1401,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7077F9072058122700BDDFEF /* Build configuration list for PBXNativeTarget "GluonUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7077F8E72058122700BDDFEF /* Debug */,
+				7077F8E82058122700BDDFEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
