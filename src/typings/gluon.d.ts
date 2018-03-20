@@ -29,6 +29,7 @@ declare const __DEV__: boolean
 
 declare interface User {
   address?: string,
+  networkId?: string,
   name?: string,
   avatar?: string,
   hidden?: boolean,
@@ -36,6 +37,7 @@ declare interface User {
 
 declare interface Token {
   address?: string,
+  networkId?: string,
   name?: string,
   code?: string,
   logo?: string,

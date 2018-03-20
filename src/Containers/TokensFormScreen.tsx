@@ -8,6 +8,7 @@ import * as Enums from '../Enums'
 import * as Theme from '../Theme'
 import * as Services from '../Services'
 import utils from '../Utils'
+import { includes } from 'lodash'
 
 interface Props extends RX.CommonProps {
   navigateBack?: () => void
@@ -58,6 +59,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         name: this.state.name,
         code: this.state.code,
         address: this.state.address,
+        networkId: this.state.network,
         type: this.state.type,
       })
       this.props.setToken(this.state.address)
@@ -67,6 +69,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         name: this.state.name,
         code: this.state.code,
         address: this.state.address,
+        networkId: this.state.network,
         decimals: this.state.decimals,
         initialAmount: utils.number.powToString(this.state.totalSupply, this.state.decimals),
       })
@@ -84,7 +87,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
 
   private isValid = () => {
     if (this.state.isNew) {
-      return this.state.network === '4'
+      return (this.state.network === '4' || this.state.network === '1')
         && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.totalSupply > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
@@ -142,8 +145,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
             disabled={!this.isValid()}
             inProgress={this.props.isProcessing}
           />
-          {this.state.isNew && this.state.network !== '4' && <RX.Text style={Theme.Styles.about.warning}>
-            Token creation currently supported only on Rinkeby network
+          {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
+            Token creation currently supported only on Mainnet or Rinkeby networks
           </RX.Text>}
         </ScrollView>
       </RX.View>

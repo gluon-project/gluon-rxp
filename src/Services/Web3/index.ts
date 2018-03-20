@@ -28,12 +28,34 @@ const ethSingleton =  {
     return web3 && web3.eth
   },
 
-  getErc223Factory: (): any => {
-    return web3.eth.contract(erc223TokenFactoryAbi).at('0x4597c2b6b11a244179f45acf565c66deb3cd99a1')
+  getNetworkId: (): Promise<String> => {
+    return new Promise<string>((resolve, reject) => {
+      web3.version.getNetwork((err: any, networkId: string) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(networkId)
+      })
+    })
   },
 
-  getErc223: (address: string): any => {
-    return web3.eth.contract(erc223abi).at(address)
+  getErc223Factory: (): any => {
+    return ethSingleton.getNetworkId()
+    .then((networkId: string) => {
+      return web3.eth.contract(erc223TokenFactoryAbi).at(
+        networkId === '4' ? '0x4597c2b6b11a244179f45acf565c66deb3cd99a1' : '0x5AECaF7d9712851dd5Db865c4242F54D9366b3e1',
+      )
+    })
+  },
+
+  getErc223: (address: string, networkId?: string): any => {
+    if (!networkId) {
+      return web3.eth.contract(erc223abi).at(address)
+    } else if (networkId === '1') {
+      return Uport.mainnetProvider.eth.contract(erc223abi).at(address)
+    } else if (networkId === '4') {
+      return Uport.rinkebyProvider.eth.contract(erc223abi).at(address)
+    }
   },
 
   getErc20: (address: string): any => {
@@ -43,7 +65,7 @@ const ethSingleton =  {
 
 if ((<any>window).web3 && (<any>window).web3.currentProvider) {
   // ethSingleton.setProvider(new Web3((<any>window).web3.currentProvider))
-  const w3 = Uport.provider
+  const w3 = Uport.getProvider()
   w3.setProvider((<any>window).web3.currentProvider)
   ethSingleton.setProvider(w3)
 }
@@ -86,10 +108,10 @@ const getNewBalances = (address: string, tokens: Token[]) => {
   return Promise.all(promises)
 }
 
-const getTokenInfo = (address: string) => {
+const getTokenInfo = (address: string, networkId?: string) => {
   let promises: Promise<any>[] = []
 
-  const tokenContract = ethSingleton.getErc223(address)
+  const tokenContract = ethSingleton.getErc223(address, networkId)
 
   // name
   promises.push(new Promise<string>((resolve, reject) => {
@@ -146,6 +168,8 @@ const getTokenInfo = (address: string) => {
     })
   }))
 
+  promises.push(ethSingleton.getNetworkId())
+
   return Promise.all(promises).then((data: any[]) => {
     return {
       address,
@@ -154,6 +178,7 @@ const getTokenInfo = (address: string) => {
       decimals: data[2].toNumber(),
       initialAmount: data[3].toString(),
       type: data[4].toString() === '0' ? Enums.TokenType.Erc20 : Enums.TokenType.Erc223,
+      networkId: networkId || '4',
     } as Token
   })
 }
@@ -270,36 +295,37 @@ const findTokenContractAddress = (logs: any[]): string => {
 }
 
 const createNewToken = (token: Token, creator: User): Promise<Token> => {
-  const tokenFactory = ethSingleton.getErc223Factory()
-
-  return new Promise<Token>((resolve, reject) => {
-    tokenFactory.createERC223Token(
-      token.initialAmount, token.name, token.decimals, token.code,
-      { from: creator.address }, function (err: any, txHash: string) {
-      if (err) {
-        reject(err)
-      } else {
-        if (txHash) {
-          console.log('Transaction created')
-          console.log(txHash)
-          const interval = setInterval(() => {
-            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-              if (error) {
-                reject(error)
-              }
-              if (response) {
-                clearInterval(interval)
-                resolve({
-                  ...token,
-                  address: findTokenContractAddress(response.logs),
-                  type: Enums.TokenType.Erc223,
-                })
-              }
-            })
-          }, 1000)
+  return ethSingleton.getErc223Factory()
+  .then((tokenFactory: any) => {
+    console.log(tokenFactory)
+    return new Promise<Token>((resolve, reject) => {
+      tokenFactory.createERC223Token(
+        token.initialAmount, token.name, token.decimals, token.code,
+        { from: creator.address, gasPrice: 3000000000 }, function (err: any, txHash: string) {
+        if (err) {
+          reject(err)
+        } else {
+          if (txHash) {
+            console.log('Transaction created')
+            console.log(txHash)
+            const interval = setInterval(() => {
+              ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
+                if (error) {
+                  reject(error)
+                }
+                if (response) {
+                  clearInterval(interval)
+                  resolve({
+                    ...token,
+                    address: findTokenContractAddress(response.logs),
+                    type: Enums.TokenType.Erc223,
+                  })
+                }
+              })
+            }, 1000)
+          }
         }
-      }
-
+      })
     })
   })
 }

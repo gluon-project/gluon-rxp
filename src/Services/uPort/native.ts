@@ -14,64 +14,91 @@ const uriHandler = (url: string) => {
   RN.Linking.openURL(url)
 }
 
-const uport = new Connect(Config.uport.app.name, {
+let uport = new Connect(Config.uport.app.name, {
   clientId: Config.uport.app.address,
   signer: SimpleSigner(Config.uport.app.privateKey),
   mobileUrlHandler: uriHandler,
   uriHandler: uriHandler,
 })
 
-uport.topicFactory = (name: string) => {
-  const id = uuidv1()
-  const path = `/uport/${id}`
-  const url = `gluon.space:${path}`
-  let handler: any
-  let cancel: any
-  const topic = new Promise((resolve, reject) => {
-    handler = (uri: string) => {
-      console.log('Handler event', uri)
-      if (uri) {
-        const url = URL(uri, true)
-        console.log(url)
-        if (url.pathname === path) {
-          if (url.hash) {
-            const params = qs.parse(url.hash.slice(1))
-            RX.Linking.deepLinkRequestEvent.unsubscribe(handler)
-            resolve(params[name])
+const uportRinkeby = new Connect(Config.uport.app.name, {
+  clientId: Config.uport.app.address,
+  signer: SimpleSigner(Config.uport.app.privateKey),
+  mobileUrlHandler: uriHandler,
+  uriHandler: uriHandler,
+})
+
+const uportMainnet = new Connect(Config.uport.app.name, {
+  clientId: Config.uport.app.address,
+  signer: SimpleSigner(Config.uport.app.privateKey),
+  mobileUrlHandler: uriHandler,
+  uriHandler: uriHandler,
+  network: 'mainnet',
+})
+
+const requestCredentials = (network: string) => {
+  uport = new Connect(Config.uport.app.name, {
+    clientId: Config.uport.app.address,
+    signer: SimpleSigner(Config.uport.app.privateKey),
+    mobileUrlHandler: uriHandler,
+    uriHandler: uriHandler,
+    network,
+  })
+
+  uport.topicFactory = (name: string) => {
+    const id = uuidv1()
+    const path = `/uport/${id}`
+    const url = `gluon.space:${path}`
+    let handler: any
+    let cancel: any
+    const topic = new Promise((resolve, reject) => {
+      handler = (uri: string) => {
+        console.log('Handler event', uri)
+        if (uri) {
+          const url = URL(uri, true)
+          console.log(url)
+          if (url.pathname === path) {
+            if (url.hash) {
+              const params = qs.parse(url.hash.slice(1))
+              RX.Linking.deepLinkRequestEvent.unsubscribe(handler)
+              resolve(params[name])
+            } else {
+              console.log('no hash')
+              reject()
+            }
           } else {
-            console.log('no hash')
-            reject()
+            console.log('ignoring request')
           }
-        } else {
-          console.log('ignoring request')
         }
       }
-    }
-    RX.Linking.deepLinkRequestEvent.subscribe(handler)
+      RX.Linking.deepLinkRequestEvent.subscribe(handler)
 
-    cancel = () => {
-      RX.Linking.deepLinkRequestEvent.unsubscribe(handler)
-      resolve()
-    }
-  }) as any
-  topic.url = url
-  topic.cancel = cancel
-  return topic
-}
+      cancel = () => {
+        RX.Linking.deepLinkRequestEvent.unsubscribe(handler)
+        resolve()
+      }
+    }) as any
+    topic.url = url
+    topic.cancel = cancel
+    return topic
+  }
 
-const requestCredentials = () => {
   return uport.requestCredentials({
     requested: ['name', 'avatar'],
+    accountType: network === 'mainnet' ? 'keypair' : 'segregated',
   }).then((result: any) => {
     return {
       ...result,
-      address: MNID.decode(result.address).address,
+      address: MNID.decode(result.networkAddress || result.address).address,
     }
   })
 }
+const getProvider = () => uport.getWeb3()
 
 export default {
   MNID,
   requestCredentials,
-  provider: uport.getWeb3(),
+  getProvider,
+  rinkebyProvider: uportRinkeby.getWeb3(),
+  mainnetProvider: uportMainnet.getWeb3(),
 }

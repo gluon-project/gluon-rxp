@@ -12,6 +12,13 @@ export default {
       hidden: true,
     },
     {
+      name: 'Gluon Token Factory',
+      address: '0x5AECaF7d9712851dd5Db865c4242F54D9366b3e1',
+      networkId: '1',
+      avatar: '',
+      hidden: true,
+    },
+    {
       name: 'Mircea Nistor',
       address: '0x34015bfCb36D716610D69Cf036f29882909bDae3',
       avatar: '',

@@ -21,7 +21,11 @@ import utils from '../Utils'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
-  yield call(Web3.ethSingleton.setProvider, uPort.provider)
+  const web3Provider = uPort.getProvider()
+  if ((<any>window).web3 && (<any>window).web3.currentProvider) {
+    web3Provider.setProvider((<any>window).web3.currentProvider)
+  }
+  yield call(Web3.ethSingleton.setProvider, web3Provider)
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
   yield  call(delay, 500)
   yield put(Actions.App.setVersion(deploymentMetaData.version))
@@ -77,7 +81,8 @@ function* handleRequest(uri: string): SagaIterator {
   switch (url.pathname) {
     case '/token/':
       const tokenAddress = url.query.t
-      const token = yield call(Web3.getTokenInfo, tokenAddress)
+      const networkId = url.query.nid
+      const token = yield call(Web3.getTokenInfo, tokenAddress, networkId)
       const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
       if (!existingToken) {
         yield put(Actions.Tokens.addToken(token))
@@ -121,7 +126,8 @@ function* handleRequest(uri: string): SagaIterator {
       if (url.query.t) {
         const tokenAddress = url.query.t
         if (url.query.t !== '0x0000000000000000000000000000000000000000') {
-          const token = yield call(Web3.getTokenInfo, tokenAddress)
+          const networkId = url.query.nid
+          const token = yield call(Web3.getTokenInfo, tokenAddress, networkId)
           const existingToken = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
           if (!existingToken) {
             yield put(Actions.Tokens.addToken(token))

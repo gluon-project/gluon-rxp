@@ -52763,8 +52763,11 @@ var Credentials = function () {
    *
    *  @param    {Object}             [params={}]           request params object
    *  @param    {Array}              params.requested      an array of attributes for which you are requesting credentials to be shared for
-   *  @param    {String}             params.callbackUrl    the url which you want to receive the response of this request
+   *  @param    {Array}              params.verified       an array of attributes for which you are requesting verified credentials to be shared for
    *  @param    {Boolean}            params.notifications  boolean if you want to request the ability to send push notifications
+   *  @param    {String}             params.callbackUrl    the url which you want to receive the response of this request
+   *  @param    {String}             params.network_id     network id of Ethereum chain of identity eg. 0x4 for rinkeby
+   *  @param    {String}             params.accountType    Ethereum account type: "general", "segregated", "keypair", "devicekey" or "none"
    *  @return   {Promise<Object, Error>}                   a promise which resolves with a signed JSON Web Token or rejects with an error
    */
 
@@ -52789,6 +52792,9 @@ var Credentials = function () {
       }
       if (params.network_id) {
         payload.net = params.network_id;
+      }
+      if (params.accountType && ['general', 'segregated', 'keypair', 'devicekey', 'none'].indexOf(params.accountType) >= 0) {
+        payload.act = params.accountType;
       }
       if (params.exp) {
         //checks for expiration on requests, if none is provided the default is 10 min
@@ -52831,6 +52837,9 @@ var Credentials = function () {
           var credentials = _extends({}, profile, payload.own || {}, payload.capabilities && payload.capabilities.length === 1 ? { pushToken: payload.capabilities[0] } : {}, { address: payload.iss });
           if (payload.nad) {
             credentials.networkAddress = payload.nad;
+          }
+          if (payload.dad) {
+            credentials.deviceKey = payload.dad;
           }
           if (payload.verified) {
             return Promise.all(payload.verified.map(function (token) {

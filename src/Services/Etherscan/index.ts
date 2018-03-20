@@ -2,6 +2,7 @@ import Config from '../../Config'
 import * as Enums from '../../Enums'
 import * as _ from 'lodash'
 import * as moment from 'moment'
+import Web3 from '../Web3'
 
 // var abiDecoder = require('abi-decoder')
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
@@ -44,12 +45,13 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
 }
 
 const fetchTransactions = (token: Token) => {
+  const endPoint = token.networkId === '1' ? Config.etherscan.endPoint.mainnet : Config.etherscan.endPoint.rinkeby
   return fetch(
-    `${Config.etherscan.endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
+    `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
 address=${token.address}&apikey=${Config.etherscan.apiKey}`,
   )
-  .then((response) => response.json())
-  .then((responseJson) => {
+  .then((response: any) => response.json())
+  .then((responseJson: any) => {
     return responseJson.result.map((ethTx: any) => ethTransactionToGluonTransaction(ethTx, token))
     // const decodedLogs = abiDecoder.decodeLogs(responseJson.result)
     // var hashes = decodedLogs.map((item: any) => {
@@ -59,7 +61,7 @@ address=${token.address}&apikey=${Config.etherscan.apiKey}`,
     // console.log(decodedLogs)
     // return decodedLogs
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error(error)
   })
 }
