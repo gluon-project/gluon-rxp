@@ -8,9 +8,9 @@ import * as Services from '../Services'
 
 export function* watchStartLogin(): SagaIterator {
   while (true) {
-    yield take(Actions.User.startLogin)
+    const action = yield take(Actions.User.startLogin)
     try {
-      const result = yield call(Services.uPort.requestCredentials)
+      const result = yield call(Services.uPort.requestCredentials, action.payload)
       if (result && result.name) {
         const user: User = {
           name: result.name,
@@ -20,7 +20,7 @@ export function* watchStartLogin(): SagaIterator {
         yield put(Actions.User.setAccounts([result.address]))
         yield put(Actions.User.setCurrent(user))
         yield put(Actions.Contacts.addContact(user))
-        yield call(Services.Web3.ethSingleton.setProvider, Services.uPort.provider)
+        yield call(Services.Web3.ethSingleton.setProvider, Services.uPort.getProvider())
         yield call(delay, 500)
         yield put(Actions.User.refreshBalances())
       }

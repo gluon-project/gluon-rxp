@@ -51,6 +51,9 @@ class FeedItem extends RX.Component<Props, null> {
     let url = `https://gluon.space/token/?t=${this.props.token.address}&tx=${this.props.transaction.hash}`
     url = `${url}&sa=${this.props.sender.address}&sn=${encodeURIComponent(this.props.sender.name)}`
     url = `${url}&ra=${this.props.receiver.address}&rn=${encodeURIComponent(this.props.receiver.name)}`
+    if (this.props.token.networkId) {
+      url = `${url}&nid=${this.props.token.networkId}`
+    }
     this.props.setModalMessage({
       type: Enums.MessageType.Success,
       title: 'Share',

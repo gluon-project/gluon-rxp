@@ -11,6 +11,7 @@ import utils from '../Utils'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   startLogin?: () => void
+  startLoginMainnet?: () => void
   navigateBack?: () => void
   accounts?: User[]
   selectedSender?: string,
@@ -55,9 +56,21 @@ class SenderScreen extends RX.Component<Props, null> {
             </RX.Text>}
             <CallToAction
               type={CallToAction.type.Main}
-              title='Login with uPort'
+              title='Login with uPort (Rinkeby)'
               onPress={this.props.startLogin}
             />
+            <RX.Text style={Theme.Styles.about.warning}>
+              Transactions on Rinkeby network will be funded by uPort Sensui service
+            </RX.Text>
+
+            <CallToAction
+              type={CallToAction.type.Main}
+              title='Login with uPort (Mainnet)'
+              onPress={this.props.startLoginMainnet}
+            />
+            <RX.Text style={Theme.Styles.about.warning}>
+              Transactions on Mainnet must be funded by you
+            </RX.Text>
           </RX.View>}
 
         </ScrollView>
@@ -77,7 +90,8 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
-    startLogin: () => dispatch(Actions.User.startLogin()),
+    startLogin: () => dispatch(Actions.User.startLogin('rinkeby')),
+    startLoginMainnet: () => dispatch(Actions.User.startLogin('mainnet')),
     setSender: (user: string) => dispatch(Actions.Transactions.setSender(user)),
   }
 }

@@ -20,16 +20,19 @@ interface Props extends RX.CommonProps {
 export default class RequestDetails extends RX.Component<Props, null> {
   constructor(props: Props) {
     super(props)
-    this.handleRequest = this.handleRequest.bind(this)
   }
 
   handleRequest() {
+    console.log(this.props)
     let url = 'https://gluon.space/send/?'
     if (this.props.sender) {
       url = `${url}r=${this.props.sender.address}&n=${encodeURIComponent(this.props.sender.name)}`
     }
     if (this.props.token) {
       url = `${url}&t=${this.props.token.address}`
+    }
+    if (this.props.token && this.props.token.networkId) {
+      url = `${url}&nid=${this.props.token.networkId}`
     }
     if (this.props.amount) {
       url = `${url}&a=${this.props.amount}`
@@ -104,7 +107,7 @@ export default class RequestDetails extends RX.Component<Props, null> {
         disabled={!this.props.sender}
         type={CallToAction.type.Main}
         title='Request'
-        onPress={this.handleRequest}
+        onPress={this.handleRequest.bind(this)}
         inProgress={this.props.isProcessing}
       /></RX.View>
 
