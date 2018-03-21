@@ -16635,7 +16635,7 @@ var paramsToUri = function paramsToUri(params) {
     pairs.push(['bytecode', params.data]);
   }
 
-  var paramsAdd = ['label', 'callback_url', 'client_id'];
+  var paramsAdd = ['label', 'callback_url', 'client_id', 'gasPrice'];
   if (params.to === 'me') {
     pairs.push(['network_id', networkId]);
   }

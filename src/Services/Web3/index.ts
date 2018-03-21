@@ -12,7 +12,7 @@ import * as Enums from '../../Enums'
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
 abiDecoder.addABI(erc223abi)
 
-const DEFAULT_GAS_PRICE = 3000000000
+const DEFAULT_GAS_PRICE = '3000000000'
 
 let web3: any = null
 
