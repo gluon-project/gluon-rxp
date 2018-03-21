@@ -12,6 +12,8 @@ import * as Enums from '../../Enums'
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
 abiDecoder.addABI(erc223abi)
 
+const DEFAULT_GAS_PRICE = 3000000000
+
 let web3: any = null
 
 const ethSingleton =  {
@@ -189,7 +191,7 @@ const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> =
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(transaction.receiver, transaction.amount, `0x${hex}`,
-      { from: transaction.sender }, function (err: any, txHash: string) {
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
       if (err) {
         reject(err)
       } else {
@@ -222,7 +224,7 @@ const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> =>
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(transaction.receiver, transaction.amount,
-      { from: transaction.sender }, function (err: any, txHash: string) {
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
       if (err) {
         reject(err)
       } else {
@@ -257,6 +259,7 @@ const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
         from: transaction.sender,
         to: transaction.receiver,
         value: transaction.amount,
+        gasPrice: DEFAULT_GAS_PRICE,
       }, function (err: any, txHash: string) {
       if (err) {
         reject(err)
@@ -301,7 +304,7 @@ const createNewToken = (token: Token, creator: User): Promise<Token> => {
     return new Promise<Token>((resolve, reject) => {
       tokenFactory.createERC223Token(
         token.initialAmount, token.name, token.decimals, token.code,
-        { from: creator.address, gasPrice: 3000000000 }, function (err: any, txHash: string) {
+        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
         if (err) {
           reject(err)
         } else {
