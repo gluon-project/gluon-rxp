@@ -275,7 +275,7 @@ const Styles = {
 
   navBar: RX.Styles.createViewStyle({
     backgroundColor: Colors.navBarBackground,
-    height: 44,
+    height: RX.Platform.getType() === 'web' ? 44 : 64,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: RX.Platform.getType() === 'web' ? 10 : 30,
@@ -461,9 +461,10 @@ const Styles = {
     }),
   },
   logo: RX.Styles.createImageStyle({
+    alignSelf: 'center',
     height: 64,
     width: 64,
-    marginTop: (Metrics.tabBar.width - 64) / 2,
+    marginTop: RX.Platform.getType() === 'web' ? 20 : 40,
     marginLeft: 10,
   }),
   visual: {
