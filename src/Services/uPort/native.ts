@@ -85,7 +85,7 @@ const requestCredentials = (network: string) => {
 
   return uport.requestCredentials({
     requested: ['name', 'avatar'],
-    accountType: network === 'mainnet' ? 'keypair' : 'segregated',
+    accountType: network === 'mainnet' ? 'keypair' : 'general',
   }).then((result: any) => {
     return {
       ...result,

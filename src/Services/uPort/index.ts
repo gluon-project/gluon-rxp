@@ -29,10 +29,16 @@ const requestCredentials = (network: string) => {
   return uport.requestCredentials({
     requested: ['name', 'avatar'],
     notifications: true,
-    accountType: network === 'mainnet' ? 'keypair' : 'segregated',
+    accountType: network === 'mainnet' ? 'keypair' : 'general',
   }).then((result: any) => {
     console.log(result)
-    console.log(MNID.decode(result.networkAddress))
+    if (result.networkAddress) {
+      console.log('result.networkAddress', result.networkAddress, MNID.decode(result.networkAddress))
+      console.log('result.address', result.address, MNID.decode(result.address))
+    } else {
+      console.log('result.address', result.address, MNID.decode(result.address))
+    }
+
     return {
       ...result,
       address: MNID.decode(result.networkAddress || result.address).address,
