@@ -42,8 +42,10 @@ declare interface Token {
   code?: string,
   logo?: string,
   initialAmount?: string,
+  totalSupply?: string,
   decimals?: number,
   type?: number,
+  exponent?: number,
 }
 
 declare interface Transaction {
@@ -59,6 +61,8 @@ declare interface Transaction {
 declare interface Balance {
   token: Token
   amount: string
+  priceToMint?: string
+  rewardForBurn?: string
 }
 
 declare interface Attachment {
