@@ -63,6 +63,13 @@ export default class TabBar extends RX.Component<Props, null> {
         />
         <TabBarButton
           type={type}
+          title='Wallet'
+          iconType={TabBarButton.icon.Send}
+          onPress={() => this.props.navigate('WalletTab')}
+          selected={tabRouteName === 'WalletTab'}
+        />
+        <TabBarButton
+          type={type}
           title='Send'
           iconType={TabBarButton.icon.Send}
           onPress={() => this.props.navigate('SendTab')}

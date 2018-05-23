@@ -5,6 +5,7 @@ import * as _ from 'lodash'
 import Utils from '../Utils'
 import * as FeedSelectors from './FeedSelectors'
 
+export const getCurrentToken = (state: CombinedState) => state.tokens.current
 export const getList = (state: CombinedState) => state.tokens.list
 export const getListForFeed = (state: CombinedState) => _.filter(
   state.tokens.list,

@@ -8,6 +8,9 @@ import utils from '../Utils'
 export const getAccounts = (state: CombinedState) => state.user.accounts
 export const getCurrent = (state: CombinedState) => state.user.current
 export const getBalances = (state: CombinedState) => state.user.balances
+export const getBalanceByAddress = (state: CombinedState, address: string): Balance => {
+  return _.find(state.user.balances, {token: {address: address}})
+}
 
 export const getUserAccounts = createSelector(
   [getAccounts, ContactSelectors.getList],

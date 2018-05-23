@@ -7,11 +7,13 @@ import Config from '../Config'
 import * as Enums from '../Enums'
 
 export interface TokensState {
+  current: string,
   new: Token,
   list: Token[],
 }
 
 const initialState: TokensState = {
+  current: Config.tokens.defaultList[0].address,
   new: null,
   list: Config.tokens.defaultList,
 }
@@ -26,6 +28,14 @@ reducer.on(addToken, (state: TokensState, payload?: Token) => {
   return {
     ...state,
     list: [ ...state.list, payload ],
+  }
+})
+
+export const selectToken = createAction('Select token')
+reducer.on(selectToken, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    current: payload,
   }
 })
 

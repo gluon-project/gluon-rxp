@@ -81,6 +81,7 @@ const About4 = { screen: Screens.About4Screen, navigationOptions: { title: 'How 
 
 const Tokens = {screen: Screens.TokensScreen, navigationOptions: {title: 'Tokens'}}
 const TokensForm = {screen: Screens.TokensFormScreen, navigationOptions: {title: 'Add Token'}}
+const TokenActions = {screen: Screens.TokenActionsScreen, navigationOptions: {title: 'Token'}}
 const Amount = {screen: Screens.AmountScreen, navigationOptions: {title: 'Amount'}}
 const Attachment = {screen: Screens.AttachmentScreen, navigationOptions: {title: 'Attachment'}}
 const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
@@ -89,11 +90,21 @@ const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigation
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
 const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}
+const CompactWalletMainScreen = {screen: Screens.CompactWalletMainScreen, navigationOptions: {title: 'Wallet'}}
 
 export const WideNavigationConfiguration = {
   FeedTab: {
     masterScreen: Screens.FeedMasterScreen,
     screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
+  },
+  WalletTab: {
+    masterScreen: Screens.WalletMasterScreen,
+    screen: TabNavigator(
+      {
+        Token: {screen: StackNavigator({ TokenActions, TokensForm }, navigationOptions)},
+      },
+      navigationOptions,
+    ),
   },
   SendTab: {
     masterScreen: Screens.SendMasterScreen,
@@ -140,6 +151,12 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   FeedTab: {
     screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
+  },
+  WalletTab: {
+    screen: StackNavigator(
+      { CompactWalletMainScreen, TokenActions, TokensForm },
+      navigationOptions,
+    ),
   },
   SendTab: {
     screen: StackNavigator(
