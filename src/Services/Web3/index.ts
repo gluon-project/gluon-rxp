@@ -239,37 +239,54 @@ const getTokenInfo = (address: string, networkId?: string) => {
   })
 }
 
+const handlePendingTransaction = (
+  handleResponse: (txHash: string, response: any) => any,
+  resolve: (data: any) => void,
+  reject: (error: any) => void,
+) => {
+  return function (err: any, txHash: string) {
+    if (err) {
+      reject(err)
+    } else {
+      if (txHash) {
+        console.log('Transaction sent')
+        console.log(txHash)
+        const interval = setInterval(() => {
+          ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
+            if (error) {
+              console.log('TX Error: ', txHash, error)
+              reject(error)
+            }
+            if (response) {
+              console.log('TX Response: ', txHash, response)
+              clearInterval(interval)
+              resolve(handleResponse(txHash, response))
+            }
+          })
+        }, 1000)
+      }
+    }
+  }
+}
+
 const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> => {
   const token = ethSingleton.getCommunityToken(transaction.token)
   const hex = transaction.attachment && transaction.attachment ? bs58.decode(transaction.attachment).toString('hex') : '00'
 
   return new Promise<Transaction>((resolve, reject) => {
-    token.transfer(transaction.receiver, transaction.amount, `0x${hex}`,
-      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
-      if (err) {
-        reject(err)
-      } else {
-        if (txHash) {
-          console.log('Transaction sent')
-          console.log(txHash)
-          const interval = setInterval(() => {
-            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-              if (error) {
-                reject(error)
-              }
-              if (response) {
-                clearInterval(interval)
-                resolve({
-                  ...transaction,
-                  hash: txHash,
-                  date: moment().toISOString(),
-                })
-              }
-            })
-          }, 1000)
+    token.transfer(
+      transaction.receiver,
+      transaction.amount,
+      `0x${hex}`,
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
         }
-      }
-    })
+      }, resolve, reject),
+    )
   })
 }
 
@@ -277,32 +294,18 @@ const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> =>
   const token = ethSingleton.getErc20(transaction.token)
 
   return new Promise<Transaction>((resolve, reject) => {
-    token.transfer(transaction.receiver, transaction.amount,
-      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
-      if (err) {
-        reject(err)
-      } else {
-        if (txHash) {
-          console.log('Transaction sent')
-          console.log(txHash)
-          const interval = setInterval(() => {
-            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-              if (error) {
-                reject(error)
-              }
-              if (response) {
-                clearInterval(interval)
-                resolve({
-                  ...transaction,
-                  hash: txHash,
-                  date: moment().toISOString(),
-                })
-              }
-            })
-          }, 1000)
+    token.transfer(
+      transaction.receiver,
+      transaction.amount,
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
         }
-      }
-    })
+      }, resolve, reject),
+    )
   })
 }
 
@@ -314,31 +317,15 @@ const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
         to: transaction.receiver,
         value: transaction.amount,
         gasPrice: DEFAULT_GAS_PRICE,
-      }, function (err: any, txHash: string) {
-      if (err) {
-        reject(err)
-      } else {
-        if (txHash) {
-          console.log('Transaction sent')
-          console.log(txHash)
-          const interval = setInterval(() => {
-            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-              if (error) {
-                reject(error)
-              }
-              if (response) {
-                clearInterval(interval)
-                resolve({
-                  ...transaction,
-                  hash: txHash,
-                  date: moment().toISOString(),
-                })
-              }
-            })
-          }, 1000)
+      },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
         }
-      }
-    })
+      }, resolve, reject),
+    )
   })
 }
 
@@ -354,36 +341,21 @@ const findTokenContractAddress = (logs: any[]): string => {
 const createNewToken = (token: Token, creator: User): Promise<Token> => {
   return ethSingleton.getCommunityTokenFactory()
   .then((tokenFactory: any) => {
-    console.log(tokenFactory)
     return new Promise<Token>((resolve, reject) => {
-      //TODO:
       tokenFactory.createCommunityToken(
-        token.name, token.decimals, token.code, token.exponent,
-        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE }, function (err: any, txHash: string) {
-        if (err) {
-          reject(err)
-        } else {
-          if (txHash) {
-            console.log('Transaction created')
-            console.log(txHash)
-            const interval = setInterval(() => {
-              ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-                if (error) {
-                  reject(error)
-                }
-                if (response) {
-                  clearInterval(interval)
-                  resolve({
-                    ...token,
-                    address: findTokenContractAddress(response.logs),
-                    type: Enums.TokenType.Erc223,
-                  })
-                }
-              })
-            }, 1000)
+        token.name,
+        token.decimals,
+        token.code,
+        token.exponent,
+        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
+        handlePendingTransaction((txHash, response) => {
+          return {
+            ...token,
+            address: findTokenContractAddress(response.logs),
+            type: Enums.TokenType.Erc223,
           }
-        }
-      })
+        }, resolve, reject),
+      )
     })
   })
 }
