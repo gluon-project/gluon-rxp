@@ -12,6 +12,7 @@ import * as moment from 'moment'
 import * as Enums from '../../Enums'
 
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
+abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
 abiDecoder.addABI(communityTokenFactoryAbi)
 
@@ -289,6 +290,80 @@ const handlePendingTransaction = (
   }
 }
 
+const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
+  const contract = ethSingleton.getEth().contract.at(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    contract.mint(
+      transaction.numTokens,
+      { from: transaction.sender, value: transaction.value, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
+        }
+      }, resolve, reject),
+    )
+  })
+}
+
+const burnTokens = (transaction: BurnTransaction): Promise<Transaction> => {
+  const contract = ethSingleton.getEth().contract.at(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    contract.burn(
+      transaction.numTokens,
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
+        }
+      }, resolve, reject),
+    )
+  })
+}
+
+const mintCommunityTokens = (transaction: MintTransaction): Promise<Transaction> => {
+  const contract = ethSingleton.getEth().contract.at(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    contract.mint(
+      transaction.sender,
+      transaction.value,
+      transaction.numTokens,
+      { from: transaction.sender, value: transaction.value, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
+        }
+      }, resolve, reject),
+    )
+  })
+}
+
+const burnCommunityTokens = (transaction: BurnTransaction): Promise<Transaction> => {
+  const contract = ethSingleton.getEth().contract.at(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    contract.burn(
+      transaction.numTokens,
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
+        }
+      }, resolve, reject),
+    )
+  })
+}
+
 const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> => {
   const token = ethSingleton.getCommunityToken(transaction.token)
   const hex = transaction.attachment && transaction.attachment ? bs58.decode(transaction.attachment).toString('hex') : '00'
@@ -392,6 +467,10 @@ const getAccounts = (): string => {
 
 export default {
   getNewBalances,
+  mintTokens,
+  burnTokens,
+  mintCommunityTokens,
+  burnCommunityTokens,
   priceToMint,
   rewardForBurn,
   sendTransactionErc223,

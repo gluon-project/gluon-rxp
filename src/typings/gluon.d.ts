@@ -60,6 +60,26 @@ declare interface Transaction {
   attachment?: string,
 }
 
+declare interface MintTransaction {
+  hash?: string,
+  sender?: string,
+  value?: string,
+  numTokens?: string,
+  token?: string,
+  date?: string,
+  attachment?: string,
+}
+
+declare interface BurnTransaction {
+  hash?: string,
+  sender?: string,
+  value?: string,
+  numTokens?: string,
+  token?: string,
+  date?: string,
+  attachment?: string,
+}
+
 declare interface Balance {
   token: Token
   amount: string
