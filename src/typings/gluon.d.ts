@@ -46,6 +46,8 @@ declare interface Token {
   decimals?: number,
   type?: number,
   exponent?: number,
+  poolBalance?: string,
+  reserveToken?: string,
 }
 
 declare interface Transaction {

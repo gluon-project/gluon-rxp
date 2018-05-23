@@ -102,7 +102,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
-    console.log(this.state.network)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>

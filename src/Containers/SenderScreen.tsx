@@ -63,14 +63,14 @@ class SenderScreen extends RX.Component<Props, null> {
               Transactions on Rinkeby network will be funded by uPort Sensui service
             </RX.Text>
 
-            <CallToAction
+            {/* <CallToAction
               type={CallToAction.type.Main}
               title='Login with uPort (Mainnet)'
               onPress={this.props.startLoginMainnet}
             />
             <RX.Text style={Theme.Styles.about.warning}>
               Transactions on Mainnet must be funded by you
-            </RX.Text>
+            </RX.Text> */}
           </RX.View>}
 
         </ScrollView>

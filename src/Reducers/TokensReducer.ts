@@ -13,34 +13,7 @@ export interface TokensState {
 
 const initialState: TokensState = {
   new: null,
-  list: [
-    {
-      name: 'Ether',
-      code: 'ETH',
-      logo: '',
-      address: '0x0000000000000000000000000000000000000000',
-      decimals: 18,
-      type: Enums.TokenType.ETH,
-    },
-    {
-      name: 'Gluon (Rinkeby)',
-      code: 'GLU',
-      logo: '',
-      address: '0x4356ea7ffec8e481984c3a697351091cf51f87f6',
-      networkId: '4',
-      decimals: 0,
-      type: Enums.TokenType.Erc223,
-    },
-    {
-      name: 'Gluon (Mainnet)',
-      code: 'GLU',
-      logo: '',
-      address: '0x087f76e8f9a487d93e5c439caad3c0a985079e01',
-      networkId: '1',
-      decimals: 0,
-      type: Enums.TokenType.Erc223,
-    },
-  ],
+  list: Config.tokens.defaultList,
 }
 
 export const reducer = createReducer({}, initialState)

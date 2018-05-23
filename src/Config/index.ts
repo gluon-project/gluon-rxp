@@ -3,6 +3,7 @@ import contacts from './contacts'
 import etherscan from './etherscan'
 import ipfs from './ipfs'
 import scraper from './scraper'
+import tokens from './tokens'
 import uport from './uport'
 
 export default {
@@ -11,5 +12,6 @@ export default {
   etherscan,
   ipfs,
   scraper,
+  tokens,
   uport,
 }

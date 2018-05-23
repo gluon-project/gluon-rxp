@@ -113,42 +113,38 @@ const getNewBalances = (address: string, tokens: Token[]) => {
   return Promise.all(promises)
 }
 
-const getPrices = (token: Token, amount: number) => {
-
+const priceToMint = (token: Token, amount: string): Promise<string> => {
   if (token.type === Enums.TokenType.Erc223) {
     const tokenContract = ethSingleton.getCommunityToken(token.address)
-
-    const mintPromise = new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       tokenContract.priceToMint.call(amount, function (err: any, val: any) {
         if (err) {
           reject(err)
         } else {
-          resolve(val)
+          resolve(val.toString())
         }
       })
     })
+  } else {
+    return Promise.reject('Token does not support priceToMint')
+  }
+}
 
-    const burnPromise = new Promise<any>((resolve, reject) => {
+const rewardForBurn = (token: Token, amount: string): Promise<string> => {
+  if (token.type === Enums.TokenType.Erc223) {
+    const tokenContract = ethSingleton.getCommunityToken(token.address)
+    return new Promise<any>((resolve, reject) => {
       tokenContract.rewardForBurn.call(amount, function (err: any, val: any) {
         if (err) {
           reject(err)
         } else {
-          resolve(val)
+          resolve(val.toString())
         }
       })
     })
-
-    return Promise.all([mintPromise, burnPromise]).then((data: any) => {
-      return {
-        priceToMint: data[0].toString(),
-        rewardForBurn: data[1].toString(),
-      } as Balance
-    })
-
   } else {
-    return null
+    return Promise.reject('Token does not support rewardForBurn')
   }
-
 }
 
 const getTokenInfo = (address: string, networkId?: string) => {
@@ -212,6 +208,28 @@ const getTokenInfo = (address: string, networkId?: string) => {
     })
   }))
 
+  // poolBalance
+  promises.push(new Promise<string>((resolve, reject) => {
+    tokenContract.poolBalance.call(function (err: any, value: string) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // reserveToken
+  promises.push(new Promise<string>((resolve, reject) => {
+    tokenContract.reserveToken.call(function (err: any, value: string) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
   // isCommunityToken
   promises.push(new Promise<number>((resolve, reject) => {
     tokenFactoryContract.then((contract: any) => contract.isCommunityToken.call(address, function (err: any, value: number) {
@@ -233,7 +251,9 @@ const getTokenInfo = (address: string, networkId?: string) => {
       decimals: data[2].toNumber(),
       totalSupply: data[3].toString(),
       exponent: data[4].toNumber(),
-      type: data[5] ? Enums.TokenType.Erc223 : Enums.TokenType.Erc20,
+      poolBalance: data[5].toString(),
+      reserveToken: data[6].toString(),
+      type: data[7] ? Enums.TokenType.Erc223 : Enums.TokenType.Erc20,
       networkId: networkId || '4',
     } as Token
   })
@@ -372,7 +392,8 @@ const getAccounts = (): string => {
 
 export default {
   getNewBalances,
-  getPrices,
+  priceToMint,
+  rewardForBurn,
   sendTransactionErc223,
   sendTransactionErc20,
   sendTransactionETH,
