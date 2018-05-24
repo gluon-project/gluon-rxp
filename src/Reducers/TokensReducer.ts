@@ -8,12 +8,26 @@ import * as Enums from '../Enums'
 
 export interface TokensState {
   current: string,
+  mintTransaction: MintTransaction,
+  burnTransaction: BurnTransaction,
   new: Token,
   list: Token[],
 }
 
+const emptyMintTransaction: MintTransaction = {
+  numTokens: '0',
+  price: '0',
+}
+
+const emptyBurnTransaction: BurnTransaction = {
+  numTokens: '0',
+  reward: '0',
+}
+
 const initialState: TokensState = {
   current: Config.tokens.defaultList[0].address,
+  mintTransaction: emptyMintTransaction,
+  burnTransaction: emptyBurnTransaction,
   new: null,
   list: Config.tokens.defaultList,
 }
@@ -47,6 +61,53 @@ reducer.on(setNew, (state: TokensState, payload?: Token) => {
   }
 })
 
-export const getTokenInfo = createAction('Get Token info')
+export const setMintNumTokens = createAction('Set amount of tokens to mint')
+reducer.on(setMintNumTokens, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    mintTransaction: {
+      ...state.mintTransaction,
+      numTokens: payload,
+    },
+  }
+})
 
+export const setMintPrice = createAction('Set mint price')
+reducer.on(setMintPrice, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    mintTransaction: {
+      ...state.mintTransaction,
+      price: payload,
+    },
+  }
+})
+
+export const setBurnNumTokens = createAction('Set amount of tokens to burn')
+reducer.on(setBurnNumTokens, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    burnTransaction: {
+      ...state.burnTransaction,
+      numTokens: payload,
+    },
+  }
+})
+
+export const setBurnReward = createAction('Set reward for burn')
+reducer.on(setBurnReward, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    burnTransaction: {
+      ...state.burnTransaction,
+      reward: payload,
+    },
+  }
+})
+
+export const getTokenInfo = createAction('Get Token info')
 export const createNewToken = createAction('Create new token')
+export const mintTokens = createAction('Mint new tokens')
+export const burnTokens = createAction('Burn tokens')
+export const getPriceToMint = createAction('Get price to mint')
+export const getRewardForBurn = createAction('Get reward for burn')

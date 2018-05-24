@@ -63,9 +63,10 @@ declare interface Transaction {
 declare interface MintTransaction {
   hash?: string,
   sender?: string,
-  value?: string,
+  price?: string,
   numTokens?: string,
   token?: string,
+  reserveToken?: string,
   date?: string,
   attachment?: string,
 }
@@ -73,7 +74,7 @@ declare interface MintTransaction {
 declare interface BurnTransaction {
   hash?: string,
   sender?: string,
-  value?: string,
+  reward?: string,
   numTokens?: string,
   token?: string,
   date?: string,

@@ -1,12 +1,15 @@
 import * as Enums from '../Enums'
 
+export const etherAddress = '0x0000000000000000000000000000000000000000'
+
 export default {
+  etherAddress,
   defaultList: [
     {
       name: 'Ether',
       code: 'ETH',
       logo: '',
-      address: '0x0000000000000000000000000000000000000000',
+      address: etherAddress,
       decimals: 18,
       type: Enums.TokenType.ETH,
     },
@@ -18,7 +21,7 @@ export default {
       networkId: '4',
       decimals: 18,
       exponent: 2,
-      reserveToken: null,
+      reserveToken: etherAddress,
       type: Enums.TokenType.Erc223,
     },
   ],

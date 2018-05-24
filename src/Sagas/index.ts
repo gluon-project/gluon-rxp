@@ -24,4 +24,7 @@ export default function* root() {
   yield fork(Web3Saga.watchGetTokenInfo)
   yield fork(Web3Saga.watchRefreshBalances)
   yield fork(Web3Saga.watchStartSavingTransaction)
+  yield fork(Web3Saga.watchSetMintBurnNumTokens)
+  yield fork(Web3Saga.watchMintTokens)
+  yield fork(Web3Saga.watchBurnTokens)
 }

@@ -28,7 +28,8 @@ interface State {
   code?: string
   isNew?: boolean,
   type?: Enums.TokenType,
-  network?: string
+  network?: string,
+  reserveToken?: string,
 }
 
 class TokensFormScreen extends RX.Component<Props, State> {
@@ -43,6 +44,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
       isNew: true,
       type: Enums.TokenType.Erc223,
       network: null,
+      reserveToken: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
   }
@@ -61,6 +63,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         type: this.state.type,
+        reserveToken: this.state.reserveToken,
+        exponent: this.state.exponent,
       })
       this.props.setToken(this.state.address)
       this.props.navigateBack()

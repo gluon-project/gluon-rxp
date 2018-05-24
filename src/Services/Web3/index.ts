@@ -122,6 +122,7 @@ const priceToMint = (token: Token, amount: string): Promise<string> => {
         if (err) {
           reject(err)
         } else {
+          console.log(val)
           resolve(val.toString())
         }
       })
@@ -291,12 +292,12 @@ const handlePendingTransaction = (
 }
 
 const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract.at(transaction.token)
-
+  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.token)
+  console.log(transaction)
   return new Promise<Transaction>((resolve, reject) => {
     contract.mint(
       transaction.numTokens,
-      { from: transaction.sender, value: transaction.value, gasPrice: DEFAULT_GAS_PRICE },
+      { from: transaction.sender, value: transaction.price, gasPrice: DEFAULT_GAS_PRICE },
       handlePendingTransaction((txHash, response) => {
         return {
           ...transaction,
@@ -309,7 +310,7 @@ const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
 }
 
 const burnTokens = (transaction: BurnTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract.at(transaction.token)
+  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.token)
 
   return new Promise<Transaction>((resolve, reject) => {
     contract.burn(
@@ -326,15 +327,20 @@ const burnTokens = (transaction: BurnTransaction): Promise<Transaction> => {
   })
 }
 
+const uintToBytes = (uint: number) => {
+  const hexInt = uint.toString(16)
+  return '0x' + '0'.repeat(64 - hexInt.length) + hexInt
+}
+
 const mintCommunityTokens = (transaction: MintTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract.at(transaction.token)
+  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.reserveToken)
 
   return new Promise<Transaction>((resolve, reject) => {
-    contract.mint(
-      transaction.sender,
-      transaction.value,
-      transaction.numTokens,
-      { from: transaction.sender, value: transaction.value, gasPrice: DEFAULT_GAS_PRICE },
+    contract.transfer(
+      transaction.token,
+      transaction.price,
+      uintToBytes(parseInt(transaction.numTokens, 10)),
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
       handlePendingTransaction((txHash, response) => {
         return {
           ...transaction,
@@ -347,11 +353,12 @@ const mintCommunityTokens = (transaction: MintTransaction): Promise<Transaction>
 }
 
 const burnCommunityTokens = (transaction: BurnTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract.at(transaction.token)
+  const contract = ethSingleton.getEth().contract(communityTokenAbi).at(transaction.token)
 
   return new Promise<Transaction>((resolve, reject) => {
     contract.burn(
       transaction.numTokens,
+      '0x0',
       { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
       handlePendingTransaction((txHash, response) => {
         return {
