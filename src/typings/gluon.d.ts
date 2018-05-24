@@ -58,6 +58,7 @@ declare interface Transaction {
   token?: string,
   date?: string,
   attachment?: string,
+  type?: string,
 }
 
 declare interface MintTransaction {

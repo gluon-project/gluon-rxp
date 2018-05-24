@@ -10,8 +10,12 @@ var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
 var bs58 = require('bs58')
 import erc223abi from '../Web3/erc223abi'
 import erc20abi from '../Web3/erc20abi'
+import gluonTokenAbi from '../Web3/gluon-token-abi'
+import communityTokenAbi from '../Web3/community-token-abi'
 abiDecoder.addABI(erc20abi)
 abiDecoder.addABI(erc223abi)
+abiDecoder.addABI(gluonTokenAbi)
+abiDecoder.addABI(communityTokenAbi)
 
 const toIPFSHash = (str: string) => {
   // remove leading 0x
@@ -24,24 +28,52 @@ const toIPFSHash = (str: string) => {
 }
 
 const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction => {
-  const event: EthereumLogEvent[] = abiDecoder.decodeLogs([ethTx])[0].events
-  const sender = _.find(event, {'name': 'from'}).value
-  const receiver = _.find(event, {'name': 'to'}).value
-  const amount = _.find(event, {'name': 'value'}).value
-  const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
-  const attachment = data ? toIPFSHash(data) : null
+  const decodedLogs = abiDecoder.decodeLogs([ethTx])[0]
 
+  const event: EthereumLogEvent[] = decodedLogs.events
   const date = moment(parseInt(ethTx.timeStamp.slice(2, ethTx.timeStamp.length), 16) * 1000).toISOString()
+  const hash = `${ethTx.transactionHash}${token.address}`
+  if (decodedLogs.name === 'Transfer') {
+    const sender = _.find(event, {'name': 'from'}).value
+    const receiver = _.find(event, {'name': 'to'}).value
+    const amount = _.find(event, {'name': 'value'}).value
+    const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
+    const attachment = data ? toIPFSHash(data) : null
 
-  return {
-    hash: ethTx.transactionHash,
-    sender,
-    receiver,
-    amount: amount,
-    token: token.address,
-    date,
-    attachment,
+    return {
+      hash,
+      sender,
+      receiver,
+      amount: amount,
+      token: token.address,
+      date,
+      attachment,
+      type: decodedLogs.name,
+    }
+  } else if (decodedLogs.name === 'Minted') {
+    return {
+      hash,
+      sender: decodedLogs.name,
+      receiver: _.find(event, {'name': 'totalCost'}).value,
+      amount: _.find(event, {'name': 'amount'}).value,
+      token: token.address,
+      date,
+      attachment: null,
+      type: decodedLogs.name,
+    }
+  } else if (decodedLogs.name === 'Burned') {
+    return {
+      hash,
+      sender: decodedLogs.name,
+      receiver: _.find(event, {'name': 'reward'}).value,
+      amount: _.find(event, {'name': 'amount'}).value,
+      token: token.address,
+      date,
+      attachment: null,
+      type: decodedLogs.name,
+    }
   }
+  return {}
 }
 
 const fetchTransactions = (token: Token) => {
