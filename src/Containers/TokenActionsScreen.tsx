@@ -74,13 +74,13 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          <ListItem
+          {this.props.balance && <ListItem
             account={this.props.balance.token}
             title={`${this.props.balance.token.name}`}
             details={utils.number.numberToString(this.props.balance.amount, this.props.balance.token.decimals)}
             subTitle={this.props.balance.token.type !== Enums.TokenType.ETH &&  utils.address.short(this.props.balance.token.address)}
             type={ListItem.type.Secondary}
-          />
+          />}
           {this.props.reserveTokenBalance !== undefined && <RX.View>
               <SegmentedControl
               titles={['Buy', 'Sell']}

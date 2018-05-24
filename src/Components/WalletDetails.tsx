@@ -19,7 +19,7 @@ export default class WalletDetails extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
-        <RX.View style={Theme.Styles.accountInfo.wrapper}>
+        {this.props.currentUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
           <AccountIcon
             account={this.props.currentUser}
             type={AccountIcon.type.Large}
@@ -27,7 +27,7 @@ export default class WalletDetails extends RX.Component<Props, null> {
           <RX.Text style={Theme.Styles.accountInfo.title}>
             {this.props.currentUser.name}
           </RX.Text>
-        </RX.View>
+        </RX.View>}
         {this.props.balances && <RX.View>
             {this.props.balances.map((account, key) => {
               return <ListItem
