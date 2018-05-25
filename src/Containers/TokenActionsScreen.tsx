@@ -110,7 +110,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               type={CallToAction.type.Main}
               title={this.state.isMint ? 'Buy' : 'Sell'}
               onPress={this.handleConfirm}
-              disabled={!this.isValid()}
+              disabled={!this.isValid() || this.props.isProcessingMint || this.props.isProcessingBurn}
               inProgress={this.props.isProcessingMint || this.props.isProcessingBurn}
             />
           </RX.View>}
