@@ -42,8 +42,12 @@ declare interface Token {
   code?: string,
   logo?: string,
   initialAmount?: string,
+  totalSupply?: string,
   decimals?: number,
   type?: number,
+  exponent?: number,
+  poolBalance?: string,
+  reserveToken?: string,
 }
 
 declare interface Transaction {
@@ -54,11 +58,35 @@ declare interface Transaction {
   token?: string,
   date?: string,
   attachment?: string,
+  type?: string,
+}
+
+declare interface MintTransaction {
+  hash?: string,
+  sender?: string,
+  price?: string,
+  numTokens?: string,
+  token?: string,
+  reserveToken?: string,
+  date?: string,
+  attachment?: string,
+}
+
+declare interface BurnTransaction {
+  hash?: string,
+  sender?: string,
+  reward?: string,
+  numTokens?: string,
+  token?: string,
+  date?: string,
+  attachment?: string,
 }
 
 declare interface Balance {
   token: Token
   amount: string
+  priceToMint?: string
+  rewardForBurn?: string
 }
 
 declare interface Attachment {

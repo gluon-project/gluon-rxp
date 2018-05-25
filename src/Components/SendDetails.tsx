@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, CallToAction } from '../Components'
+import { ListItem, CallToAction, AccountIcon } from '../Components'
 import * as Enums from '../Enums'
 import Utils from '../Utils'
 
@@ -22,6 +22,7 @@ export default class SendDetails extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
+
         <ListItem
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Sender'}

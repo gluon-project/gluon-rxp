@@ -14,6 +14,10 @@ export enum ProcessType {
   ProcessAttachment,
   SaveAttachment,
   SendTransaction,
+  GetPriceToMint,
+  GetRewardForBurn,
+  MintTokens,
+  BurnTokens,
 }
 
 export enum VisualType {

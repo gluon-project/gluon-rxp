@@ -7,40 +7,29 @@ import Config from '../Config'
 import * as Enums from '../Enums'
 
 export interface TokensState {
+  current: string,
+  mintTransaction: MintTransaction,
+  burnTransaction: BurnTransaction,
   new: Token,
   list: Token[],
 }
 
+const emptyMintTransaction: MintTransaction = {
+  numTokens: '0',
+  price: '0',
+}
+
+const emptyBurnTransaction: BurnTransaction = {
+  numTokens: '0',
+  reward: '0',
+}
+
 const initialState: TokensState = {
+  current: Config.tokens.defaultList[0].address,
+  mintTransaction: emptyMintTransaction,
+  burnTransaction: emptyBurnTransaction,
   new: null,
-  list: [
-    {
-      name: 'Ether',
-      code: 'ETH',
-      logo: '',
-      address: '0x0000000000000000000000000000000000000000',
-      decimals: 18,
-      type: Enums.TokenType.ETH,
-    },
-    {
-      name: 'Gluon (Rinkeby)',
-      code: 'GLU',
-      logo: '',
-      address: '0x4356ea7ffec8e481984c3a697351091cf51f87f6',
-      networkId: '4',
-      decimals: 0,
-      type: Enums.TokenType.Erc223,
-    },
-    {
-      name: 'Gluon (Mainnet)',
-      code: 'GLU',
-      logo: '',
-      address: '0x087f76e8f9a487d93e5c439caad3c0a985079e01',
-      networkId: '1',
-      decimals: 0,
-      type: Enums.TokenType.Erc223,
-    },
-  ],
+  list: Config.tokens.defaultList,
 }
 
 export const reducer = createReducer({}, initialState)
@@ -56,6 +45,14 @@ reducer.on(addToken, (state: TokensState, payload?: Token) => {
   }
 })
 
+export const selectToken = createAction('Select token')
+reducer.on(selectToken, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    current: payload,
+  }
+})
+
 export const setNew = createAction('Set new Token values')
 reducer.on(setNew, (state: TokensState, payload?: Token) => {
   return {
@@ -64,6 +61,53 @@ reducer.on(setNew, (state: TokensState, payload?: Token) => {
   }
 })
 
-export const getTokenInfo = createAction('Get Token info')
+export const setMintNumTokens = createAction('Set amount of tokens to mint')
+reducer.on(setMintNumTokens, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    mintTransaction: {
+      ...state.mintTransaction,
+      numTokens: payload,
+    },
+  }
+})
 
+export const setMintPrice = createAction('Set mint price')
+reducer.on(setMintPrice, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    mintTransaction: {
+      ...state.mintTransaction,
+      price: payload,
+    },
+  }
+})
+
+export const setBurnNumTokens = createAction('Set amount of tokens to burn')
+reducer.on(setBurnNumTokens, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    burnTransaction: {
+      ...state.burnTransaction,
+      numTokens: payload,
+    },
+  }
+})
+
+export const setBurnReward = createAction('Set reward for burn')
+reducer.on(setBurnReward, (state: TokensState, payload?: string) => {
+  return {
+    ...state,
+    burnTransaction: {
+      ...state.burnTransaction,
+      reward: payload,
+    },
+  }
+})
+
+export const getTokenInfo = createAction('Get Token info')
 export const createNewToken = createAction('Create new token')
+export const mintTokens = createAction('Mint new tokens')
+export const burnTokens = createAction('Burn tokens')
+export const getPriceToMint = createAction('Get price to mint')
+export const getRewardForBurn = createAction('Get reward for burn')

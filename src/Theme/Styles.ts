@@ -549,6 +549,20 @@ const Styles = {
     justifyContent: 'center',
     flex: 1,
   }),
+  accountInfo: {
+    wrapper: RX.Styles.createViewStyle({
+      margin: Metrics.baseMargin,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      marginBottom: Metrics.baseMargin,
+      textAlign: 'center',
+    }),
+  },
 }
 
 export default Styles

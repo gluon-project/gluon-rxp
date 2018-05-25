@@ -9,6 +9,7 @@ import CompactAboutMainScreen from './CompactAboutMainScreen'
 import CompactFeedMainScreen from './CompactFeedMainScreen'
 import CompactRequestMainScreen from './CompactRequestMainScreen'
 import CompactSendMainScreen from './CompactSendMainScreen'
+import CompactWalletMainScreen from './CompactWalletMainScreen'
 import FeedItem from './FeedItem'
 import FeedMasterScreen from './FeedMasterScreen'
 import FeedScreen from './FeedScreen'
@@ -22,7 +23,9 @@ import SenderScreen from './SenderScreen'
 import SendMasterScreen from './SendMasterScreen'
 import SettingsScreen from './SettingsScreen'
 import TokensFormScreen from './TokensFormScreen'
+import TokenActionsScreen from './TokenActionsScreen'
 import TokensScreen from './TokensScreen'
+import WalletMasterScreen from './WalletMasterScreen'
 
 export {
   About1Screen,
@@ -36,6 +39,7 @@ export {
   CompactFeedMainScreen,
   CompactRequestMainScreen,
   CompactSendMainScreen,
+  CompactWalletMainScreen,
   FeedItem,
   FeedMasterScreen,
   FeedScreen,
@@ -48,6 +52,8 @@ export {
   SenderScreen,
   SendMasterScreen,
   SettingsScreen,
+  TokenActionsScreen,
   TokensFormScreen,
   TokensScreen,
+  WalletMasterScreen,
 }

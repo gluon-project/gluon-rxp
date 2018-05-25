@@ -18,6 +18,7 @@ import TabBarButton from './TabBarButton'
 import TextInput from './TextInput'
 import ToggleSwitch from './ToggleSwitch'
 import VisualBox from './VisualBox'
+import WalletDetails from './WalletDetails'
 
 export {
   AboutDetails,
@@ -40,4 +41,5 @@ export {
   TextInput,
   ToggleSwitch,
   VisualBox,
+  WalletDetails,
 }

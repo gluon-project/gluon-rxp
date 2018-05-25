@@ -7,6 +7,7 @@ import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import * as Theme from '../Theme'
 import * as Services from '../Services'
+import Config from '../Config'
 import utils from '../Utils'
 import { includes } from 'lodash'
 
@@ -24,11 +25,12 @@ interface State {
   name?: string
   address?: string
   decimals?: number,
-  totalSupply?: number,
+  exponent?: number,
   code?: string
   isNew?: boolean,
   type?: Enums.TokenType,
-  network?: string
+  network?: string,
+  reserveToken?: string,
 }
 
 class TokensFormScreen extends RX.Component<Props, State> {
@@ -38,11 +40,12 @@ class TokensFormScreen extends RX.Component<Props, State> {
       name: '',
       address: '',
       decimals: 0,
-      totalSupply: 1000000,
+      exponent: 2,
       code: '',
       isNew: true,
       type: Enums.TokenType.Erc223,
       network: null,
+      reserveToken: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
   }
@@ -61,6 +64,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         type: this.state.type,
+        reserveToken: this.state.reserveToken,
+        exponent: this.state.exponent,
       })
       this.props.setToken(this.state.address)
       this.props.navigateBack()
@@ -71,7 +76,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         decimals: this.state.decimals,
-        initialAmount: utils.number.powToString(this.state.totalSupply, this.state.decimals),
+        exponent: this.state.exponent,
+        reserveToken: Config.tokens.gluonAddress,
       })
     }
   }
@@ -88,7 +94,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
   private isValid = () => {
     if (this.state.isNew) {
       return (this.state.network === '4' || this.state.network === '1')
-        && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.totalSupply > 0
+        && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.exponent > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
     }
@@ -102,7 +108,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
-    console.log(this.state.network)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -127,22 +132,16 @@ class TokensFormScreen extends RX.Component<Props, State> {
             onChangeText={(value) => this.setState({ code: value })}
             />
           {this.state.isNew && <TextInput
-            label='Decimals'
+            label='Exponent'
             keyboardType='numeric'
-            value={this.state.decimals.toString()}
-            onChangeText={(value) => this.setState({ decimals: parseInt(value, 10) || 0 })}
-            />}
-          {this.state.isNew && <TextInput
-            label='Total supply'
-            keyboardType='numeric'
-            value={this.state.totalSupply.toString()}
-            onChangeText={(value) => this.setState({ totalSupply: parseInt(value, 10) || 0 })}
+            value={this.state.exponent.toString()}
+            onChangeText={(value) => this.setState({ exponent: parseInt(value, 10) || 0 })}
             />}
           <CallToAction
             type={CallToAction.type.Main}
             title={this.state.isNew ? 'Create token' : 'Add'}
             onPress={this.handleSave}
-            disabled={!this.isValid()}
+            disabled={!this.isValid() || this.props.isProcessing}
             inProgress={this.props.isProcessing}
           />
           {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
