@@ -42,6 +42,7 @@ class CompactWalletMasterScreen extends RX.Component<Props, null> {
               handleSelectToken={this.handleSelectToken.bind(this)}
               selectedToken={this.props.selectedToken}
               balances={this.props.balances}
+              uiTraits={this.props.uiTraits}
             />
 
         </ScrollView>

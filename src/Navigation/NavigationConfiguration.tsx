@@ -101,7 +101,8 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.WalletMasterScreen,
     screen: TabNavigator(
       {
-        Token: {screen: StackNavigator({ TokenActions, TokensForm }, navigationOptions)},
+        TokenActions: {screen: StackNavigator({ TokenActions }, navigationOptions)},
+        TokensForm: {screen: StackNavigator({ TokensForm }, navigationOptions)},
       },
       navigationOptions,
     ),

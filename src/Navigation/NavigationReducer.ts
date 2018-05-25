@@ -22,6 +22,26 @@ export const WideReducer = (state = wideInitialState, action: any) => {
 
   const nextState = WideRouter.getStateForAction(action, state)
 
+  if (state && action.type === 'Navigation/NAVIGATE') {
+    const index = state.routes[state.index].index
+    const currentSecondaryRouteName = state && state.routes[state.index].routes[state.routes[state.index].index].routes &&
+      state.routes[state.index].routes[state.routes[state.index].index].routes[0].routeName
+    if (currentSecondaryRouteName === action.routeName) {
+      return state
+    }
+    //  else {
+    //   const nextIndex = nextState.routes[nextState.index].routes[nextState.routes[nextState.index].index].index
+    //   const nextSecondaryRouteName =
+    //   nextState.routes &&
+    //   nextState.routes[nextState.index].routes &&
+    //   nextState.routes[nextState.index].routes[nextState.routes[nextState.index].index].routes &&
+    //   nextState.routes[nextState.index].routes[nextState.routes[nextState.index].index].routes[nextIndex] &&
+    //   nextState.routes[nextState.index].routes[nextState.routes[nextState.index].index].routes[nextIndex].routeName
+
+    //   console.log(nextIndex, nextSecondaryRouteName, currentSecondaryRouteName)
+    // }
+  }
+
   return nextState || state
 }
 
@@ -32,7 +52,12 @@ export const CompactReducer = (state = compactInitialState, action: any) => {
   }
   let nextState = CompactRouter.getStateForAction(action, state)
 
-  if (state && action.type === 'Navigation/NAVIGATE'
+  const index = state.routes[state.index].index
+  const currentRouteName = state.routes[state.index].routes[index].routeName
+
+  if (state && action.type === 'Navigation/NAVIGATE' && currentRouteName === action.routeName) {
+    return state
+  } else if (state && action.type === 'Navigation/NAVIGATE'
     && ( action.routeName === 'SendTab' || action.routeName === 'RequestTab')) {
     nextState.routes[nextState.index].routes = [nextState.routes[nextState.index].routes[0]]
     nextState.routes[nextState.index].index = 0

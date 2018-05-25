@@ -12,6 +12,7 @@ interface Props extends RX.CommonProps {
   selectedToken?: string
   balances?: Balance[]
   handleSelectToken: (token: Token) => void
+  uiTraits?: UITraits
 }
 
 export default class WalletDetails extends RX.Component<Props, null> {
@@ -29,6 +30,15 @@ export default class WalletDetails extends RX.Component<Props, null> {
           </RX.Text>
         </RX.View>}
         {this.props.balances && <RX.View>
+            <ListItem
+              key='new'
+              isOff
+              title={`New token`}
+              subTitle={`Create or add existing`}
+              type={ListItem.type.Default}
+              selected={this.props.routeName === 'TokensForm'}
+              onPress={() => this.props.navigate('TokensForm')}
+            />
             {this.props.balances.map((account, key) => {
               return <ListItem
                 key={key}
@@ -36,7 +46,7 @@ export default class WalletDetails extends RX.Component<Props, null> {
                 title={`${account.token.name}`}
                 subTitle={`${Utils.number.numberToString(account.amount, account.token.decimals)} ${account.token.code}`}
                 type={ListItem.type.Default}
-                selected={this.props.selectedToken
+                selected={!this.props.uiTraits.horizontalIsCompact && this.props.routeName !== 'TokensForm' && this.props.selectedToken
                   && account.token.address === this.props.selectedToken}
                 onPress={() => this.props.handleSelectToken(account.token)}
               />

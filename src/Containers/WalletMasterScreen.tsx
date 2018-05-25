@@ -32,11 +32,12 @@ class SendMasterScreen extends RX.Component<Props, null> {
           <WalletDetails
             navigate={this.props.navigate}
             startLogin={this.props.startLogin}
-            routeName={''}
+            routeName={routeName}
             currentUser={this.props.currentUser}
             handleSelectToken={this.props.handleSelectToken}
             selectedToken={this.props.selectedToken}
             balances={this.props.balances}
+            uiTraits={this.props.uiTraits}
           />
         </RX.ScrollView>
       </RX.View>
@@ -57,7 +58,10 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     startLogin: () => dispatch(Actions.User.startLogin()),
-    handleSelectToken: (token: Token) => dispatch(Actions.Tokens.selectToken(token.address)),
+    handleSelectToken: (token: Token) => {
+      dispatch(Actions.Navigation.navigate('TokenActions'))
+      dispatch(Actions.Tokens.selectToken(token.address))
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SendMasterScreen)
