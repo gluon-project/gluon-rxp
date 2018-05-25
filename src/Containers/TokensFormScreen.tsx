@@ -7,6 +7,7 @@ import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import * as Theme from '../Theme'
 import * as Services from '../Services'
+import Config from '../Config'
 import utils from '../Utils'
 import { includes } from 'lodash'
 
@@ -76,6 +77,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         networkId: this.state.network,
         decimals: this.state.decimals,
         exponent: this.state.exponent,
+        reserveToken: Config.tokens.gluonAddress,
       })
     }
   }
@@ -130,12 +132,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
             onChangeText={(value) => this.setState({ code: value })}
             />
           {this.state.isNew && <TextInput
-            label='Decimals'
-            keyboardType='numeric'
-            value={this.state.decimals.toString()}
-            onChangeText={(value) => this.setState({ decimals: parseInt(value, 10) || 0 })}
-            />}
-          {this.state.isNew && <TextInput
             label='Exponent'
             keyboardType='numeric'
             value={this.state.exponent.toString()}
@@ -145,7 +141,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
             type={CallToAction.type.Main}
             title={this.state.isNew ? 'Create token' : 'Add'}
             onPress={this.handleSave}
-            disabled={!this.isValid()}
+            disabled={!this.isValid() || this.props.isProcessing}
             inProgress={this.props.isProcessing}
           />
           {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
