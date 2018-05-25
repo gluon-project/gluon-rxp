@@ -196,6 +196,7 @@ export function* watchMintTokens(): SagaIterator {
       }
       yield call(delay, 1000)
       yield put(Actions.User.refreshBalances())
+      yield put(Actions.Tokens.getPriceToMint())
       yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
       yield put(Actions.App.handleError(e))
@@ -229,6 +230,7 @@ export function* watchBurnTokens(): SagaIterator {
       }
       yield call(delay, 1000)
       yield put(Actions.User.refreshBalances())
+      yield put(Actions.Tokens.getRewardForBurn())
       yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
       yield put(Actions.App.handleError(e))
