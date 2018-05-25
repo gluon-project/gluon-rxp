@@ -135,8 +135,11 @@ export function* watchGetTokenInfo(): SagaIterator {
   }
 }
 
-export function* watchSetMintBurnNumTokens(): SagaIterator {
+export function* watchSetMintNumTokens(): SagaIterator {
   yield takeEvery(Actions.Tokens.setMintNumTokens, getPriceToMint)
+}
+
+export function* watchSetBurnNumTokens(): SagaIterator {
   yield takeEvery(Actions.Tokens.setBurnNumTokens, getRewardForBurn)
 }
 
@@ -157,10 +160,10 @@ export function* getPriceToMint(): SagaIterator {
 export function* getRewardForBurn(): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.GetRewardForBurn}))
   try {
-    const mintTransaction: MintTransaction = yield select(Selectors.Tokens.getMintTransaction)
+    const burnTransaction: BurnTransaction = yield select(Selectors.Tokens.getBurnTransaction)
     const tokenAddress = yield select(Selectors.Tokens.getCurrentToken)
     const token = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
-    const reward = yield call(Web3.rewardForBurn, token, mintTransaction.numTokens)
+    const reward = yield call(Web3.rewardForBurn, token, burnTransaction.numTokens)
     yield put(Actions.Tokens.setBurnReward(reward))
   } catch (e) {
     yield put(Actions.App.handleError(e))
@@ -191,7 +194,7 @@ export function* watchMintTokens(): SagaIterator {
           sender: currentUser.address,
         } as MintTransaction)
       }
-
+      yield call(delay, 1000)
       yield put(Actions.User.refreshBalances())
       yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
@@ -224,7 +227,7 @@ export function* watchBurnTokens(): SagaIterator {
           sender: currentUser.address,
         } as BurnTransaction)
       }
-
+      yield call(delay, 1000)
       yield put(Actions.User.refreshBalances())
       yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
