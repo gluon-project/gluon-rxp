@@ -12,6 +12,7 @@ import OffIcon from './OffIcon'
 import ChevronLeftIcon from './ChevronLeftIcon'
 import ChevronRightIcon from './ChevronRightIcon'
 import BackSpaceIcon from './BackSpaceIcon'
+import WalletIcon from './WalletIcon'
 
 export default {
   RequestIcon,
@@ -28,4 +29,5 @@ export default {
   ChevronLeftIcon,
   ChevronRightIcon,
   BackSpaceIcon,
+  WalletIcon,
 }

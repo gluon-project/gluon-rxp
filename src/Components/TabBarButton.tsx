@@ -22,6 +22,7 @@ export enum IconType {
   Request,
   About,
   Settings,
+  Wallet,
 }
 
 export default class TabBarButton extends RX.Component<Props, null> {
@@ -64,6 +65,9 @@ export default class TabBarButton extends RX.Component<Props, null> {
         break
       case IconType.Settings:
         Icon = Icons.SettingsIcon
+        break
+      case IconType.Wallet:
+        Icon = Icons.WalletIcon
         break
     }
 
