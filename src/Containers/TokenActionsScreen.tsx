@@ -88,9 +88,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
             <TextInput
-              label={`Amount (${utils.number.numberToString(
-                (this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens)
-                , this.props.balance.token.decimals)})`}
+              label={`Amount`}
               value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
               onChangeText={this.setAmount}
               />

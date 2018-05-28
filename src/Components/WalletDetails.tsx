@@ -29,7 +29,30 @@ export default class WalletDetails extends RX.Component<Props, null> {
             {this.props.currentUser.name}
           </RX.Text>
         </RX.View>}
-        {this.props.balances && <RX.View>
+
+        {this.props.balances.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
+            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
+              No Web3 provider detected. Please use Metamask, Parity, Cipher or:
+            </RX.Text>}
+            <CallToAction
+              type={CallToAction.type.Main}
+              title='Login with uPort (Rinkeby)'
+              onPress={this.props.startLogin}
+            />
+            <RX.Text style={Theme.Styles.about.warning}>
+              Transactions on Rinkeby network will be funded by uPort Sensui service
+            </RX.Text>
+
+            {/* <CallToAction
+              type={CallToAction.type.Main}
+              title='Login with uPort (Mainnet)'
+              onPress={this.props.startLoginMainnet}
+            />
+            <RX.Text style={Theme.Styles.about.warning}>
+              Transactions on Mainnet must be funded by you
+            </RX.Text> */}
+          </RX.View>}
+        {this.props.balances.length > 0 && <RX.View>
             <ListItem
               key='new'
               isOff

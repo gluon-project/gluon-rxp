@@ -49,7 +49,7 @@ const ethSingleton =  {
     return ethSingleton.getNetworkId()
     .then((networkId: string) => {
       return web3.eth.contract(communityTokenFactoryAbi).at(
-        networkId === '4' ? '0xfdc1151624dae6e7d986f106632509663268611f' : '',
+        networkId === '4' ? Config.tokens.communityTokenFactoryAddress : '',
       )
     })
   },
