@@ -54,17 +54,17 @@ platform :ios do
     # UI.important "Important Message"
     # UI.error "O NO!"
     # UI.message "Basic blah"
-    answer = UI.select("Would you like to add a Changelog?", ["Yes", "No"])
-    changelog = ask('Type Changelog message:') if answer == "Yes"
+    # answer = UI.select("Would you like to add a Changelog?", ["Yes", "No"])
+    # changelog = ask('Type Changelog message:') if answer == "Yes"
 
     # Do application testing here
     # Very personal process
 
     # always get latest certificates/provisioning profiles
-    register_devices(devices_file: "./fastlane/devices.txt")
-    match(type: 'adhoc', force_for_new_devices: true, app_identifier: "cat.not.gluon")
-    match(type: 'development', force_for_new_devices: true, app_identifier: "cat.not.gluon")
-    match(type: 'appstore', app_identifier: "cat.not.gluon")
+    # register_devices(devices_file: "./fastlane/devices.txt")
+    # match(type: 'adhoc', force_for_new_devices: true, app_identifier: "cat.not.gluon")
+    # match(type: 'development', force_for_new_devices: true, app_identifier: "cat.not.gluon")
+    # match(type: 'appstore', app_identifier: "cat.not.gluon")
 
     # Change build number
     increment_build_number(
@@ -81,11 +81,11 @@ platform :ios do
 
     # Sometimes itunes email is different!
     ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
-    if changelog
+    # if changelog
       pilot(username: @username)
-    else
-      pilot(username: @username, changelog: changelog)
-    end
+    # else
+    #   pilot(username: @username, changelog: changelog)
+    # end
 
     # Print reminder of testers
     sh "pilot list -u #{@username}"
