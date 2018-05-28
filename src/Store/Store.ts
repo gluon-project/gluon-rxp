@@ -24,7 +24,7 @@ const callback = (store: Store<any>) => {
 
 const updateReducers = (store: Store<any>) => {
   CustomStorage.configureStorage().then(configuredStorage => {
-    const reducerVersion = 3 // Bump up this value, when persisted reducer state format changes
+    const reducerVersion = 5 // Bump up this value, when persisted reducer state format changes
     const config = {
       storage: configuredStorage,
       whitelist: [

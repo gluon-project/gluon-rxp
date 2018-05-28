@@ -50,6 +50,8 @@ reducer.on(selectToken, (state: TokensState, payload?: string) => {
   return {
     ...state,
     current: payload,
+    burnTransaction: emptyBurnTransaction,
+    mintTransaction: emptyMintTransaction,
   }
 })
 
