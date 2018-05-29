@@ -15,6 +15,7 @@ interface Props extends RX.CommonProps {
   multiline?: boolean
   style?: any
   defaultValue?: string
+  brand?: boolean
 }
 
 export default class TextInput extends RX.Component<Props, null> {
@@ -29,6 +30,7 @@ export default class TextInput extends RX.Component<Props, null> {
             Theme.Styles.textInput.input,
             this.props.multiline && Theme.Styles.textInput.multiline,
             this.props.editable === false && Theme.Styles.textInput.inputReadonly,
+            this.props.brand && Theme.Styles.textInput.inputBrand,
           ]}
           defaultValue={this.props.defaultValue}
           multiline={this.props.multiline}

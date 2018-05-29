@@ -463,6 +463,11 @@ const Styles = {
       paddingLeft: 0,
       borderWidth: 0,
     }),
+    inputBrand: RX.Styles.createTextInputStyle({
+      paddingLeft: Metrics.baseMargin,
+      borderWidth: Metrics.borderWidth,
+      borderColor: Colors.brand,
+    }),
     multiline: RX.Styles.createTextInputStyle({
       height: Metrics.buttonHeight * 2,
       paddingTop: Metrics.smallMargin * 2,

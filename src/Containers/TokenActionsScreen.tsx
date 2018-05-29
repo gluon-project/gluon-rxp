@@ -131,17 +131,16 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 />
               <TextInput
                 editable={false}
+                brand
                 label={this.state.isMint ? 'Stake' : 'Reward'}
-                value={`${utils.number.numberToString(
+                value={(this.props.isProcessingMintPrice || this.props.isProcessingBurnReward) ? 'Loading...' :
+                `${utils.number.numberToString(
                   this.state.isMint ? this.props.mintTransaction.price : this.props.burnTransaction.reward,
                   this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
                 onChangeText={this.setAmount}
                 />
               </RX.View>
-            {(this.props.isProcessingMintPrice || this.props.isProcessingBurnReward) && <RX.ActivityIndicator
-              color={Theme.Colors.light}
-              size='small'
-            />}
+
             <CallToAction
               type={CallToAction.type.Main}
               title={this.state.isMint ? 'Buy' : 'Sell'}
