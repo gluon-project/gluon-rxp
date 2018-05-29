@@ -139,12 +139,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
             value={this.state.code}
             onChangeText={(value) => this.setState({ code: value })}
             />
-          {this.state.isNew && <TextInput
-            label='Exponent'
-            keyboardType='numeric'
-            value={this.state.exponent.toString()}
-            onChangeText={(value) => this.setState({ exponent: value })}
-            />}
 
           {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveToken.decimals}
@@ -158,16 +152,29 @@ class TokensFormScreen extends RX.Component<Props, State> {
               totalSupply={0}
               numTokens={0}
               /></RX.View>}
-          <CallToAction
-            type={CallToAction.type.Main}
-            title={this.state.isNew ? 'Create token' : 'Add'}
-            onPress={this.handleSave}
-            disabled={!this.isValid() || this.props.isProcessing}
-            inProgress={this.props.isProcessing}
-          />
-          {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
-            Token creation currently supported only on Mainnet or Rinkeby networks
-          </RX.Text>}
+
+          {this.state.isNew && <TextInput
+            label='Exponent'
+            keyboardType='numeric'
+            value={this.state.exponent.toString()}
+            onChangeText={(value) => this.setState({ exponent: value })}
+            />}
+
+          <RX.View
+            style={{
+              marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
+            }}>
+            <CallToAction
+              type={CallToAction.type.Main}
+              title={this.state.isNew ? 'Create token' : 'Add'}
+              onPress={this.handleSave}
+              disabled={!this.isValid() || this.props.isProcessing}
+              inProgress={this.props.isProcessing}
+            />
+            {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
+              Token creation currently supported only on Mainnet or Rinkeby networks
+            </RX.Text>}
+          </RX.View>
         </ScrollView>
       </RX.View>
     )
