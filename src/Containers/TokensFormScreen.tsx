@@ -129,16 +129,18 @@ class TokensFormScreen extends RX.Component<Props, State> {
             value={this.state.address}
             onChangeText={this.handleAddressChange}
             />}
-          <TextInput
-            label='Name (BecKoin)'
-            value={this.state.name}
-            onChangeText={(value) => this.setState({ name: value })}
-            />
-          <TextInput
-            label='Symbol (BCK)'
-            value={this.state.code}
-            onChangeText={(value) => this.setState({ code: value })}
-            />
+          <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TextInput
+              label='Name (BecKoin)'
+              value={this.state.name}
+              onChangeText={(value) => this.setState({ name: value })}
+              />
+            <TextInput
+              label='Symbol (BCK)'
+              value={this.state.code}
+              onChangeText={(value) => this.setState({ code: value })}
+              />
+          </RX.View>
 
           {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveToken.decimals}
@@ -157,7 +159,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
             label='Exponent'
             keyboardType='numeric'
             value={this.state.exponent.toString()}
-            onChangeText={(value) => this.setState({ exponent: value })}
+            onChangeText={(value) => this.setState({ exponent: value.replace(',', '.') })}
             />}
 
           <RX.View
