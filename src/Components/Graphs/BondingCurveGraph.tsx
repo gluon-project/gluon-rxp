@@ -29,8 +29,8 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
   render() {
 
-    const totalSupply = 100
-    const maxTotalSupply = totalSupply * 2
+    const totalSupply = 10
+    const maxTotalSupply = (totalSupply || 10) * 2
     const numberOfDataPoints = 200
     const exponent = 1.8
     const newNumTokens = 0
@@ -50,24 +50,28 @@ class BondingCurveGraph extends RX.Component <Props, State> {
       txData.push(totalSupply)
     }
 
-    var price = (supply: number) => Math.pow(supply, exponent)
+    const price = (supply: number) => Math.pow(supply, exponent)
 
-    var x = scaleLinear().domain([0, maxTotalSupply]).range([0, this.state.width])
-    var y = scaleLinear().domain([price(maxTotalSupply), 0]).range([0, this.props.height])
+    const x = scaleLinear().domain([0, maxTotalSupply]).range([0, this.state.width])
+    const y = scaleLinear().domain([price(maxTotalSupply), 0]).range([0, this.props.height])
 
-    var axisX = scaleLinear().domain([0, 1]).range([0, this.state.width])
-    var axisY = scaleLinear().domain([1, 0]).range([0, this.props.height])
+    const xTicks: any[] = x.ticks(5)
+    xTicks[0] = ''
+    const yTicks = y.ticks(3)
 
-    var axisL: (any) = line()
+    const axisX = scaleLinear().domain([0, 1]).range([0, this.state.width])
+    const axisY = scaleLinear().domain([1, 0]).range([0, this.props.height])
+
+    const axisL: (any) = line()
       .x(function(d: any) { return axisX(d.x) })
       .y(function(d: any) { return axisY(d.y) })
 
-    var l: (any) = line()
+    const l: (any) = line()
       .x(function(d: any) { return x(d) })
       .y(function(d: any) { return y(price(d)) })
       // .curve(curveCatmullRom.alpha(0.5))
 
-    var a: (any) = area()
+    const a: (any) = area()
       .x(function(d: any) { return x(d) })
       .y1(function(d: any) { return y(price(d)) })
       .y0(y(0))
@@ -77,45 +81,54 @@ class BondingCurveGraph extends RX.Component <Props, State> {
       <RX.View
         style={Theme.Styles.scrollContainer}>
         <RX.View
+          style={{flexDirection: 'row'}}
           onLayout={(e: RX.Types.ViewOnLayoutEvent) => this.setState({width: e.width})}>
-          <RXImageSvg
-            style={{alignSelf: 'center'}}
-            width={this.state.width}
-            height={this.props.height}
-            viewBox={`0 0 ${this.state.width} ${this.props.height}`}
-          >
-          <RXSvgPath
-            fillColor={this.props.stakedColor}
-            strokeColor={null}
-            strokeWidth={0}
-            d={a(supplyData)}
-          />
-          <RXSvgPath
-            fillColor={Theme.Colors.brand}
-            strokeColor={null}
-            strokeWidth={0}
-            d={a(txData)}
-          />
-          <RXSvgPath
-            fillColor={'transparent'}
-            strokeColor={Theme.Colors.brand}
-            strokeWidth={1}
-            d={l(data)}
-          />
+          <RX.View style={{justifyContent: 'space-between'}}>
+            {yTicks.map((tick: number, index) => <RX.Text key={index} style={Theme.Styles.graph.yAxisLabel}>{tick}</RX.Text>)}
+          </RX.View>
+          <RX.View>
+            <RXImageSvg
+              style={{alignSelf: 'center'}}
+              width={this.state.width}
+              height={this.props.height}
+              viewBox={`0 0 ${this.state.width} ${this.props.height}`}
+            >
+            <RXSvgPath
+              fillColor={this.props.stakedColor}
+              strokeColor={null}
+              strokeWidth={0}
+              d={a(supplyData)}
+            />
+            <RXSvgPath
+              fillColor={Theme.Colors.brand}
+              strokeColor={null}
+              strokeWidth={0}
+              d={a(txData)}
+            />
+            <RXSvgPath
+              fillColor={'transparent'}
+              strokeColor={Theme.Colors.brand}
+              strokeWidth={1}
+              d={l(data)}
+            />
 
-          <RXSvgPath
-            fillColor={'transparent'}
-            strokeColor={Theme.Colors.borderColor}
-            strokeWidth={2}
-            d={axisL([{x: 0, y: 0}, {x: 1, y: 0}])}
-          />
-          <RXSvgPath
-            fillColor={'transparent'}
-            strokeColor={Theme.Colors.borderColor}
-            strokeWidth={2}
-            d={axisL([{x: 0, y: 0}, {x: 0, y: 1}])}
-          />
-        </RXImageSvg>
+            <RXSvgPath
+              fillColor={'transparent'}
+              strokeColor={Theme.Colors.borderColor}
+              strokeWidth={2}
+              d={axisL([{x: 0, y: 0}, {x: 1, y: 0}])}
+            />
+            <RXSvgPath
+              fillColor={'transparent'}
+              strokeColor={Theme.Colors.borderColor}
+              strokeWidth={2}
+              d={axisL([{x: 0, y: 0}, {x: 0, y: 1}])}
+            />
+          </RXImageSvg>
+          <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            {xTicks.map((tick: number, index) => <RX.Text key={index} style={Theme.Styles.graph.xAxisLabel}>{tick}</RX.Text>)}
+          </RX.View>
+        </RX.View>
       </RX.View>
     </RX.View>
     )

@@ -563,6 +563,20 @@ const Styles = {
       textAlign: 'center',
     }),
   },
+  graph: {
+    yAxisLabel: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.micro,
+      textAlign: 'right',
+      marginRight: Metrics.smallMargin,
+    }),
+    xAxisLabel: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.micro,
+      textAlign: 'center',
+      marginTop: Metrics.smallMargin,
+    }),
+  },
 }
 
 export default Styles
