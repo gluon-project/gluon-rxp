@@ -118,17 +118,11 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 />
               <TextInput
                 label={`Total supply`}
-                value={(this.props.balance.token.totalSupply || 0).toString()}
+                value={`${(this.props.balance.token.totalSupply || 0).toString()} ${this.props.balance.token.code}`}
                 editable={false}
                 />
             </RX.View>
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <TextInput
-                label={`Amount`}
-                value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
-                onChangeText={this.setAmount}
-                keyboardType='numeric'
-                />
               <TextInput
                 editable={false}
                 brand
@@ -138,6 +132,12 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                   this.state.isMint ? this.props.mintTransaction.price : this.props.burnTransaction.reward,
                   this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
                 onChangeText={this.setAmount}
+                />
+              <TextInput
+                label={this.state.isMint ? `Amount` : 'Amount'}
+                value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
+                onChangeText={this.setAmount}
+                keyboardType='numeric'
                 />
               </RX.View>
 
