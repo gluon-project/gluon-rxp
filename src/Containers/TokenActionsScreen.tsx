@@ -87,7 +87,9 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             subTitle={this.props.balance.token.type !== Enums.TokenType.ETH &&  utils.address.short(this.props.balance.token.address)}
             type={ListItem.type.Secondary}
           />}
-          {this.props.reserveTokenBalance !== undefined && <RX.View>
+          {this.props.reserveTokenBalance !== undefined && <RX.View style={{
+            marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
+          }}>
 
             <SegmentedControl
               titles={['Buy', 'Sell']}
@@ -95,7 +97,10 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
             <Graphs.BondingCurveGraph
-              height={this.props.uiTraits.horizontalIsCompact ? 150 : 300}
+              priceDecimals={this.props.reserveTokenBalance.token.decimals}
+              xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
+              yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
+              height={this.props.uiTraits.horizontalIsCompact ? 120 : 300}
               priceCode={this.props.reserveTokenBalance.token.code}
               supplyCode={this.props.balance.token.code}
               isMint={this.state.isMint}

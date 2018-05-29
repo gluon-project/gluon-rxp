@@ -5,6 +5,7 @@ import { line, curveCatmullRom, area } from 'd3-shape'
 import { path } from 'd3-path'
 import { scaleLinear } from 'd3-scale'
 import { range } from 'd3-array'
+import utils from '../../Utils'
 
 interface Props extends RX.CommonProps {
   width?: number
@@ -15,7 +16,10 @@ interface Props extends RX.CommonProps {
   exponent: number,
   numTokens: number,
   priceCode: string,
+  priceDecimals: number,
   supplyCode: string,
+  xTicks: number,
+  yTicks: number,
 }
 
 interface State {
@@ -62,10 +66,10 @@ class BondingCurveGraph extends RX.Component <Props, State> {
     const x = scaleLinear().domain([0, maxTotalSupply]).range([0, this.state.width])
     const y = scaleLinear().domain([price(maxTotalSupply), 0]).range([0, this.props.height])
 
-    const xTicks: any[] = x.ticks(4)
+    const xTicks: any[] = x.ticks(this.props.xTicks)
     xTicks[0] = ''
     xTicks[xTicks.length - 1] = `${this.props.supplyCode} Supply`
-    const yTicks: any[] = y.ticks(4)
+    const yTicks: any[] = y.ticks(this.props.yTicks)
     yTicks[0] = `${this.props.priceCode} Price`
 
     const axisX = scaleLinear().domain([0, 1]).range([0, this.state.width])
@@ -160,6 +164,9 @@ BondingCurveGraph.defaultProps = {
   numTokens: 0,
   supplyCode: '',
   priceCode: '',
+  xTicks: 4,
+  yTicks: 4,
+  priceDecimals: 0,
 }
 
 export default BondingCurveGraph
