@@ -93,7 +93,17 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               selectedIndex={this.state.isMint ? 0 : 1}
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
-            <Graphs.BondingCurveGraph />
+            <Graphs.BondingCurveGraph
+              isMint={this.state.isMint}
+              exponent={this.props.balance.token.exponent}
+              totalSupply={this.props.balance.token.totalSupply}
+              numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
+              />
+            <TextInput
+              label={`Total supply`}
+              value={(this.props.balance.token.totalSupply || 0).toString()}
+              editable={false}
+              />
             <TextInput
               label={`Amount`}
               value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}

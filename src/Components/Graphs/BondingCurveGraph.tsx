@@ -10,7 +10,10 @@ interface Props extends RX.CommonProps {
   width?: number
   height?: number
   stakedColor?: string,
-  isBuy?: boolean,
+  isMint: boolean,
+  totalSupply: number,
+  exponent: number,
+  numTokens: number,
 }
 
 interface State {
@@ -29,11 +32,11 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
   render() {
 
-    const totalSupply = 10
+    const totalSupply = this.props.totalSupply
     const maxTotalSupply = (totalSupply || 10) * 2
     const numberOfDataPoints = 200
-    const exponent = 1.8
-    const newNumTokens = 0
+    const exponent = this.props.exponent
+    const numTokens = this.props.numTokens
 
     let data = range(0, maxTotalSupply, maxTotalSupply / numberOfDataPoints)
     data.push(maxTotalSupply)
@@ -42,11 +45,11 @@ class BondingCurveGraph extends RX.Component <Props, State> {
     supplyData.push(totalSupply)
 
     let txData
-    if (this.props.isBuy) {
-      txData = range(totalSupply, totalSupply + newNumTokens)
-      txData.push(totalSupply + newNumTokens)
+    if (this.props.isMint) {
+      txData = range(totalSupply, totalSupply + numTokens)
+      txData.push(totalSupply + numTokens)
     } else {
-      txData = range(totalSupply - newNumTokens, totalSupply)
+      txData = range(totalSupply - numTokens, totalSupply)
       txData.push(totalSupply)
     }
 
@@ -139,7 +142,10 @@ BondingCurveGraph.defaultProps = {
   width: 500,
   height: 200,
   stakedColor: '#424242',
-  isBuy: false,
+  isMint: false,
+  exponent: 2,
+  totalSupply: 1,
+  numTokens: 0,
 }
 
 export default BondingCurveGraph
