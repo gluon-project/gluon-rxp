@@ -34,7 +34,7 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
     const numTokens = this.props.numTokens
     const totalSupply = this.props.totalSupply
-    const maxTotalSupply = (totalSupply + numTokens || 10) * 2
+    const maxTotalSupply = (totalSupply + numTokens) > totalSupply * 2 ? totalSupply + numTokens : (totalSupply || 10) * 2
     const numberOfDataPoints = 10
     const exponent = this.props.exponent
 
@@ -45,11 +45,12 @@ class BondingCurveGraph extends RX.Component <Props, State> {
     supplyData.push(totalSupply)
 
     let txData
+    const step = numTokens / numberOfDataPoints
     if (this.props.isMint) {
-      txData = range(totalSupply, totalSupply + numTokens)
+      txData = range(totalSupply, totalSupply + numTokens, step)
       txData.push(totalSupply + numTokens)
     } else {
-      txData = range(totalSupply - numTokens, totalSupply)
+      txData = range(totalSupply - numTokens, totalSupply, step)
       txData.push(totalSupply)
     }
 
@@ -80,16 +81,22 @@ class BondingCurveGraph extends RX.Component <Props, State> {
       .y0(y(0))
       // .curve(curveCatmullRom.alpha(0.5))
 
+    // console.log('supplyData', supplyData)
+    // console.log('txData', txData)
+    // console.log('data', data)
+
     return(
       <RX.View
         style={Theme.Styles.scrollContainer}>
         <RX.View
           style={{flexDirection: 'row'}}
-          onLayout={(e: RX.Types.ViewOnLayoutEvent) => this.setState({width: e.width})}>
+          >
           <RX.View style={{justifyContent: 'space-between'}}>
             {yTicks.map((tick: number, index) => <RX.Text key={index} style={Theme.Styles.graph.yAxisLabel}>{tick}</RX.Text>)}
           </RX.View>
-          <RX.View>
+          <RX.View
+            style={{flex: 1}}
+            onLayout={(e: RX.Types.ViewOnLayoutEvent) => this.setState({width: e.width})}>
             <RXImageSvg
               style={{alignSelf: 'center'}}
               width={this.state.width}
