@@ -46,7 +46,7 @@ declare interface Token {
   decimals?: number,
   type?: number,
   exponent?: number,
-  poolBalance?: string,
+  poolBalance?: number,
   reserveToken?: string,
 }
 

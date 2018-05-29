@@ -96,18 +96,53 @@ const getNewBalances = (address: string, tokens: Token[]) => {
       promises.push(promise)
     } else {
       const tokenContract = ethSingleton.getCommunityToken(token.address)
-      const promise = new Promise<Balance>((resolve, reject) => {
-        tokenContract.balanceOf.call(address, function (err: any, bal: any) {
+
+      const subPromises: Promise<any>[] = []
+
+      // totalSupply
+      subPromises.push(new Promise<string>((resolve, reject) => {
+        tokenContract.totalSupply.call(function (err: any, value: string) {
           if (err) {
             reject(err)
           } else {
-            resolve({
-              token,
-              amount: bal.toString(),
-            })
+            resolve(value)
           }
         })
+      }))
+
+      // poolBalance
+      subPromises.push(new Promise<string>((resolve, reject) => {
+        tokenContract.poolBalance.call(function (err: any, value: string) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(value)
+          }
+        })
+      }))
+
+      // balanceOf
+      subPromises.push(new Promise<string>((resolve, reject) => {
+        tokenContract.balanceOf.call(address, function (err: any, value: string) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(value)
+          }
+        })
+      }))
+
+      const promise = Promise.all(subPromises).then((data: any[]) => {
+        return {
+          token: {
+            ...token,
+            totalSupply: parseInt(data[0], 10),
+            poolBalance: parseInt(data[1], 10),
+          },
+          amount: data[2].toString(),
+        } as Balance
       })
+
       promises.push(promise)
     }
   })
