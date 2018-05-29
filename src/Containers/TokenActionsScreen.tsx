@@ -88,6 +88,21 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             type={ListItem.type.Secondary}
           />}
           {this.props.reserveTokenBalance !== undefined && <RX.View>
+            <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TextInput
+              label={`Pool balance`}
+              value={`${utils.number.numberToString(
+                this.props.balance.token.poolBalance.toString(),
+                this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
+              editable={false}
+              />
+            <TextInput
+              label={`Total supply`}
+              value={(this.props.balance.token.totalSupply || 0).toString()}
+              editable={false}
+              />
+            </RX.View>
+
             <SegmentedControl
               titles={['Buy', 'Sell']}
               selectedIndex={this.state.isMint ? 0 : 1}
@@ -98,11 +113,6 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               exponent={this.props.balance.token.exponent}
               totalSupply={this.props.balance.token.totalSupply}
               numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
-              />
-            <TextInput
-              label={`Total supply`}
-              value={(this.props.balance.token.totalSupply || 0).toString()}
-              editable={false}
               />
             <TextInput
               label={`Amount`}
