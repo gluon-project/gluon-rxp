@@ -14,6 +14,8 @@ interface Props extends RX.CommonProps {
   totalSupply: number,
   exponent: number,
   numTokens: number,
+  priceCode: string,
+  supplyCode: string,
 }
 
 interface State {
@@ -34,12 +36,12 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
     const numTokens = this.props.numTokens
     const totalSupply = this.props.totalSupply
-    let maxTotalSupply = (totalSupply + numTokens) > totalSupply * 2 ? totalSupply + numTokens : (totalSupply || 10) * 2
+    let maxTotalSupply = (totalSupply + numTokens) > totalSupply * 2 ? (totalSupply + numTokens) * 1.3 : (totalSupply || 10) * 2
     maxTotalSupply = maxTotalSupply < 10 ? 10 : maxTotalSupply
-    const numberOfDataPoints = 10
-    const exponent = this.props.exponent
+    const numberOfDataPoints = 200
+    const exponent = 2//this.props.exponent
 
-    let data = range(0, maxTotalSupply, maxTotalSupply / numberOfDataPoints)
+    let data = range(0, maxTotalSupply, maxTotalSupply / numberOfDataPoints / 2)
     data.push(maxTotalSupply)
 
     let supplyData = range(0, totalSupply, totalSupply / numberOfDataPoints / 2)
@@ -60,9 +62,11 @@ class BondingCurveGraph extends RX.Component <Props, State> {
     const x = scaleLinear().domain([0, maxTotalSupply]).range([0, this.state.width])
     const y = scaleLinear().domain([price(maxTotalSupply), 0]).range([0, this.props.height])
 
-    const xTicks: any[] = x.ticks(5)
+    const xTicks: any[] = x.ticks(4)
     xTicks[0] = ''
-    const yTicks = y.ticks(3)
+    xTicks[xTicks.length - 1] = `${this.props.supplyCode} Supply`
+    const yTicks: any[] = y.ticks(4)
+    yTicks[0] = `${this.props.priceCode} Price`
 
     const axisX = scaleLinear().domain([0, 1]).range([0, this.state.width])
     const axisY = scaleLinear().domain([1, 0]).range([0, this.props.height])
@@ -92,7 +96,7 @@ class BondingCurveGraph extends RX.Component <Props, State> {
         <RX.View
           style={{flexDirection: 'row'}}
           >
-          <RX.View style={{justifyContent: 'space-between'}}>
+          <RX.View style={{position: 'absolute', justifyContent: 'space-between', top: 0, bottom: 0}}>
             {yTicks.map((tick: number, index) => <RX.Text key={index} style={Theme.Styles.graph.yAxisLabel}>{tick}</RX.Text>)}
           </RX.View>
           <RX.View
@@ -148,12 +152,14 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
 BondingCurveGraph.defaultProps = {
   width: 500,
-  height: 200,
+  height: 300,
   stakedColor: '#424242',
   isMint: false,
   exponent: 2,
   totalSupply: 1,
   numTokens: 0,
+  supplyCode: '',
+  priceCode: '',
 }
 
 export default BondingCurveGraph

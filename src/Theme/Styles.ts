@@ -436,6 +436,7 @@ const Styles = {
   },
   textInput: {
     wrapper: RX.Styles.createViewStyle({
+      flex: 1,
       marginLeft: Metrics.baseMargin,
       marginRight: Metrics.baseMargin,
       marginTop: Metrics.baseMargin,
@@ -446,6 +447,7 @@ const Styles = {
       marginBottom: Metrics.smallMargin,
     }),
     input: RX.Styles.createTextInputStyle({
+      flex: 1,
       backgroundColor: Colors.backgroundSelected,
       height: Metrics.buttonHeight,
       paddingLeft: Metrics.baseMargin,
@@ -454,6 +456,10 @@ const Styles = {
       borderRadius: Metrics.borderRadius,
       color: Colors.light,
       fontSize: Fonts.size.medium,
+    }),
+    inputReadonly: RX.Styles.createTextInputStyle({
+      backgroundColor: Colors.transparent,
+      color: Colors.info,
     }),
     multiline: RX.Styles.createTextInputStyle({
       height: Metrics.buttonHeight * 2,
@@ -567,8 +573,8 @@ const Styles = {
     yAxisLabel: RX.Styles.createTextStyle({
       color: Colors.info,
       fontSize: Fonts.size.micro,
-      textAlign: 'right',
-      marginRight: Metrics.smallMargin,
+      textAlign: 'left',
+      marginLeft: Metrics.smallMargin,
     }),
     xAxisLabel: RX.Styles.createTextStyle({
       color: Colors.info,

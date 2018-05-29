@@ -25,7 +25,11 @@ export default class TextInput extends RX.Component<Props, null> {
       <RX.View style={Theme.Styles.textInput.wrapper}>
         <RX.Text style={Theme.Styles.textInput.label}>{this.props.label}</RX.Text>
         <RX.TextInput
-          style={[Theme.Styles.textInput.input, this.props.multiline && Theme.Styles.textInput.multiline]}
+          style={[
+            Theme.Styles.textInput.input,
+            this.props.multiline && Theme.Styles.textInput.multiline,
+            this.props.editable === false && Theme.Styles.textInput.inputReadonly,
+          ]}
           defaultValue={this.props.defaultValue}
           multiline={this.props.multiline}
           placeholderTextColor={Theme.Colors.info}

@@ -89,18 +89,18 @@ class TokenActionsScreen extends RX.Component<Props, State> {
           />}
           {this.props.reserveTokenBalance !== undefined && <RX.View>
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TextInput
-              label={`Pool balance`}
-              value={`${utils.number.numberToString(
-                this.props.balance.token.poolBalance.toString(),
-                this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
-              editable={false}
-              />
-            <TextInput
-              label={`Total supply`}
-              value={(this.props.balance.token.totalSupply || 0).toString()}
-              editable={false}
-              />
+              <TextInput
+                label={`Staked`}
+                value={`${utils.number.numberToString(
+                  this.props.balance.token.poolBalance.toString(),
+                  this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
+                editable={false}
+                />
+              <TextInput
+                label={`Total supply`}
+                value={(this.props.balance.token.totalSupply || 0).toString()}
+                editable={false}
+                />
             </RX.View>
 
             <SegmentedControl
@@ -109,24 +109,29 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
             <Graphs.BondingCurveGraph
+              priceCode={this.props.reserveTokenBalance.token.code}
+              supplyCode={this.props.balance.token.code}
               isMint={this.state.isMint}
               exponent={this.props.balance.token.exponent}
               totalSupply={this.props.balance.token.totalSupply}
               numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
               />
-            <TextInput
-              label={`Amount`}
-              value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
-              onChangeText={this.setAmount}
-              />
-            <TextInput
-              editable={false}
-              label={this.state.isMint ? 'Price' : 'Reward'}
-              value={`${utils.number.numberToString(
-                this.state.isMint ? this.props.mintTransaction.price : this.props.burnTransaction.reward,
-                this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
-              onChangeText={this.setAmount}
-              />
+            <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TextInput
+                label={`Amount`}
+                value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
+                onChangeText={this.setAmount}
+                keyboardType='numeric'
+                />
+              <TextInput
+                editable={false}
+                label={this.state.isMint ? 'Stake' : 'Reward'}
+                value={`${utils.number.numberToString(
+                  this.state.isMint ? this.props.mintTransaction.price : this.props.burnTransaction.reward,
+                  this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
+                onChangeText={this.setAmount}
+                />
+              </RX.View>
             {(this.props.isProcessingMintPrice || this.props.isProcessingBurnReward) && <RX.ActivityIndicator
               color={Theme.Colors.light}
               size='small'
