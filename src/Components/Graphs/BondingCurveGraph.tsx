@@ -43,7 +43,7 @@ class BondingCurveGraph extends RX.Component <Props, State> {
     let maxTotalSupply = (totalSupply + numTokens) > totalSupply * 2 ? (totalSupply + numTokens) * 1.3 : (totalSupply || 10) * 2
     maxTotalSupply = maxTotalSupply < 10 ? 10 : maxTotalSupply
     const numberOfDataPoints = 200
-    const exponent = 2//this.props.exponent
+    const exponent = this.props.exponent
 
     let data = range(0, maxTotalSupply, maxTotalSupply / numberOfDataPoints / 2)
     data.push(maxTotalSupply)
