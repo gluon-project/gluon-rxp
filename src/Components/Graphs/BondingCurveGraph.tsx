@@ -32,11 +32,11 @@ class BondingCurveGraph extends RX.Component <Props, State> {
 
   render() {
 
-    const totalSupply = this.props.totalSupply
-    const maxTotalSupply = (totalSupply || 10) * 2
-    const numberOfDataPoints = 200
-    const exponent = this.props.exponent
     const numTokens = this.props.numTokens
+    const totalSupply = this.props.totalSupply
+    const maxTotalSupply = (totalSupply + numTokens || 10) * 2
+    const numberOfDataPoints = 10
+    const exponent = this.props.exponent
 
     let data = range(0, maxTotalSupply, maxTotalSupply / numberOfDataPoints)
     data.push(maxTotalSupply)
