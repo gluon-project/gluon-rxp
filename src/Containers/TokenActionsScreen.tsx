@@ -1,6 +1,12 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ScrollView, ListItem, SegmentedControl, TextInput } from '../Components'
+import {
+  CallToAction,
+  ScrollView,
+  ListItem,
+  SegmentedControl,
+  TextInput,
+  Graphs } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Theme from '../Theme'
@@ -82,11 +88,12 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             type={ListItem.type.Secondary}
           />}
           {this.props.reserveTokenBalance !== undefined && <RX.View>
-              <SegmentedControl
+            <SegmentedControl
               titles={['Buy', 'Sell']}
               selectedIndex={this.state.isMint ? 0 : 1}
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
+            <Graphs.BondingCurveGraph />
             <TextInput
               label={`Amount`}
               value={this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens}
