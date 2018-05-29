@@ -110,7 +110,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               />
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput
-                label={`Staked`}
+                label={`Reserve pool`}
                 value={`${utils.number.numberToString(
                   this.props.balance.token.poolBalance.toString(),
                   this.props.reserveTokenBalance.token.decimals)} ${this.props.reserveTokenBalance.token.code}`}
@@ -132,7 +132,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               <TextInput
                 editable={false}
                 brand
-                label={this.state.isMint ? 'Stake' : 'Reward'}
+                label={this.state.isMint ? 'Price' : 'Reward'}
                 value={(this.props.isProcessingMintPrice || this.props.isProcessingBurnReward) ? 'Loading...' :
                 `${utils.number.numberToString(
                   this.state.isMint ? this.props.mintTransaction.price : this.props.burnTransaction.reward,

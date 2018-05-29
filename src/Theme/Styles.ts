@@ -401,7 +401,7 @@ const Styles = {
       borderColor: Colors.brand,
       borderWidth: Metrics.borderWidth,
       overflow: 'hidden',
-      height: Metrics.buttonHeight,
+      height: Metrics.buttonHeight - 10,
       margin: Metrics.baseMargin,
     }),
     button: RX.Styles.createButtonStyle({
@@ -410,16 +410,16 @@ const Styles = {
     }),
     label: RX.Styles.createTextStyle({
       color: Colors.brand,
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.medium - 4,
       alignSelf: 'center',
     }),
     selectedButton: RX.Styles.createButtonStyle({
-      backgroundColor: Colors.brand,
+      backgroundColor: Colors.brandBackGround,
       flex: 1,
     }),
     selectedLabel: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.medium - 4,
       alignSelf: 'center',
     }),
   },
