@@ -88,6 +88,21 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             type={ListItem.type.Secondary}
           />}
           {this.props.reserveTokenBalance !== undefined && <RX.View>
+
+            <SegmentedControl
+              titles={['Buy', 'Sell']}
+              selectedIndex={this.state.isMint ? 0 : 1}
+              handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
+              />
+            <Graphs.BondingCurveGraph
+              height={this.props.uiTraits.horizontalIsCompact ? 150 : 300}
+              priceCode={this.props.reserveTokenBalance.token.code}
+              supplyCode={this.props.balance.token.code}
+              isMint={this.state.isMint}
+              exponent={this.props.balance.token.exponent}
+              totalSupply={this.props.balance.token.totalSupply}
+              numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
+              />
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput
                 label={`Staked`}
@@ -102,20 +117,6 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 editable={false}
                 />
             </RX.View>
-
-            <SegmentedControl
-              titles={['Buy', 'Sell']}
-              selectedIndex={this.state.isMint ? 0 : 1}
-              handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
-              />
-            <Graphs.BondingCurveGraph
-              priceCode={this.props.reserveTokenBalance.token.code}
-              supplyCode={this.props.balance.token.code}
-              isMint={this.state.isMint}
-              exponent={this.props.balance.token.exponent}
-              totalSupply={this.props.balance.token.totalSupply}
-              numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
-              />
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput
                 label={`Amount`}

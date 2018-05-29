@@ -459,7 +459,9 @@ const Styles = {
     }),
     inputReadonly: RX.Styles.createTextInputStyle({
       backgroundColor: Colors.transparent,
-      color: Colors.info,
+      // color: Colors.info,
+      paddingLeft: 0,
+      borderWidth: 0,
     }),
     multiline: RX.Styles.createTextInputStyle({
       height: Metrics.buttonHeight * 2,
