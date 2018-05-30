@@ -42,11 +42,11 @@ declare interface Token {
   code?: string,
   logo?: string,
   initialAmount?: string,
-  totalSupply?: string,
+  totalSupply?: number,
   decimals?: number,
   type?: number,
   exponent?: number,
-  poolBalance?: string,
+  poolBalance?: number,
   reserveToken?: string,
 }
 

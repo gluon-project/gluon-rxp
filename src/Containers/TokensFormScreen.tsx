@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl } from '../Components'
+import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl, Graphs } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -19,18 +19,19 @@ interface Props extends RX.CommonProps {
   getTokenInfo?: (address: string) => void
   isProcessing?: boolean
   formValues?: Token
+  reserveToken?: Token,
+  uiTraits?: UITraits
 }
 
 interface State {
   name?: string
   address?: string
   decimals?: number,
-  exponent?: number,
+  exponent?: string,
   code?: string
   isNew?: boolean,
   type?: Enums.TokenType,
   network?: string,
-  reserveToken?: string,
 }
 
 class TokensFormScreen extends RX.Component<Props, State> {
@@ -40,12 +41,11 @@ class TokensFormScreen extends RX.Component<Props, State> {
       name: '',
       address: '',
       decimals: 0,
-      exponent: 2,
+      exponent: '2',
       code: '',
       isNew: true,
       type: Enums.TokenType.Erc223,
       network: null,
-      reserveToken: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
   }
@@ -64,8 +64,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         type: this.state.type,
-        reserveToken: this.state.reserveToken,
-        exponent: this.state.exponent,
+        reserveToken: this.props.reserveToken.address,
+        exponent: parseFloat(this.state.exponent),
       })
       this.props.setToken(this.state.address)
       this.props.navigateBack()
@@ -76,7 +76,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         decimals: this.state.decimals,
-        exponent: this.state.exponent,
+        exponent: parseFloat(this.state.exponent),
         reserveToken: Config.tokens.gluonAddress,
       })
     }
@@ -87,14 +87,20 @@ class TokensFormScreen extends RX.Component<Props, State> {
     }
 
     if (!this.props.formValues && newProps.formValues) {
-      this.setState(newProps.formValues)
+      const formValues = {
+        ...newProps.formValues,
+        exponent: newProps.formValues.exponent,
+      } as any
+      this.setState({
+        ...formValues,
+      })
     }
   }
 
   private isValid = () => {
     if (this.state.isNew) {
       return (this.state.network === '4' || this.state.network === '1')
-        && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && this.state.exponent > 0
+        && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && parseFloat(this.state.exponent) > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
     }
@@ -108,6 +114,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
+    console.log(this.state.exponent)
+    console.log(this.state.code)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -121,32 +129,54 @@ class TokensFormScreen extends RX.Component<Props, State> {
             value={this.state.address}
             onChangeText={this.handleAddressChange}
             />}
-          <TextInput
-            label='Name (BecKoin)'
-            value={this.state.name}
-            onChangeText={(value) => this.setState({ name: value })}
-            />
-          <TextInput
-            label='Symbol (BCK)'
-            value={this.state.code}
-            onChangeText={(value) => this.setState({ code: value })}
-            />
+          <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TextInput
+              label='Name (BecKoin)'
+              value={this.state.name}
+              onChangeText={(value) => this.setState({ name: value })}
+              />
+            <TextInput
+              label='Symbol (BCK)'
+              value={this.state.code}
+              onChangeText={(value) => this.setState({ code: value })}
+              />
+          </RX.View>
+
+          {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
+              priceDecimals={this.props.reserveToken.decimals}
+              xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
+              yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
+              height={this.props.uiTraits.horizontalIsCompact ? 120 : 300}
+              priceCode={this.props.reserveToken.code}
+              supplyCode={this.state.code}
+              isMint={true}
+              exponent={parseFloat(this.state.exponent)}
+              totalSupply={0}
+              numTokens={0}
+              /></RX.View>}
+
           {this.state.isNew && <TextInput
             label='Exponent'
             keyboardType='numeric'
             value={this.state.exponent.toString()}
-            onChangeText={(value) => this.setState({ exponent: parseInt(value, 10) || 0 })}
+            onChangeText={(value) => this.setState({ exponent: value.replace(',', '.') })}
             />}
-          <CallToAction
-            type={CallToAction.type.Main}
-            title={this.state.isNew ? 'Create token' : 'Add'}
-            onPress={this.handleSave}
-            disabled={!this.isValid() || this.props.isProcessing}
-            inProgress={this.props.isProcessing}
-          />
-          {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
-            Token creation currently supported only on Mainnet or Rinkeby networks
-          </RX.Text>}
+
+          <RX.View
+            style={{
+              marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
+            }}>
+            <CallToAction
+              type={CallToAction.type.Main}
+              title={this.state.isNew ? 'Create token' : 'Add'}
+              onPress={this.handleSave}
+              disabled={!this.isValid() || this.props.isProcessing}
+              inProgress={this.props.isProcessing}
+            />
+            {this.state.isNew && !includes(['4', '1'], this.state.network) && <RX.Text style={Theme.Styles.about.warning}>
+              Token creation currently supported only on Mainnet or Rinkeby networks
+            </RX.Text>}
+          </RX.View>
         </ScrollView>
       </RX.View>
     )
@@ -157,6 +187,8 @@ const mapStateToProps = (state: CombinedState): Props => {
   return {
     isProcessing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.CreateNewToken),
     formValues: Selectors.Tokens.getNew(state),
+    reserveToken: Selectors.Tokens.getTokenByAddress(state, Config.tokens.gluonAddress),
+    uiTraits: state.app.uiTraits,
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
