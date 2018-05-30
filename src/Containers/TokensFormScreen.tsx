@@ -17,9 +17,12 @@ interface Props extends RX.CommonProps {
   createNewToken?: (token: Token) => void
   setToken?: (token: string) => void
   getTokenInfo?: (address: string) => void
+  getAvailableTokens?: () => void
   isProcessing?: boolean
+  isGettingAvailableTokens?: boolean
   formValues?: Token
   reserveToken?: Token,
+  availableTokens?: Token[]
   uiTraits?: UITraits
 }
 
@@ -48,6 +51,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
       network: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
+    this.handleTypeChange = this.handleTypeChange.bind(this)
   }
 
   componentDidMount() {
@@ -113,16 +117,21 @@ class TokensFormScreen extends RX.Component<Props, State> {
     }
   }
 
+  handleTypeChange(isNew: boolean) {
+    this.setState({isNew})
+    if (!isNew) {
+      this.props.getAvailableTokens()
+    }
+  }
+
   render() {
-    console.log(this.state.exponent)
-    console.log(this.state.code)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <SegmentedControl
             titles={['Create new', 'Add existing']}
             selectedIndex={this.state.isNew ? 0 : 1}
-            handleSelection={(index) => this.setState({isNew: index === 0 ? true : false})}
+            handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
             />
           {!this.state.isNew && <TextInput
             label='Address'
@@ -162,6 +171,17 @@ class TokensFormScreen extends RX.Component<Props, State> {
             onChangeText={(value) => this.setState({ exponent: value.replace(',', '.') })}
             />}
 
+          {this.props.isGettingAvailableTokens && <RX.Text>Loading...</RX.Text>}
+          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
+            {this.props.availableTokens.map((token, index) => <ListItem
+              key={index}
+              title={`${token.name}`}
+                subTitle={`Supply ${token.totalSupply}`}
+                type={ListItem.type.Default}
+                onPress={() => console.log(token)}
+            />)}
+          </RX.View>}
+
           <RX.View
             style={{
               marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
@@ -186,8 +206,10 @@ class TokensFormScreen extends RX.Component<Props, State> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     isProcessing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.CreateNewToken),
+    isGettingAvailableTokens: Selectors.Process.isRunningProcess(state, Enums.ProcessType.GetAvailableTokens),
     formValues: Selectors.Tokens.getNew(state),
     reserveToken: Selectors.Tokens.getTokenByAddress(state, Config.tokens.gluonAddress),
+    availableTokens: Selectors.Tokens.getAvailable(state),
     uiTraits: state.app.uiTraits,
   }
 }
@@ -198,6 +220,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     addToken: (token: Token) => dispatch(Actions.Tokens.addToken(token)),
     createNewToken: (token: Token) => dispatch(Actions.Tokens.createNewToken(token)),
     getTokenInfo: (address: string) => dispatch(Actions.Tokens.getTokenInfo(address)),
+    getAvailableTokens: () => dispatch(Actions.Tokens.getAvailableTokens()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TokensFormScreen)

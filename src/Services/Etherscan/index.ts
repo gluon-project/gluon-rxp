@@ -12,10 +12,12 @@ import erc223abi from '../Web3/erc223abi'
 import erc20abi from '../Web3/erc20abi'
 import gluonTokenAbi from '../Web3/gluon-token-abi'
 import communityTokenAbi from '../Web3/community-token-abi'
+import communityTokenFactoryAbi from '../Web3/community-token-factory-abi'
 abiDecoder.addABI(erc20abi)
 abiDecoder.addABI(erc223abi)
 abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
+abiDecoder.addABI(communityTokenFactoryAbi)
 
 const toIPFSHash = (str: string) => {
   // remove leading 0x
@@ -98,6 +100,26 @@ address=${token.address}&apikey=${Config.etherscan.apiKey}`,
   })
 }
 
+const fetchAvailableTokens = () => {
+  const endPoint = Config.etherscan.endPoint.rinkeby
+  return fetch(
+    `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
+address=${Config.tokens.communityTokenFactoryAddress}&apikey=${Config.etherscan.apiKey}`,
+  )
+  .then((response: any) => response.json())
+  .then((responseJson: any) => {
+    return responseJson.result.map((ethTx: any) => {
+      const decodedLogs = abiDecoder.decodeLogs([ethTx])[0]
+      const event: EthereumLogEvent[] = decodedLogs.events
+      return _.find(event, {'name': 'addr'}).value
+    })
+  })
+  .catch((error: any) => {
+    console.error(error)
+  })
+}
+
 export default {
   fetchTransactions,
+  fetchAvailableTokens,
 }

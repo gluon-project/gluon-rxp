@@ -9,6 +9,7 @@ export const getMintTransaction = (state: CombinedState) => state.tokens.mintTra
 export const getBurnTransaction = (state: CombinedState) => state.tokens.burnTransaction
 export const getCurrentToken = (state: CombinedState) => state.tokens.current
 export const getList = (state: CombinedState) => state.tokens.list
+export const getAvailable = (state: CombinedState) => state.tokens.available
 export const getListForFeed = (state: CombinedState) => _.filter(
   state.tokens.list,
   (item: Token) => item.type !== Enums.TokenType.ETH,

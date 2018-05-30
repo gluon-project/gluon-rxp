@@ -28,4 +28,5 @@ export default function* root() {
   yield fork(Web3Saga.watchSetBurnNumTokens)
   yield fork(Web3Saga.watchMintTokens)
   yield fork(Web3Saga.watchBurnTokens)
+  yield fork(Web3Saga.watchGetAvailableTokens)
 }

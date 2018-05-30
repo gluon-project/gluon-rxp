@@ -12,6 +12,7 @@ export interface TokensState {
   burnTransaction: BurnTransaction,
   new: Token,
   list: Token[],
+  available: Token[],
 }
 
 const emptyMintTransaction: MintTransaction = {
@@ -30,6 +31,7 @@ const initialState: TokensState = {
   burnTransaction: emptyBurnTransaction,
   new: null,
   list: Config.tokens.defaultList,
+  available: [],
 }
 
 export const reducer = createReducer({}, initialState)
@@ -107,9 +109,18 @@ reducer.on(setBurnReward, (state: TokensState, payload?: string) => {
   }
 })
 
+export const setAvailableTokens = createAction('Set available tokens')
+reducer.on(setAvailableTokens, (state: TokensState, payload?: Token[]) => {
+  return {
+    ...state,
+    available: payload,
+  }
+})
+
 export const getTokenInfo = createAction('Get Token info')
 export const createNewToken = createAction('Create new token')
 export const mintTokens = createAction('Mint new tokens')
 export const burnTokens = createAction('Burn tokens')
 export const getPriceToMint = createAction('Get price to mint')
 export const getRewardForBurn = createAction('Get reward for burn')
+export const getAvailableTokens = createAction('Get available tokens')
