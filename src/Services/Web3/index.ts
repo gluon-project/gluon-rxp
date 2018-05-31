@@ -184,6 +184,11 @@ const rewardForBurn = (token: Token, amount: string): Promise<string> => {
   }
 }
 
+const getTokenListInfo = (address: string[]): Promise<Token[]> => {
+  let promises = address.map(item => getTokenInfo(item) as Promise<Token>)
+  return Promise.all(promises)
+}
+
 const getTokenInfo = (address: string, networkId?: string) => {
   let promises: Promise<any>[] = []
 
@@ -522,5 +527,6 @@ export default {
   getAccount,
   getAccounts,
   getTokenInfo,
+  getTokenListInfo,
   createNewToken,
 }

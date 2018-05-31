@@ -8,7 +8,8 @@ import * as FeedSelectors from './FeedSelectors'
 export const getMintTransaction = (state: CombinedState) => state.tokens.mintTransaction
 export const getBurnTransaction = (state: CombinedState) => state.tokens.burnTransaction
 export const getCurrentToken = (state: CombinedState) => state.tokens.current
-export const getList = (state: CombinedState) => state.tokens.list
+export const getList = (state: CombinedState): Token[] => state.tokens.list
+export const getAvailable = (state: CombinedState): Token[] => state.tokens.available
 export const getListForFeed = (state: CombinedState) => _.filter(
   state.tokens.list,
   (item: Token) => item.type !== Enums.TokenType.ETH,
@@ -26,5 +27,12 @@ export const getListForDownload = createSelector(
     } else {
       return _.filter(list, (item: Token) => item.address === selectedToken)
     }
+  },
+)
+
+export const getAvailableNotUsed = createSelector(
+  [getList, getAvailable],
+  (list: Token[], available: Token[]) => {
+    return _.differenceBy(available, list, 'address')
   },
 )

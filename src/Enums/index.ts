@@ -18,6 +18,7 @@ export enum ProcessType {
   GetRewardForBurn,
   MintTokens,
   BurnTokens,
+  GetAvailableTokens,
 }
 
 export enum VisualType {

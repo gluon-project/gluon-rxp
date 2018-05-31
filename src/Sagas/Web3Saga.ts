@@ -238,3 +238,18 @@ export function* watchBurnTokens(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.BurnTokens}))
   }
 }
+
+export function* watchGetAvailableTokens(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Tokens.getAvailableTokens)
+    yield put(Actions.Process.start({type: Enums.ProcessType.GetAvailableTokens}))
+    try {
+      const tokenAddresses: string[] = yield call(Etherscan.fetchAvailableTokens)
+      const tokens = yield call(Web3.getTokenListInfo, tokenAddresses)
+      yield put(Actions.Tokens.setAvailableTokens(tokens))
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.GetAvailableTokens}))
+  }
+}
