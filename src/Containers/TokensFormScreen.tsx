@@ -144,7 +144,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               account={token}
               title={`${token.name}`}
               details={`${token.code}`}
-              subTitle={`Total supply ${token.totalSupply}, Reserve pool: ${token.poolBalance}`}
+              subTitle={`Supply ${token.totalSupply}, pool: ${token.poolBalance}`}
               type={ListItem.type.Secondary}
               onPress={() => this.addExisting(token)}
             />)}
