@@ -60,9 +60,15 @@ class TokensFormScreen extends RX.Component<Props, State> {
     })
   }
 
+  private addExisting = (token: Token) => {
+    this.props.addToken(token)
+    this.props.setToken(this.state.address)
+    this.props.navigateBack()
+  }
+
   private handleSave = () => {
     if (!this.state.isNew) {
-      this.props.addToken({
+      this.addExisting({
         name: this.state.name,
         code: this.state.code,
         address: this.state.address,
@@ -71,8 +77,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
         reserveToken: this.props.reserveToken.address,
         exponent: parseFloat(this.state.exponent),
       })
-      this.props.setToken(this.state.address)
-      this.props.navigateBack()
     } else {
       this.props.createNewToken({
         name: this.state.name,
@@ -133,6 +137,19 @@ class TokensFormScreen extends RX.Component<Props, State> {
             selectedIndex={this.state.isNew ? 0 : 1}
             handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
             />
+          {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>}
+          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
+            {this.props.availableTokens.map((token, index) => <ListItem
+              key={index}
+              account={token}
+              title={`${token.name}`}
+              details={`${token.code}`}
+              subTitle={`Total supply ${token.totalSupply}, Reserve pool: ${token.poolBalance}`}
+              type={ListItem.type.Secondary}
+              onPress={() => this.addExisting(token)}
+            />)}
+          </RX.View>}
+
           {!this.state.isNew && <TextInput
             label='Address'
             value={this.state.address}
@@ -171,17 +188,6 @@ class TokensFormScreen extends RX.Component<Props, State> {
             onChangeText={(value) => this.setState({ exponent: value.replace(',', '.') })}
             />}
 
-          {this.props.isGettingAvailableTokens && <RX.Text>Loading...</RX.Text>}
-          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
-            {this.props.availableTokens.map((token, index) => <ListItem
-              key={index}
-              title={`${token.name}`}
-                subTitle={`Supply ${token.totalSupply}`}
-                type={ListItem.type.Default}
-                onPress={() => console.log(token)}
-            />)}
-          </RX.View>}
-
           <RX.View
             style={{
               marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
@@ -209,7 +215,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     isGettingAvailableTokens: Selectors.Process.isRunningProcess(state, Enums.ProcessType.GetAvailableTokens),
     formValues: Selectors.Tokens.getNew(state),
     reserveToken: Selectors.Tokens.getTokenByAddress(state, Config.tokens.gluonAddress),
-    availableTokens: Selectors.Tokens.getAvailable(state),
+    availableTokens: Selectors.Tokens.getAvailableNotUsed(state),
     uiTraits: state.app.uiTraits,
   }
 }
