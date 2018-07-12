@@ -590,6 +590,26 @@ const Styles = {
       marginTop: Metrics.smallMargin,
     }),
   },
+  chat: {
+    messageBubble: RX.Styles.createViewStyle({
+      margin: Metrics.baseMargin,
+      flex: 1,
+      backgroundColor: Colors.backgroundSelected,
+      borderRadius: Metrics.borderRadius,
+      marginTop: Metrics.smallMargin,
+      padding: Metrics.mediumMargin,
+      flexDirection: 'row',
+    }),
+    messageSender: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+      marginRight: Metrics.baseMargin,
+    }),
+    messageBody: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+    }),
+  },
 }
 
 export default Styles

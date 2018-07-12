@@ -11,6 +11,7 @@ import ListItem from './ListItem'
 import ModalMessage from './ModalMessage'
 import NavBar from './NavBar'
 import RequestDetails from './RequestDetails'
+import RoomsDetails from './RoomsDetails'
 import ScrollView from './ScrollView'
 import SegmentedControl from './SegmentedControl'
 import SendDetails from './SendDetails'
@@ -35,6 +36,7 @@ export {
   ModalMessage,
   NavBar,
   RequestDetails,
+  RoomsDetails,
   SegmentedControl,
   SendDetails,
   ScrollView,

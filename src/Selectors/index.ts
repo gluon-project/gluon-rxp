@@ -2,6 +2,7 @@ import * as App from './AppSelectors'
 import * as Attachment from './AttachmentSelectors'
 import * as Contacts from './ContactsSelectors'
 import * as Feed from './FeedSelectors'
+import * as Matrix from './MatrixSelectors'
 import * as Process from './ProcessSelectors'
 import * as Settings from './SettingsSelectors'
 import * as Tokens from './TokensSelectors'
@@ -13,6 +14,7 @@ export {
   Attachment,
   Contacts,
   Feed,
+  Matrix,
   Process,
   Settings,
   Tokens,

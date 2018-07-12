@@ -151,3 +151,34 @@ interface TokenTransactionsMap {
 declare interface ImagePickerFile {
   dataUrl: any
 }
+
+// Matrix
+
+declare interface MatrixRoomState {
+}
+declare interface MatrixMessage {
+  type: string,
+  content: {
+    body: string,
+    msgtype: string,
+  },
+  eventId: string,
+  originServerTs: number,
+  sender: string,
+  roomId: string,
+}
+
+declare interface MatrixMember {
+  mxid: string,
+  displayname: string,
+  membership: 'invite' | 'join',
+  avatarUrl: string,
+}
+declare interface MatrixRoom {
+  id: string,
+  name: string,
+  members: MatrixMember[],
+  timeline: MatrixMessage[],
+  state: MatrixRoomState,
+  receipts: any[],
+}
