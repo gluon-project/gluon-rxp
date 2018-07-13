@@ -42,11 +42,13 @@ export default class MatrixLogin extends RX.Component<Props, State> {
           value={this.state.password}
           onChangeText={(password) => this.setState({password})}
           />
-        <CallToAction
-          title={'Login'}
-          onPress={() => this.props.login(this.state.username, this.state.password, this.state.baseUrl)}
-          inProgress={this.props.isLoggingIn}
-          />
+        <RX.View style={Theme.Styles.scrollContainer}>
+          <CallToAction
+            title={'Login'}
+            onPress={() => this.props.login(this.state.username, this.state.password, this.state.baseUrl)}
+            inProgress={this.props.isLoggingIn}
+            />
+        </RX.View>
       </RX.View>
     )
   }

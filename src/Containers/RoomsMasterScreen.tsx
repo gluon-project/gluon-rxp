@@ -17,6 +17,9 @@ interface Props extends RX.CommonProps {
   selectedRoomId?: string
   rooms?: MatrixRoom[]
   handleSelectRoom?: (roomId: string) => void
+  matrixLogin?: (username: string, password: string, baseUrl: string) => void
+  isLoggingIn?: boolean
+  currentMatrixUser?: MatrixUser
 }
 
 class RoomsMasterScreen extends RX.Component<Props, null> {
@@ -29,6 +32,9 @@ class RoomsMasterScreen extends RX.Component<Props, null> {
         <NavBar title='Rooms' />
         <RX.ScrollView style={[Theme.Styles.scrollContainerNoMargins, Theme.Styles.masterViewContainer]}>
           <RoomsDetails
+            currentMatrixUser={this.props.currentMatrixUser}
+            matrixLogin={this.props.matrixLogin}
+            isLoggingIn={this.props.isLoggingIn}
             navigate={this.props.navigate}
             routeName={routeName}
             currentUser={this.props.currentUser}
@@ -49,10 +55,13 @@ const mapStateToProps = (state: CombinedState): Props => {
     rooms: Selectors.Matrix.getRooms(state),
     uiTraits: state.app.uiTraits,
     selectedRoomId: Selectors.Matrix.getSelectedRoomId(state),
+    isLoggingIn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLogin),
+    currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
+    matrixLogin: (username: string, password: string, baseUrl: string) => dispatch(Actions.Matrix.login({username, password, baseUrl})),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     handleSelectRoom: (roomId: string) => {

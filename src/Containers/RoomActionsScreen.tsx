@@ -18,10 +18,10 @@ import utils from '../Utils'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
+  isLoggingIn?: boolean
   matrixSendTextMessage?: (message: string) => void
   matrixSendMessage?: (content: any) => void
   navigateBack?: () => void
-  isLoggingIn?: boolean
   isSendingMessage?: boolean
   room?: MatrixRoom
   uiTraits?: UITraits
@@ -67,7 +67,6 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
-        {!this.props.currentMatrixUser && <MatrixLogin login={this.props.matrixLogin} isLoggingIn={this.props.isLoggingIn} />}
         <ScrollView>
           {this.props.room && this.props.room.timeline.map(event => <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
             <RX.Text style={Theme.Styles.chat.messageSender}>{event.sender}</RX.Text>

@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, AccountIcon } from '../Components'
+import { ListItem, AccountIcon, MatrixLogin } from '../Components'
 
 interface Props extends RX.CommonProps {
   startLogin?: () => void
@@ -9,8 +9,11 @@ interface Props extends RX.CommonProps {
   currentUser?: User
   selectedRoomId?: string
   rooms?: MatrixRoom[]
+  currentMatrixUser?: MatrixUser
   handleSelectRoom: (roomId: String) => void
   uiTraits?: UITraits
+  matrixLogin?: (username: string, password: string, baseUrl: string) => void
+  isLoggingIn?: boolean
 }
 
 export default class RoomsDetails extends RX.Component<Props, null> {
@@ -27,6 +30,7 @@ export default class RoomsDetails extends RX.Component<Props, null> {
             {this.props.currentUser.name}
           </RX.Text>
         </RX.View>}
+        {!this.props.currentMatrixUser && <MatrixLogin login={this.props.matrixLogin} isLoggingIn={this.props.isLoggingIn} />}
 
         {this.props.rooms.length > 0 && <RX.View>
             {/* <ListItem
