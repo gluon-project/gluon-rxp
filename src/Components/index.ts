@@ -8,6 +8,7 @@ import Icons from './Icons'
 import ImagePicker from './ImagePicker'
 import KeyPad from './KeyPad'
 import ListItem from './ListItem'
+import MatrixLogin from './MatrixLogin'
 import ModalMessage from './ModalMessage'
 import NavBar from './NavBar'
 import RequestDetails from './RequestDetails'
@@ -33,6 +34,7 @@ export {
   ImagePicker,
   KeyPad,
   ListItem,
+  MatrixLogin,
   ModalMessage,
   NavBar,
   RequestDetails,

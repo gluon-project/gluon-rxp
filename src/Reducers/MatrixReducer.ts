@@ -2,106 +2,33 @@ import {
   createAction,
   createReducer,
 } from 'redux-act'
-import { remove } from 'lodash'
+import { remove, findIndex } from 'lodash'
 import { resetToInitialState } from './AppReducer'
 import Config from '../Config'
 
 export interface MatrixState {
+  currentUser: MatrixUser,
   selectedRoomId: string,
   rooms: MatrixRoom[],
 }
 
 const initialState: MatrixState = {
+  currentUser: null,
   selectedRoomId: null,
-  rooms: [
-    {
-      id: '!APCMYIiDTQGkcIeuVR:matrix.org',
-      name: 'Skaniukai',
-      members: [
-        {
-          displayname: 'Simonas',
-          mxid: '@simonas:matrix.org',
-          avatarUrl: 'mxc://matrix.org/nvzxrWtNBPInTssDBbZNIJqF',
-          membership: 'join',
-        },
-      ],
-      state: null,
-      receipts: [],
-      timeline: [
-        {
-          type: 'm.room.message',
-          content: {
-            body: 'Hello',
-            msgtype: 'm.text',
-          },
-          eventId: '12345',
-          originServerTs: 1234564,
-          sender: '@simonas:matrix.org',
-          roomId: '!APCMYIiDTQGkcIeuVR:matrix.org',
-        },
-        {
-          type: 'm.room.message',
-          content: {
-            body: 'Whats up?',
-            msgtype: 'm.text',
-          },
-          eventId: '5345345',
-          originServerTs: 3432423,
-          sender: '@simonas:matrix.org',
-          roomId: '!APCMYIiDTQGkcIeuVR:matrix.org',
-        },
-      ],
-    },
-    {
-      id: '!APCMYIiDTQGkcIeuVR2:matrix.org',
-      name: 'EV Running Club',
-      members: [
-        {
-          displayname: 'Simonas',
-          mxid: '@simonas:matrix.org',
-          avatarUrl: 'mxc://matrix.org/nvzxrWtNBPInTssDBbZNIJqF',
-          membership: 'join',
-        },
-        {
-          displayname: 'Ziggy',
-          mxid: '@ziggy:matrix.org',
-          avatarUrl: 'mxc://matrix.org/nvzxrWtNBPInTssDBbZNIJqF3',
-          membership: 'join',
-        },
-      ],
-      state: null,
-      receipts: [],
-      timeline: [
-        {
-          type: 'm.room.message',
-          content: {
-            body: 'What are we running from?',
-            msgtype: 'm.text',
-          },
-          eventId: '123454',
-          originServerTs: 12345634,
-          sender: '@simonas:matrix.org',
-          roomId: '!APCMYIiDTQGkcIeuVR2:matrix.org',
-        },
-        {
-          type: 'm.room.message',
-          content: {
-            body: 'From our problems :)',
-            msgtype: 'm.text',
-          },
-          eventId: '53453453',
-          originServerTs: 3432423,
-          sender: '@ziggy:matrix.org',
-          roomId: '!APCMYIiDTQGkcIeuVR2:matrix.org',
-        },
-      ],
-    },
-  ],
+  rooms: [],
 }
 
 export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: MatrixState) => {
   return initialState
+})
+
+export const setRooms = createAction('Set rooms')
+reducer.on(setRooms, (state: MatrixState, payload?: MatrixRoom[]) => {
+  return {
+    ...state,
+    rooms: payload,
+  }
 })
 
 export const addRoom = createAction('Add room')
@@ -119,3 +46,26 @@ reducer.on(selectRoom, (state: MatrixState, payload?: string) => {
     selectedRoomId: payload,
   }
 })
+
+export const setCurrentUser = createAction('Set Current User')
+reducer.on(setCurrentUser, (state: MatrixState, payload?: MatrixUser) => {
+  return {
+    ...state,
+    currentUser: payload,
+  }
+})
+
+export const addTimelineEvent = createAction('Add timeline event')
+reducer.on(addTimelineEvent, (state: MatrixState, payload?: MatrixTimelineEvent) => {
+  const rooms = [...state.rooms]
+  const index = findIndex(rooms, {id: payload.roomId})
+  rooms[index].timeline.push(payload)
+  return {
+    ...state,
+    rooms: [ ...rooms ],
+  }
+})
+
+export const login = createAction('Matrix login')
+export const sendTextMessage = createAction('Send text message')
+export const sendMessage = createAction('Send message')

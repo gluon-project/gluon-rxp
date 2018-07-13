@@ -154,22 +154,26 @@ declare interface ImagePickerFile {
 
 // Matrix
 
+declare interface MatrixUser {
+  access_token: string
+  device_id: string
+  home_server: string
+  user_id: string
+}
+
 declare interface MatrixRoomState {
 }
-declare interface MatrixMessage {
+declare interface MatrixTimelineEvent {
   type: string,
-  content: {
-    body: string,
-    msgtype: string,
-  },
+  content: any,
   eventId: string,
-  originServerTs: number,
+  ts: number,
   sender: string,
   roomId: string,
 }
 
 declare interface MatrixMember {
-  mxid: string,
+  userId: string,
   displayname: string,
   membership: 'invite' | 'join',
   avatarUrl: string,
@@ -178,7 +182,7 @@ declare interface MatrixRoom {
   id: string,
   name: string,
   members: MatrixMember[],
-  timeline: MatrixMessage[],
+  timeline: MatrixTimelineEvent[],
   state: MatrixRoomState,
   receipts: any[],
 }

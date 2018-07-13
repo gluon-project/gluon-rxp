@@ -9,7 +9,7 @@ const topRoutes = _.map(moreStack, (value, key) => { return key })
 
 const initialAction = {
   type: 'Navigation/NAVIGATE',
-  routeName: 'Feed',
+  routeName: 'RoomsTab',
 }
 
 const wideInitialState = WideRouter.getStateForAction(initialAction)

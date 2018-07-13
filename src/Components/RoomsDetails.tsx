@@ -29,14 +29,14 @@ export default class RoomsDetails extends RX.Component<Props, null> {
         </RX.View>}
 
         {this.props.rooms.length > 0 && <RX.View>
-            <ListItem
+            {/* <ListItem
               key='new'
               isOff
               title={`New room`}
               subTitle={`Create or join existing`}
               type={ListItem.type.Default}
               selected={this.props.routeName === 'NewRoomForm'}
-            />
+            /> */}
             {this.props.rooms.map((room, key) => {
               return <ListItem
                 key={key}

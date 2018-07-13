@@ -96,10 +96,6 @@ const CompactRoomsMainScreen = {screen: Screens.CompactRoomsMainScreen, navigati
 const CompactWalletMainScreen = {screen: Screens.CompactWalletMainScreen, navigationOptions: {title: 'Wallet'}}
 
 export const WideNavigationConfiguration = {
-  FeedTab: {
-    masterScreen: Screens.FeedMasterScreen,
-    screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
-  },
   RoomsTab: {
     masterScreen: Screens.RoomsMasterScreen,
     screen: TabNavigator(
@@ -108,6 +104,10 @@ export const WideNavigationConfiguration = {
       },
       navigationOptions,
     ),
+  },
+  FeedTab: {
+    masterScreen: Screens.FeedMasterScreen,
+    screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -162,14 +162,14 @@ export const WideNavigationConfiguration = {
 export const moreStack = {  }
 
 export const CompactNavigationConfiguration = {
-  FeedTab: {
-    screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
-  },
   RoomsTab: {
     screen: StackNavigator(
       { CompactRoomsMainScreen, RoomActions },
       navigationOptions,
     ),
+  },
+  FeedTab: {
+    screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(

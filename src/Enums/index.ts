@@ -19,6 +19,8 @@ export enum ProcessType {
   MintTokens,
   BurnTokens,
   GetAvailableTokens,
+  MatrixLogin,
+  MatrixSendMessage,
 }
 
 export enum VisualType {
