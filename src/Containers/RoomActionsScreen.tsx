@@ -38,7 +38,7 @@ interface State {
 }
 
 const getMember = (userId: string, room: MatrixRoom): MatrixMember => {
-  return find(room.members, {userId})
+  return (room && room.members) ? find(room.members, {userId}) : { userId: '', avatarUrl: '', displayname: '', membership: 'join'}
 }
 
 class TokenActionsScreen extends RX.Component<Props, State> {
@@ -89,6 +89,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             </RX.View>)}
           </RX.View>
         </ScrollView>
+        {this.props.currentMatrixUser && this.props.room &&
         <RX.View style={[Theme.Styles.containerWrapper, {flex: 0, height: 100,  alignItems: 'flex-end'}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
             <RX.Image
@@ -108,7 +109,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               <Icons.SendIcon height={25} width={25} fill={Theme.Colors.brand} />
             </RX.Button>
           </RX.View>
-        </RX.View>
+        </RX.View>}
       </RX.View>
     )
   }
