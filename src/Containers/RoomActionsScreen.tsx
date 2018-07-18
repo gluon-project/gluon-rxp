@@ -7,6 +7,7 @@ import {
   SegmentedControl,
   AttachmentCard,
   MatrixLogin,
+  Icons,
   TextInput,
   Graphs } from '../Components'
 import { CombinedState } from '../Reducers'
@@ -40,6 +41,7 @@ const getMember = (userId: string, room: MatrixRoom): MatrixMember => {
 }
 
 class TokenActionsScreen extends RX.Component<Props, State> {
+  private scrollRef: any = null
 
   constructor(props: Props) {
     super(props)
@@ -85,22 +87,24 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             </RX.View>)}
           </RX.View>
         </ScrollView>
-        <RX.View style={[Theme.Styles.containerWrapper, {flex: 0}]}>
-          <RX.View style={[Theme.Styles.container, Theme.Styles.row]}>
+        <RX.View style={[Theme.Styles.containerWrapper, {flex: 0, height: 100,  alignItems: 'flex-end'}]}>
+          <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
+            <RX.Image
+              resizeMode={'cover'}
+              style={Theme.Styles.chat.messageSenderAvatarInput}
+              source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
             <TextInput
+              style={{backgroundColor: 'green'}}
               value={this.state.message}
               onKeyPress={this.handleKeyPress}
               onChangeText={(message) => this.setState({message})}
               />
-            <CallToAction
-              inProgress={this.props.isSendingMessage}
-              title='Send'
-              onPress={this.send}
-              />
-            <CallToAction
-              title='+'
-              onPress={this.sendTx}
-              />
+            <RX.Button onPress={this.send}>
+              <RX.Text style={Theme.Styles.chat.messageSendButton}>Send</RX.Text>
+            </RX.Button>
+            <RX.Button onPress={this.sendTx} style={{margin: 15}}>
+              <Icons.SendIcon height={25} width={25} fill={Theme.Colors.brand} />
+            </RX.Button>
           </RX.View>
         </RX.View>
       </RX.View>

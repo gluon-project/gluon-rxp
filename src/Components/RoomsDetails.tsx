@@ -21,13 +21,9 @@ export default class RoomsDetails extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
-        {this.props.currentUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
-          <AccountIcon
-            account={this.props.currentUser}
-            type={AccountIcon.type.Large}
-            />
+        {this.props.currentMatrixUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
           <RX.Text style={Theme.Styles.accountInfo.title}>
-            {this.props.currentUser.name}
+            {this.props.currentMatrixUser.user_id}
           </RX.Text>
         </RX.View>}
         {!this.props.currentMatrixUser && <MatrixLogin login={this.props.matrixLogin} isLoggingIn={this.props.isLoggingIn} />}

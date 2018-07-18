@@ -602,6 +602,7 @@ const Styles = {
       height: 32,
       backgroundColor: Colors.backgroundSelected,
       borderRadius: 16,
+      marginBottom: Metrics.smallMargin,
     }),
     messageSender: RX.Styles.createTextStyle({
       color: Colors.info,
@@ -610,6 +611,28 @@ const Styles = {
     }),
     messageBody: RX.Styles.createTextStyle({
       color: Colors.light,
+      fontSize: Fonts.size.small,
+      marginBottom: Metrics.baseMargin,
+    }),
+    inputRow: RX.Styles.createViewStyle({
+      // height: 60,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      paddingRight: Metrics.baseMargin,
+      paddingLeft: Metrics.baseMargin,
+      paddingBottom: Metrics.smallMargin,
+      borderTopWidth: 1,
+      borderColor: Colors.borderColor,
+    }),
+    messageSenderAvatarInput: RX.Styles.createViewStyle({
+      width: 32,
+      height: 32,
+      backgroundColor: Colors.backgroundSelected,
+      borderRadius: 16,
+      marginBottom: Metrics.smallMargin,
+    }),
+    messageSendButton: RX.Styles.createTextStyle({
+      color: Colors.brand,
       fontSize: Fonts.size.small,
       marginBottom: Metrics.baseMargin,
     }),

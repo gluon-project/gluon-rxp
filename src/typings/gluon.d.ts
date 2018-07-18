@@ -162,6 +162,7 @@ declare interface MatrixUser {
   device_id: string
   home_server: string
   user_id: string
+  avatarUrl: string
 }
 
 declare interface MatrixRoomState {

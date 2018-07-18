@@ -82,5 +82,6 @@ export const getRooms = (): MatrixRoom[] => {
       timeline,
     }
   })
+
   return data
 }

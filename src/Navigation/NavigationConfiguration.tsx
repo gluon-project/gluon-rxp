@@ -124,7 +124,7 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.SendMasterScreen,
     screen: TabNavigator(
       {
-        Sender: {screen: StackNavigator({ Sender }, navigationOptions)},
+        // Sender: {screen: StackNavigator({ Sender }, navigationOptions)},
         Tokens: {screen: StackNavigator({ Tokens, TokensForm }, navigationOptions)},
         Amount: {screen: StackNavigator({ Amount }, navigationOptions)},
         Receiver: {screen: StackNavigator({ Receiver, ReceiverForm }, navigationOptions)},

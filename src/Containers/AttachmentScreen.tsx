@@ -107,9 +107,9 @@ class AttachmentScreen extends RX.Component<Props, null> {
           </RX.View>}
 
           {this.props.isProcessing && <RX.ActivityIndicator color={Theme.Colors.light} type={'large'}/>}
-          <ImagePicker
+          {/* <ImagePicker
             onChange={this.handleImagePickerChange}
-            />
+            /> */}
           {/* <CallToAction
             inProgress={this.props.isSaving}
             type={CallToAction.type.Main}
