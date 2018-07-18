@@ -110,13 +110,13 @@ class AttachmentScreen extends RX.Component<Props, null> {
           <ImagePicker
             onChange={this.handleImagePickerChange}
             />
-          <CallToAction
+          {/* <CallToAction
             inProgress={this.props.isSaving}
             type={CallToAction.type.Main}
             title='Set Attachment'
             onPress={this.props.saveAttachment}
             // disabled={!this.props.attachment.message}
-            />
+            /> */}
         </ScrollView>
       </RX.View>
     )

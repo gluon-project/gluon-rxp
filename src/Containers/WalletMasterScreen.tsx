@@ -18,9 +18,16 @@ interface Props extends RX.CommonProps {
   selectedToken?: string
   balances?: Balance[]
   handleSelectToken?: (token: Token) => void
+  refreshBalances?: () => void
 }
 
 class SendMasterScreen extends RX.Component<Props, null> {
+  componentDidMount() {
+    if (this.props.currentUser) {
+      this.props.refreshBalances()
+    }
+  }
+
   render() {
     const tabIndex = this.props.navigation.state.index
     const index = this.props.navigation.state.routes[tabIndex].index
@@ -58,6 +65,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     startLogin: () => dispatch(Actions.User.startLogin()),
+    refreshBalances: () => dispatch(Actions.User.refreshBalances()),
     handleSelectToken: (token: Token) => {
       dispatch(Actions.Navigation.navigate('TokenActions'))
       dispatch(Actions.Tokens.selectToken(token.address))

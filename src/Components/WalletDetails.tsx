@@ -39,9 +39,6 @@ export default class WalletDetails extends RX.Component<Props, null> {
               title='Login with uPort (Rinkeby)'
               onPress={this.props.startLogin}
             />
-            <RX.Text style={Theme.Styles.about.warning}>
-              Transactions on Rinkeby network will be funded by uPort Sensui service
-            </RX.Text>
 
             {/* <CallToAction
               type={CallToAction.type.Main}

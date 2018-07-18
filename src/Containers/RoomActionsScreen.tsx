@@ -5,6 +5,7 @@ import {
   ScrollView,
   ListItem,
   SegmentedControl,
+  AttachmentCard,
   MatrixLogin,
   TextInput,
   Graphs } from '../Components'
@@ -22,6 +23,7 @@ interface Props extends RX.CommonProps {
   matrixSendTextMessage?: (message: string) => void
   matrixSendMessage?: (content: any) => void
   navigateBack?: () => void
+  setRoomForTransaction?: (roomId: any) => void
   isSendingMessage?: boolean
   room?: MatrixRoom
   uiTraits?: UITraits
@@ -57,12 +59,8 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   }
 
   sendTx() {
-    const content = {
-      body: 'Simonas sent 50 GLU to Ziggy',
-      msgtype: 'm.eth.erc20.tranferTo',
-      txHash: '0x1242343',
-    }
-    this.props.matrixSendMessage(content)
+    this.props.setRoomForTransaction(this.props.room.id)
+    this.props.navigate('SendTab')
   }
   render() {
     return (
@@ -70,11 +68,11 @@ class TokenActionsScreen extends RX.Component<Props, State> {
         <ScrollView>
           {this.props.room && this.props.room.timeline.map(event => <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
             <RX.Text style={Theme.Styles.chat.messageSender}>{event.sender}</RX.Text>
-            <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>
-            {event.content.msgtype === 'm.eth.erc20.tranferTo' && <RX.View><RX.Text style={Theme.Styles.chat.messageSender}>
-              ETH TX: {event.content.txHash}
-            </RX.Text></RX.View>}
-          </RX.View>)}
+            <RX.View>
+              <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>
+              {event.content.attachment && <AttachmentCard attachment={event.content.attachment} />}
+            </RX.View>
+            </RX.View>)}
         </ScrollView>
         <RX.View style={[Theme.Styles.containerWrapper, {flex: 0}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.row]}>
@@ -89,8 +87,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               onPress={this.send}
               />
             <CallToAction
-              inProgress={this.props.isSendingMessage}
-              title='TX'
+              title='+'
               onPress={this.sendTx}
               />
           </RX.View>
@@ -118,6 +115,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     matrixLogin: (username: string, password: string, baseUrl: string) => dispatch(Actions.Matrix.login({username, password, baseUrl})),
     matrixSendTextMessage: (message: string) => dispatch(Actions.Matrix.sendTextMessage(message)),
     matrixSendMessage: (content: any) => dispatch(Actions.Matrix.sendMessage(content)),
+    setRoomForTransaction: (roomId: any) => dispatch(Actions.Transactions.setRoom(roomId)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TokenActionsScreen)

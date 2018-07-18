@@ -8,20 +8,30 @@ interface Props extends RX.CommonProps {
   attachment?: Attachment
 }
 
+export const simpleHtmlForAttachment = (attachment: Attachment): String => {
+  let body = ''
+
+  if (attachment.data && attachment.data.meta) {
+    body = `<br/><strong><a href="${attachment.data.url}">${attachment.data.meta.title}</a></strong>\
+<br/>${attachment.data.meta.description}`
+  }
+  return `${body}`
+}
+
 export default class AttachmentCard extends RX.Component<Props, null> {
 
   render() {
     return (
       <RX.View style={Theme.Styles.attachment.card}>
 
-        {this.props.attachment.data.links.thumbnail && <RX.Image
+        {this.props.attachment.data && this.props.attachment.data.links && this.props.attachment.data.links.thumbnail && <RX.Image
           style={Theme.Styles.attachment.image}
           resizeMode={'cover'}
           source={this.props.attachment.data.links.thumbnail[0].href}
         />}
 
-        {this.props.attachment.data.meta && <RX.View style={Theme.Styles.attachment.siteRow}>
-          {this.props.attachment.data.links.icon && <RX.Image
+        {this.props.attachment.data && this.props.attachment.data.meta && <RX.View style={Theme.Styles.attachment.siteRow}>
+          {this.props.attachment.data && this.props.attachment.data.links && this.props.attachment.data.links.icon && <RX.Image
             style={Theme.Styles.attachment.icon}
             source={this.props.attachment.data.links.icon[0].href}
           />}

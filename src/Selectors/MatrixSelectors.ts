@@ -8,3 +8,6 @@ export const getCurrentUser = (state: CombinedState) => state.matrix.currentUser
 export const getSelectedRoom = (state: CombinedState) => {
   return _.find(state.matrix.rooms, {id: state.matrix.selectedRoomId})
 }
+export const getRoomById = (state: CombinedState, roomId: string) => {
+  return _.find(state.matrix.rooms, {id: roomId})
+}

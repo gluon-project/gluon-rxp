@@ -18,9 +18,15 @@ interface Props extends RX.CommonProps {
   selectedToken?: string
   balances?: Balance[]
   handleSelectToken?: (token: Token) => void
+  refreshBalances?: () => void
 }
 
 class CompactWalletMasterScreen extends RX.Component<Props, null> {
+  componentDidMount() {
+    if (this.props.currentUser) {
+      this.props.refreshBalances()
+    }
+  }
 
   handleSelectToken(token: Token) {
     this.props.handleSelectToken(token)
@@ -65,6 +71,7 @@ const mapStateToProps = (state: CombinedState): Props => {
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
+    refreshBalances: () => dispatch(Actions.User.refreshBalances()),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     startLogin: () => dispatch(Actions.User.startLogin()),

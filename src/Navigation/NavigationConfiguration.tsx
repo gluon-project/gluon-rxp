@@ -87,6 +87,7 @@ const Attachment = {screen: Screens.AttachmentScreen, navigationOptions: {title:
 const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 
 const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
+const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Send'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
@@ -127,6 +128,7 @@ export const WideNavigationConfiguration = {
         Tokens: {screen: StackNavigator({ Tokens, TokensForm }, navigationOptions)},
         Amount: {screen: StackNavigator({ Amount }, navigationOptions)},
         Receiver: {screen: StackNavigator({ Receiver, ReceiverForm }, navigationOptions)},
+        Rooms: {screen: StackNavigator({ Rooms }, navigationOptions)},
         Attachment: {screen: StackNavigator({ Attachment }, navigationOptions)},
       },
       navigationOptions,
@@ -179,7 +181,7 @@ export const CompactNavigationConfiguration = {
   },
   SendTab: {
     screen: StackNavigator(
-      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Attachment },
+      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Rooms, Attachment },
       navigationOptions,
     ),
   },

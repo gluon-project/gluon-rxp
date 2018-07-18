@@ -57,8 +57,10 @@ declare interface Transaction {
   amount?: string,
   token?: string,
   date?: string,
+  room?: string,
   attachment?: string,
   type?: string,
+  pending?: boolean,
 }
 
 declare interface MintTransaction {
@@ -113,6 +115,7 @@ declare interface LinkType {
 
 declare interface AttachmentData {
   url?: string,
+  html?: string,
   meta?: {
     title?: string,
     description?: string,
