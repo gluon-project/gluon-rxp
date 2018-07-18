@@ -36,6 +36,7 @@ class RoomsScreen extends RX.Component<Props, null> {
             {this.props.rooms.map((room, key) => {
               return <ListItem
                 key={key}
+                account={{avatar: room.avatarUrl}}
                 title={`${room.name}`}
                 subTitle={`${room.members.length} Members`}
                 type={ListItem.type.Secondary}

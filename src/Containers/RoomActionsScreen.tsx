@@ -25,6 +25,7 @@ interface Props extends RX.CommonProps {
   matrixSendMessage?: (content: any) => void
   navigateBack?: () => void
   setRoomForTransaction?: (roomId: any) => void
+  setMessageForTransaction?: (message: string) => void
   isSendingMessage?: boolean
   room?: MatrixRoom
   uiTraits?: UITraits
@@ -65,6 +66,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   }
 
   sendTx() {
+    this.props.setMessageForTransaction(this.state.message)
     this.props.setRoomForTransaction(this.props.room.id)
     this.props.navigate('SendTab')
   }
@@ -131,6 +133,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     matrixSendTextMessage: (message: string) => dispatch(Actions.Matrix.sendTextMessage(message)),
     matrixSendMessage: (content: any) => dispatch(Actions.Matrix.sendMessage(content)),
     setRoomForTransaction: (roomId: any) => dispatch(Actions.Transactions.setRoom(roomId)),
+    setMessageForTransaction: (message: string) => dispatch(Actions.Attachment.setMessage(message)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TokenActionsScreen)

@@ -80,7 +80,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           title={this.props.room ? this.props.room.name : 'Room'}
           subTitle={'Where do you want to share?'}
           onPress={() => this.props.navigate('Rooms')}
-          isOn={!!this.props.room}
+          account={this.props.room && {avatar: this.props.room.avatarUrl}}
           isOff={!this.props.room}
         />
 
