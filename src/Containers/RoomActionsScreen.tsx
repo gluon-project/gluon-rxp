@@ -15,7 +15,7 @@ import * as Theme from '../Theme'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import utils from '../Utils'
-
+import { find } from 'lodash'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
@@ -33,6 +33,10 @@ interface Props extends RX.CommonProps {
 
 interface State {
   message: string
+}
+
+const getMember = (userId: string, room: MatrixRoom): MatrixMember => {
+  return find(room.members, {userId})
 }
 
 class TokenActionsScreen extends RX.Component<Props, State> {
@@ -66,13 +70,20 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          {this.props.room && this.props.room.timeline.map(event => <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
-            <RX.Text style={Theme.Styles.chat.messageSender}>{event.sender}</RX.Text>
-            <RX.View>
-              <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>
-              {event.content.attachment && <AttachmentCard attachment={event.content.attachment} />}
-            </RX.View>
+          <RX.View style={Theme.Styles.scrollContainer}>
+            {this.props.room && this.props.room.timeline.map(event => (event.type === 'm.room.message' && event.content.body) &&
+            <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
+              <RX.Image
+                resizeMode={'cover'}
+                style={Theme.Styles.chat.messageSenderAvatar}
+                source={getMember(event.sender, this.props.room).avatarUrl} />
+              <RX.View style={{flex: 1}}>
+                <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>
+                <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>
+                {event.content.attachment && <AttachmentCard attachment={event.content.attachment} />}
+              </RX.View>
             </RX.View>)}
+          </RX.View>
         </ScrollView>
         <RX.View style={[Theme.Styles.containerWrapper, {flex: 0}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.row]}>

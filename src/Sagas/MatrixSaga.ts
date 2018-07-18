@@ -82,6 +82,7 @@ export function * handleSyncEvent (event: any) {
   if (event === 'PREPARED') {
     const rooms = yield call(Services.Matrix.getRooms)
     yield put(Actions.Matrix.setRooms(rooms))
+    console.log(Services.Matrix.client)
 
     const timelineChannel = yield eventChannel(emitter => {
       Services.Matrix.client.on('Room.timeline', emitter)

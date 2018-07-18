@@ -62,16 +62,20 @@ export const getRooms = (): MatrixRoom[] => {
   const data = rooms.map((room: any) => {
 
     const members: MatrixMember[] = room.getJoinedMembers().map((member: any) => {
+      const avatarUrl = member.getAvatarUrl(client.baseUrl, 50, 50, 'scale', true, true)
       return {
         userId: member.userId,
         displayname: member.name,
         membership: member.membership,
+        avatarUrl,
       } as MatrixMember
     })
 
     const timeline: MatrixTimelineEvent[] = room.getLiveTimeline().getEvents().map(getEventData)
+    const avatarUrl = room.getAvatarUrl(client.baseUrl, 50, 50, 'scale', true)
 
     return {
+      avatarUrl,
       id: room.roomId,
       name: room.name,
       members,

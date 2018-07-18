@@ -592,22 +592,26 @@ const Styles = {
   },
   chat: {
     messageBubble: RX.Styles.createViewStyle({
-      margin: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
       flex: 1,
-      backgroundColor: Colors.backgroundSelected,
-      borderRadius: Metrics.borderRadius,
-      marginTop: Metrics.smallMargin,
-      padding: Metrics.mediumMargin,
       flexDirection: 'row',
+    }),
+    messageSenderAvatar: RX.Styles.createViewStyle({
+      marginRight: Metrics.baseMargin,
+      width: 32,
+      height: 32,
+      backgroundColor: Colors.backgroundSelected,
+      borderRadius: 16,
     }),
     messageSender: RX.Styles.createTextStyle({
       color: Colors.info,
       fontSize: Fonts.size.small,
-      marginRight: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin,
     }),
     messageBody: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.small,
+      marginBottom: Metrics.baseMargin,
     }),
   },
 }

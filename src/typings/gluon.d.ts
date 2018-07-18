@@ -184,6 +184,7 @@ declare interface MatrixMember {
 declare interface MatrixRoom {
   id: string,
   name: string,
+  avatarUrl: string,
   members: MatrixMember[],
   timeline: MatrixTimelineEvent[],
   state: MatrixRoomState,
