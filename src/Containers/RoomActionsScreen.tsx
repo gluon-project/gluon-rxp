@@ -76,7 +76,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <RX.View style={Theme.Styles.scrollContainer}>
-            {this.props.room !== null && this.props.room.timeline.map(event =>
+            {showInputRow && this.props.room.timeline.map(event =>
             (event.type === 'm.room.message' && event.content.body !== null) &&
             <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
               <RX.Image
