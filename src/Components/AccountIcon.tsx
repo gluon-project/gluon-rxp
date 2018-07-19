@@ -52,12 +52,13 @@ class AccountIcon extends RX.Component<Props, null> {
           <RX.Image
             style={style}
             source={this.props.account.avatar}
+            resizeMode={'cover'}
             />
-          <Blockies
+          {this.props.account.address && <Blockies
             style={style}
             width={size}
             seed={this.props.account.address}
-            />
+            />}
         </RX.View>
       )
     } else {
@@ -66,12 +67,13 @@ class AccountIcon extends RX.Component<Props, null> {
           <RX.Image
             style={style}
             source={this.props.account.avatar}
+            resizeMode={'cover'}
             />
-          <Blockies
+          {this.props.account.address && <Blockies
             style={Theme.Styles.accountIconSmallAbsolute}
             width={20}
             seed={this.props.account.address}
-            />
+            />}
         </RX.View>
       )
     }

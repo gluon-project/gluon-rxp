@@ -7,6 +7,7 @@ import {
   call,
   put,
   select,
+  fork,
   spawn,
   take,
 } from 'redux-saga/effects'
@@ -18,6 +19,8 @@ import { CodePush, Web3, uPort } from '../Services'
 import * as Enums from '../Enums'
 import Config from '../Config'
 import utils from '../Utils'
+
+import { startClient } from './MatrixSaga'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
@@ -153,6 +156,8 @@ function* handleRequest(uri: string): SagaIterator {
 function* loadInitialState(): SagaIterator {
   yield put(Actions.App.initialDataStartedLoading())
 
+  yield fork(startClient)
+
   yield call(handleInitialUrl)
 
   try {
@@ -164,8 +169,8 @@ function* loadInitialState(): SagaIterator {
         address: accounts[0],
         avatar: null,
       }))
-      yield call(delay, 500)
-      yield put(Actions.User.refreshBalances())
+      // yield call(delay, 500)
+      // yield put(Actions.User.refreshBalances())
     }
   } catch (e) {
     yield put(Actions.App.handleError(e))

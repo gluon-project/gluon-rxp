@@ -2,6 +2,7 @@ import * as App from './AppReducer'
 import * as Attachment from './AttachmentReducer'
 import * as Contacts from './ContactsReducer'
 import * as Feed from './FeedReducer'
+import * as Matrix from './MatrixReducer'
 import * as ModalMessage from './ModalMessageReducer'
 import * as Navigation from './NavigationActions'
 import * as Process from './ProcessReducer'
@@ -15,6 +16,7 @@ export default {
   Attachment,
   Contacts,
   Feed,
+  Matrix,
   ModalMessage,
   Navigation,
   Process,

@@ -12,6 +12,7 @@ interface Props extends RX.CommonProps {
   sender?: User
   receiver?: User
   amount?: string
+  room?: MatrixRoom
   token?: Token
   attachment?: Attachment
   isProcessing?: boolean
@@ -22,18 +23,16 @@ export default class SendDetails extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
+        {this.props.sender && <RX.View style={Theme.Styles.accountInfo.wrapper}>
+          <AccountIcon
+            account={this.props.sender}
+            type={AccountIcon.type.Large}
+            />
+          <RX.Text style={Theme.Styles.accountInfo.title}>
+            {this.props.sender.name}
+          </RX.Text>
+        </RX.View>}
 
-        <ListItem
-          type={ListItem.type.Default}
-          selected={this.props.routeName === 'Sender'}
-          title={ this.props.sender ? this.props.sender.name : 'Select sender'}
-          subTitle={'Which account are you sending from?'}
-          isOn={!!this.props.sender}
-          isOff={!this.props.sender}
-          onPress={() => this.props.navigate('Sender')}
-          smallSeedIcon
-          account={this.props.sender}
-          />
         <ListItem
           disabled={!this.props.sender}
           type={ListItem.type.Default}
@@ -74,16 +73,27 @@ export default class SendDetails extends RX.Component<Props, null> {
           account={this.props.receiver}
         />
 
-        {this.props.token && this.props.token.type === Enums.TokenType.Erc223 && <ListItem
+        <ListItem
+          //disabled={!this.props.currentUser}
+          type={ListItem.type.Default}
+          selected={this.props.routeName === 'Rooms'}
+          title={this.props.room ? this.props.room.name : 'Room'}
+          subTitle={'Where do you want to share?'}
+          onPress={() => this.props.navigate('Rooms')}
+          account={this.props.room && {avatar: this.props.room.avatarUrl}}
+          isOff={!this.props.room}
+        />
+
+        <ListItem
           //disabled={!this.props.currentUser}
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Attachment'}
-          title={this.props.attachment ? this.props.attachment.message : 'Attach something'}
+          title={this.props.attachment && this.props.attachment.message ? this.props.attachment.message : 'Attach something'}
           subTitle={'Why are you sending?'}
           onPress={() => this.props.navigate('Attachment')}
-          isOn={!!this.props.attachment}
-          isOff={!this.props.attachment}
-        />}
+          isOn={(!!this.props.attachment.message || !!this.props.attachment.data)}
+          isOff={!(!!this.props.attachment.message || !!this.props.attachment.data)}
+        />
 
       <RX.View style={styles.cta}><CallToAction
         disabled={!this.props.sender

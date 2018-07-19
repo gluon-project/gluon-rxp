@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, WalletDetails, NavBar } from '../Components'
+import { CallToAction, RoomsDetails, NavBar } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -14,36 +14,33 @@ interface Props extends RX.CommonProps {
   navigation?: any,
   currentUser?: User,
   uiTraits?: UITraits
-  startLogin?: () => void
-  selectedToken?: string
-  balances?: Balance[]
-  handleSelectToken?: (token: Token) => void
-  refreshBalances?: () => void
+  selectedRoomId?: string
+  rooms?: MatrixRoom[]
+  handleSelectRoom?: (roomId: string) => void
+  matrixLogin?: (username: string, password: string, baseUrl: string) => void
+  isLoggingIn?: boolean
+  currentMatrixUser?: MatrixUser
 }
 
-class SendMasterScreen extends RX.Component<Props, null> {
-  componentDidMount() {
-    if (this.props.currentUser) {
-      this.props.refreshBalances()
-    }
-  }
-
+class RoomsMasterScreen extends RX.Component<Props, null> {
   render() {
     const tabIndex = this.props.navigation.state.index
     const index = this.props.navigation.state.routes[tabIndex].index
     const routeName = this.props.navigation.state.routes[tabIndex].routes[index].routeName
     return (
       <RX.View style={Theme.Styles.containerFull}>
-        <NavBar title='Wallet' />
+        <NavBar title='Rooms' />
         <RX.ScrollView style={[Theme.Styles.scrollContainerNoMargins, Theme.Styles.masterViewContainer]}>
-          <WalletDetails
+          <RoomsDetails
+            currentMatrixUser={this.props.currentMatrixUser}
+            matrixLogin={this.props.matrixLogin}
+            isLoggingIn={this.props.isLoggingIn}
             navigate={this.props.navigate}
-            startLogin={this.props.startLogin}
             routeName={routeName}
             currentUser={this.props.currentUser}
-            handleSelectToken={this.props.handleSelectToken}
-            selectedToken={this.props.selectedToken}
-            balances={this.props.balances}
+            handleSelectRoom={this.props.handleSelectRoom}
+            selectedRoomId={this.props.selectedRoomId}
+            rooms={this.props.rooms}
             uiTraits={this.props.uiTraits}
           />
         </RX.ScrollView>
@@ -55,21 +52,22 @@ class SendMasterScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     currentUser: state.user.current,
-    balances: state.user.balances,
+    rooms: Selectors.Matrix.getRooms(state),
     uiTraits: state.app.uiTraits,
-    selectedToken: Selectors.Tokens.getCurrentToken(state),
+    selectedRoomId: Selectors.Matrix.getSelectedRoomId(state),
+    isLoggingIn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLogin),
+    currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
+    matrixLogin: (username: string, password: string, baseUrl: string) => dispatch(Actions.Matrix.login({username, password, baseUrl})),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
-    startLogin: () => dispatch(Actions.User.startLogin()),
-    refreshBalances: () => dispatch(Actions.User.refreshBalances()),
-    handleSelectToken: (token: Token) => {
-      dispatch(Actions.Navigation.navigate('TokenActions'))
-      dispatch(Actions.Tokens.selectToken(token.address))
+    handleSelectRoom: (roomId: string) => {
+      dispatch(Actions.Navigation.navigate('RoomActions'))
+      dispatch(Actions.Matrix.selectRoom(roomId))
     },
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SendMasterScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsMasterScreen)

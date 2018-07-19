@@ -29,6 +29,17 @@ reducer.on(resetToInitialState, (state: TransactionState) => {
   return initialState
 })
 
+export const setRoom = createAction('Set Room')
+reducer.on(setRoom, (state: TransactionState, payload?: string) => {
+  return {
+    ...state,
+    new: {
+      ...state.new,
+      room: payload,
+    },
+  }
+})
+
 export const setToken = createAction('Set Token')
 reducer.on(setToken, (state: TransactionState, payload?: string) => {
   return {

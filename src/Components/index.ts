@@ -8,9 +8,11 @@ import Icons from './Icons'
 import ImagePicker from './ImagePicker'
 import KeyPad from './KeyPad'
 import ListItem from './ListItem'
+import MatrixLogin from './MatrixLogin'
 import ModalMessage from './ModalMessage'
 import NavBar from './NavBar'
 import RequestDetails from './RequestDetails'
+import RoomsDetails from './RoomsDetails'
 import ScrollView from './ScrollView'
 import SegmentedControl from './SegmentedControl'
 import SendDetails from './SendDetails'
@@ -32,9 +34,11 @@ export {
   ImagePicker,
   KeyPad,
   ListItem,
+  MatrixLogin,
   ModalMessage,
   NavBar,
   RequestDetails,
+  RoomsDetails,
   SegmentedControl,
   SendDetails,
   ScrollView,

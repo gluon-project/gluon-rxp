@@ -86,13 +86,26 @@ const Amount = {screen: Screens.AmountScreen, navigationOptions: {title: 'Amount
 const Attachment = {screen: Screens.AttachmentScreen, navigationOptions: {title: 'Attachment'}}
 const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 
+const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
+const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
+
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Send'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
 const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}
+const CompactRoomsMainScreen = {screen: Screens.CompactRoomsMainScreen, navigationOptions: {title: 'Rooms'}}
 const CompactWalletMainScreen = {screen: Screens.CompactWalletMainScreen, navigationOptions: {title: 'Wallet'}}
 
 export const WideNavigationConfiguration = {
+  RoomsTab: {
+    masterScreen: Screens.RoomsMasterScreen,
+    screen: TabNavigator(
+      {
+        RoomActions: {screen: StackNavigator({ RoomActions }, navigationOptions)},
+      },
+      navigationOptions,
+    ),
+  },
   FeedTab: {
     masterScreen: Screens.FeedMasterScreen,
     screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
@@ -111,10 +124,11 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.SendMasterScreen,
     screen: TabNavigator(
       {
-        Sender: {screen: StackNavigator({ Sender }, navigationOptions)},
+        // Sender: {screen: StackNavigator({ Sender }, navigationOptions)},
         Tokens: {screen: StackNavigator({ Tokens, TokensForm }, navigationOptions)},
         Amount: {screen: StackNavigator({ Amount }, navigationOptions)},
         Receiver: {screen: StackNavigator({ Receiver, ReceiverForm }, navigationOptions)},
+        Rooms: {screen: StackNavigator({ Rooms }, navigationOptions)},
         Attachment: {screen: StackNavigator({ Attachment }, navigationOptions)},
       },
       navigationOptions,
@@ -150,6 +164,12 @@ export const WideNavigationConfiguration = {
 export const moreStack = {  }
 
 export const CompactNavigationConfiguration = {
+  RoomsTab: {
+    screen: StackNavigator(
+      { CompactRoomsMainScreen, RoomActions },
+      navigationOptions,
+    ),
+  },
   FeedTab: {
     screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
   },
@@ -161,7 +181,7 @@ export const CompactNavigationConfiguration = {
   },
   SendTab: {
     screen: StackNavigator(
-      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Attachment },
+      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Rooms, Attachment },
       navigationOptions,
     ),
   },

@@ -4,6 +4,7 @@ import * as App from './AppReducer'
 import * as Attachment from './AttachmentReducer'
 import * as Contacts from './ContactsReducer'
 import * as Feed from './FeedReducer'
+import * as Matrix from './MatrixReducer'
 import * as ModalMessage from './ModalMessageReducer'
 import * as OsExtensionsReducer from './OsExtensionsReducer'
 import * as Process from './ProcessReducer'
@@ -19,6 +20,7 @@ export default combineReducers({
   compactNavigation: CompactReducer,
   contacts: Contacts.reducer,
   feed: Feed.reducer,
+  matrix: Matrix.reducer,
   modalMessage: ModalMessage.reducer,
   osExtensions: OsExtensionsReducer.reducer,
   process: Process.reducer,
@@ -35,6 +37,7 @@ export interface CombinedState {
   compactNavigation: any,
   contacts: Contacts.ContactsState,
   feed: Feed.FeedState,
+  matrix: Matrix.MatrixState,
   modalMessage: ModalMessageConfig,
   osExtensions: OsExtensionsReducer.OsExtensionState,
   process: Process.ProcessState,

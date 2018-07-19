@@ -35,6 +35,7 @@ const updateReducers = (store: Store<any>) => {
         'attachment',
         'contacts',
         'tokens',
+        'matrix',
       ], // Reducers that should persist their states between app launches
     }
 

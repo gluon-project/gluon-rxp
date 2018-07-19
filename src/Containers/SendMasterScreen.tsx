@@ -24,6 +24,7 @@ interface Props extends RX.CommonProps {
   amount?: string
   token?: Token
   attachment?: Attachment
+  room?: MatrixRoom
 }
 
 class SendMasterScreen extends RX.Component<Props, null> {
@@ -46,6 +47,7 @@ class SendMasterScreen extends RX.Component<Props, null> {
             amount={this.props.amount}
             token={this.props.token}
             attachment={this.props.attachment}
+            room={this.props.room}
           />
         </RX.ScrollView>
       </RX.View>
@@ -58,11 +60,12 @@ const mapStateToProps = (state: CombinedState): Props => {
     currentUser: state.user.current,
     transaction: state.transactions.new,
     amount: state.transactions.new.amount,
-    attachment: Selectors.Attachment.getFromCache(state, state.transactions.new.attachment),
+    attachment: Selectors.Attachment.getNew(state),
     token: Selectors.Tokens.getTokenByAddress(state, state.transactions.new.token),
     receiver: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.receiver),
     sender: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     isProcessing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.SendTransaction),
+    room: Selectors.Matrix.getRoomById(state, state.transactions.new.room),
     uiTraits: state.app.uiTraits,
   }
 }

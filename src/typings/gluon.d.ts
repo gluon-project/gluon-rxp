@@ -57,8 +57,10 @@ declare interface Transaction {
   amount?: string,
   token?: string,
   date?: string,
+  room?: string,
   attachment?: string,
   type?: string,
+  pending?: boolean,
 }
 
 declare interface MintTransaction {
@@ -113,6 +115,7 @@ declare interface LinkType {
 
 declare interface AttachmentData {
   url?: string,
+  html?: string,
   meta?: {
     title?: string,
     description?: string,
@@ -150,4 +153,41 @@ interface TokenTransactionsMap {
 
 declare interface ImagePickerFile {
   dataUrl: any
+}
+
+// Matrix
+
+declare interface MatrixUser {
+  access_token: string
+  device_id: string
+  home_server: string
+  user_id: string
+  avatarUrl: string
+}
+
+declare interface MatrixRoomState {
+}
+declare interface MatrixTimelineEvent {
+  type: string,
+  content: any,
+  eventId: string,
+  ts: number,
+  sender: string,
+  roomId: string,
+}
+
+declare interface MatrixMember {
+  userId: string,
+  displayname: string,
+  membership: 'invite' | 'join',
+  avatarUrl: string,
+}
+declare interface MatrixRoom {
+  id: string,
+  name: string,
+  avatarUrl: string,
+  members: MatrixMember[],
+  timeline: MatrixTimelineEvent[],
+  state: MatrixRoomState,
+  receipts: any[],
 }

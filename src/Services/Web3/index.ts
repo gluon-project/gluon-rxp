@@ -305,6 +305,7 @@ const handlePendingTransaction = (
   handleResponse: (txHash: string, response: any) => any,
   resolve: (data: any) => void,
   reject: (error: any) => void,
+  returnWithoutWaiting?: boolean,
 ) => {
   return function (err: any, txHash: string) {
     if (err) {
@@ -313,19 +314,24 @@ const handlePendingTransaction = (
       if (txHash) {
         console.log('Transaction sent')
         console.log(txHash)
-        const interval = setInterval(() => {
-          ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
-            if (error) {
-              console.log('TX Error: ', txHash, error)
-              reject(error)
-            }
-            if (response) {
-              console.log('TX Response: ', txHash, response)
-              clearInterval(interval)
-              resolve(handleResponse(txHash, response))
-            }
-          })
-        }, 1000)
+        if (returnWithoutWaiting === true) {
+          console.log('Not waiting for blockchain confirmation')
+          resolve(handleResponse(txHash, null))
+        } else {
+          const interval = setInterval(() => {
+            ethSingleton.getEth().getTransactionReceipt(txHash, (error: any, response: any) => {
+              if (error) {
+                console.log('TX Error: ', txHash, error)
+                reject(error)
+              }
+              if (response) {
+                console.log('TX Response: ', txHash, response)
+                clearInterval(interval)
+                resolve(handleResponse(txHash, response))
+              }
+            })
+          }, 1000)
+        }
       }
     }
   }
@@ -426,8 +432,9 @@ const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> =
           ...transaction,
           hash: txHash,
           date: moment().toISOString(),
+          pending: response ? false : true,
         }
-      }, resolve, reject),
+      }, resolve, reject, true),
     )
   })
 }
@@ -445,8 +452,9 @@ const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> =>
           ...transaction,
           hash: txHash,
           date: moment().toISOString(),
+          pending: response ? false : true,
         }
-      }, resolve, reject),
+      }, resolve, reject, true),
     )
   })
 }
@@ -465,8 +473,9 @@ const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
           ...transaction,
           hash: txHash,
           date: moment().toISOString(),
+          pending: response ? false : true,
         }
-      }, resolve, reject),
+      }, resolve, reject, true),
     )
   })
 }

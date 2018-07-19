@@ -3,6 +3,7 @@ import {
   createReducer,
 } from 'redux-act'
 import { resetToInitialState } from './AppReducer'
+import { resetNewTransaction } from './TransactionsReducer'
 import * as FeedActions from './FeedReducer'
 import Config from '../Config'
 
@@ -29,6 +30,10 @@ const initialState: AttachmentState = {
 
 export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: AttachmentState) => {
+  return initialState
+})
+
+reducer.on(resetNewTransaction, (state: AttachmentState) => {
   return initialState
 })
 
