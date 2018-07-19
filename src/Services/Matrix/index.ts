@@ -1,9 +1,10 @@
 const Matrix = require('matrix-js-sdk')
+import request from './Request'
 
 export let client: any = null
 
 export const login = (username: string, password: string, baseUrl: string) => {
-  const tmpClient = Matrix.createClient({baseUrl})
+  const tmpClient = Matrix.createClient({baseUrl, request})
   return new Promise<MatrixUser>((resolve, reject) => {
     tmpClient.login('m.login.password', {user: username, password: password}, (err: any, resp: any) => {
       console.log(err)
@@ -16,6 +17,7 @@ export const login = (username: string, password: string, baseUrl: string) => {
             baseUrl,
             userId: resp.user_id,
             accessToken: resp.access_token,
+            request,
         })
         // client.startClient()
         resolve(resp)
@@ -30,6 +32,7 @@ export const startClient = (options: MatrixUser) => {
     userId: options.user_id,
     accessToken: options.access_token,
     deviceId: options.device_id,
+    request,
   })
   // client.startClient()
   return true

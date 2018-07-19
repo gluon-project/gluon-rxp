@@ -71,11 +71,13 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     this.props.navigate('SendTab')
   }
   render() {
+    const showInputRow = (this.props.currentMatrixUser !== null && this.props.room !== null) ? true : false
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <RX.View style={Theme.Styles.scrollContainer}>
-            {this.props.room && this.props.room.timeline.map(event => (event.type === 'm.room.message' && event.content.body) &&
+            {this.props.room !== null && this.props.room.timeline.map(event =>
+            (event.type === 'm.room.message' && event.content.body !== null) &&
             <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
               <RX.Image
                 resizeMode={'cover'}
@@ -89,7 +91,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             </RX.View>)}
           </RX.View>
         </ScrollView>
-        {this.props.currentMatrixUser && this.props.room &&
+        {showInputRow &&
         <RX.View style={[Theme.Styles.containerWrapper, {flex: 0, height: 100,  alignItems: 'flex-end'}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
             <RX.Image
@@ -97,7 +99,6 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               style={Theme.Styles.chat.messageSenderAvatarInput}
               source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
             <TextInput
-              style={{backgroundColor: 'green'}}
               value={this.state.message}
               onKeyPress={this.handleKeyPress}
               onChangeText={(message) => this.setState({message})}
