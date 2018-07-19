@@ -32,7 +32,7 @@ export default class MatrixLogin extends RX.Component<Props, State> {
           onChangeText={(baseUrl) => this.setState({baseUrl})}
           />
         <TextInput
-          label='User name (@user:matrix.org)'
+          label='User name'
           value={this.state.username}
           onChangeText={(username) => this.setState({username})}
           />
