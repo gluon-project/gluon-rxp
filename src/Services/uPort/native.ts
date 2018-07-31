@@ -3,7 +3,7 @@ import Config from '../../Config'
 import RX = require('reactxp')
 import RN = require('react-native')
 
-var uportConnect = require('../../../src/Services/uPort/uport-connect.js')
+var uportConnect = require('uport-connect/dist/uport-connect')
 const { Connect, SimpleSigner, MNID } = uportConnect
 const uuidv1 = require('uuid/v1')
 const URL = require('url-parse')
