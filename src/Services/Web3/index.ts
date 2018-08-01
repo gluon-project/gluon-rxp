@@ -304,7 +304,7 @@ const getTokenInfo = (address: string, networkId?: string) => {
 }
 
 const handlePendingTransaction = (
-  handleResponse: (txHash: string, response: any) => any,
+  handleResponse: (txHash: string, response: any, timestamp?: number) => any,
   resolve: (data: any) => void,
   reject: (error: any) => void,
   returnWithoutWaiting?: boolean,
@@ -329,7 +329,13 @@ const handlePendingTransaction = (
               if (response) {
                 console.log('TX Response: ', txHash, response)
                 clearInterval(interval)
-                resolve(handleResponse(txHash, response))
+                ethSingleton.getEth().getBlock(response.blockNumber, (err: any, block: any) => {
+                  if (err) {
+                    console.log('TX Error: ', error)
+                    reject(err)
+                  }
+                  resolve(handleResponse(txHash, response, block.timestamp))
+                })
               }
             })
           }, 1000)
@@ -342,8 +348,8 @@ const handlePendingTransaction = (
 const loadTransactionInfo = (txHash: string): Promise<Transaction> => {
 
   return new Promise<Transaction>((resolve, reject) => {
-    handlePendingTransaction((txHash, response) => {
-      const tx = Etherscan.ethTransactionToGluonTransactionGeneric(response)
+    handlePendingTransaction((txHash, response, timestamp) => {
+      const tx = Etherscan.ethTransactionToGluonTransactionGeneric(response, timestamp)
       return tx
     }, resolve, reject)(null, txHash)
   })

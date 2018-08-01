@@ -29,12 +29,11 @@ const toIPFSHash = (str: string) => {
   return hash
 }
 
-const ethTransactionToGluonTransactionGeneric = (ethTx: any): Transaction => {
+const ethTransactionToGluonTransactionGeneric = (ethTx: any, timestamp: number): Transaction => {
   const decodedLogs = abiDecoder.decodeLogs([ethTx.logs[0]])[0]
 
   const event: EthereumLogEvent[] = decodedLogs.events
-  // const date = moment(parseInt(ethTx.timeStamp.slice(2, ethTx.timeStamp.length), 16) * 1000).toISOString()
-  const date = moment().toISOString()
+  const date = moment.unix(timestamp).toISOString()
   const hash = `${ethTx.transactionHash}`
   if (decodedLogs.name === 'Transfer') {
     const sender = _.find(event, {'name': 'from'}).value
