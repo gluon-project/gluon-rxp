@@ -31,17 +31,9 @@ const requestCredentials = (network: string) => {
     notifications: true,
     accountType: 'keypair',
   }).then((result: any) => {
-    console.log(result)
-    if (result.networkAddress) {
-      console.log('result.networkAddress', result.networkAddress, MNID.decode(result.networkAddress))
-      console.log('result.address', result.address)
-    } else {
-      console.log('result.address', result.address, MNID.decode(result.address))
-    }
-
     return {
       ...result,
-      address: MNID.decode(result.networkAddress || result.address).address,
+      address: MNID.decode(result.networkAddress).address,
     }
   })
 }

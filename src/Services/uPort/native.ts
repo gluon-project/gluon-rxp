@@ -85,11 +85,11 @@ const requestCredentials = (network: string) => {
 
   return uport.requestCredentials({
     requested: ['name', 'avatar'],
-    accountType: network === 'mainnet' ? 'keypair' : 'general',
+    accountType: 'keypair',
   }).then((result: any) => {
     return {
       ...result,
-      address: MNID.decode(result.networkAddress || result.address).address,
+      address: MNID.decode(result.networkAddress).address,
     }
   })
 }
