@@ -28,6 +28,9 @@ export default class WalletDetails extends RX.Component<Props, null> {
           <RX.Text style={Theme.Styles.accountInfo.title}>
             {this.props.currentUser.name}
           </RX.Text>
+          {this.props.currentUser.address !== this.props.currentUser.name && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
+            {Utils.address.short(this.props.currentUser.address)}
+          </RX.Text>}
         </RX.View>}
 
         {this.props.balances.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>

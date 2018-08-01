@@ -572,6 +572,12 @@ const Styles = {
     title: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
+      marginBottom: Metrics.smallMargin,
+      textAlign: 'center',
+    }),
+    subTitle: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
       marginBottom: Metrics.baseMargin,
       textAlign: 'center',
     }),

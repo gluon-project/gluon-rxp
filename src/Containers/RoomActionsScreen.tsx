@@ -107,7 +107,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               <RX.Text style={Theme.Styles.chat.messageSendButton}>Send</RX.Text>
             </RX.Button>
             <RX.Button onPress={this.sendTx} style={{margin: 15}}>
-              <Icons.SendIcon height={25} width={25} fill={Theme.Colors.brand} />
+              <Icons.TransfersIcon height={25} width={25} fill={Theme.Colors.brand} />
             </RX.Button>
           </RX.View>
         </RX.View>}

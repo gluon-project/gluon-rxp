@@ -25,6 +25,9 @@ interface Props extends RX.CommonProps {
   token?: Token
   attachment?: Attachment
   room?: MatrixRoom
+  isSend?: boolean
+  setIsSend?: (isSend: boolean) => void
+  setModalMessage?: (config: ModalMessageConfig) => void
 }
 
 class SendMasterScreen extends RX.Component<Props, null> {
@@ -34,7 +37,7 @@ class SendMasterScreen extends RX.Component<Props, null> {
     const routeName = this.props.navigation.state.routes[tabIndex].routes[index].routeName
     return (
       <RX.View style={Theme.Styles.containerFull}>
-        <NavBar title='Send' />
+        <NavBar title='Transfers' />
         <RX.ScrollView style={[Theme.Styles.scrollContainerNoMargins, Theme.Styles.masterViewContainer]}>
           <SendDetails
             navigate={this.props.navigate}
@@ -48,6 +51,10 @@ class SendMasterScreen extends RX.Component<Props, null> {
             token={this.props.token}
             attachment={this.props.attachment}
             room={this.props.room}
+            setModalMessage={this.props.setModalMessage}
+            isSend={this.props.isSend}
+            setIsSend={this.props.setIsSend}
+            currentUser={this.props.currentUser}
           />
         </RX.ScrollView>
       </RX.View>
@@ -57,10 +64,11 @@ class SendMasterScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    currentUser: state.user.current,
+    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     transaction: state.transactions.new,
     amount: state.transactions.new.amount,
     attachment: Selectors.Attachment.getNew(state),
+    isSend: Selectors.Transactions.getIsSend(state),
     token: Selectors.Tokens.getTokenByAddress(state, state.transactions.new.token),
     receiver: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.receiver),
     sender: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
@@ -76,6 +84,8 @@ const mapDispatchToProps = (dispatch: any): Props => {
     send: () => dispatch(Actions.Transactions.startSaving()),
     startLogin: () => dispatch(Actions.User.startLogin()),
     createNewToken: (token: Token) => dispatch(Actions.Tokens.createNewToken(token)),
+    setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),
+    setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SendMasterScreen)

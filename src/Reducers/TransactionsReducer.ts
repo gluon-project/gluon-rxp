@@ -7,6 +7,7 @@ import * as UserActions from './UserReducer'
 import * as FeedActions from './FeedReducer'
 
 export interface TransactionState {
+  isSend: boolean,
   new: Transaction,
   list: Transaction[],
 }
@@ -20,6 +21,7 @@ const emptyTransaction = {
 } as Transaction
 
 const initialState: TransactionState = {
+  isSend: true,
   new: emptyTransaction,
   list: [],
 }
@@ -37,6 +39,14 @@ reducer.on(setRoom, (state: TransactionState, payload?: string) => {
       ...state.new,
       room: payload,
     },
+  }
+})
+
+export const setIsSend = createAction('Set is send')
+reducer.on(setIsSend, (state: TransactionState, payload?: boolean) => {
+  return {
+    ...state,
+    isSend: payload,
   }
 })
 

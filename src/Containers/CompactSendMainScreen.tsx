@@ -24,6 +24,9 @@ interface Props extends RX.CommonProps {
   token?: Token
   attachment?: Attachment
   room?: MatrixRoom
+  isSend?: boolean
+  setIsSend?: (isSend: boolean) => void
+  setModalMessage?: (config: ModalMessageConfig) => void
 }
 
 class CompactSendMasterScreen extends RX.Component<Props, null> {
@@ -44,7 +47,11 @@ class CompactSendMasterScreen extends RX.Component<Props, null> {
               token={this.props.token}
               attachment={this.props.attachment}
               room={this.props.room}
-            />
+              setModalMessage={this.props.setModalMessage}
+              isSend={this.props.isSend}
+              setIsSend={this.props.setIsSend}
+              currentUser={this.props.currentUser}
+              />
 
         </ScrollView>
       </RX.View>
@@ -58,10 +65,11 @@ const styles = {
 }
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    currentUser: state.user.current,
+    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     transaction: state.transactions.new,
     amount: state.transactions.new.amount,
     attachment: Selectors.Attachment.getNew(state),
+    isSend: Selectors.Transactions.getIsSend(state),
     token: Selectors.Tokens.getTokenByAddress(state, state.transactions.new.token),
     receiver: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.receiver),
     sender: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
@@ -76,6 +84,8 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     send: () => dispatch(Actions.Transactions.startSaving()),
     startLogin: () => dispatch(Actions.User.startLogin()),
+    setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),
+    setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CompactSendMasterScreen)

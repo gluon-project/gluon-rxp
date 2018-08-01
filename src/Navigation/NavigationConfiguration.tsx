@@ -89,7 +89,7 @@ const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
 const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 
-const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Send'}}
+const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
 const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}

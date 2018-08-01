@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, CallToAction, AccountIcon } from '../Components'
+import { ListItem, CallToAction, AccountIcon, SegmentedControl } from '../Components'
 import * as Enums from '../Enums'
 import Utils from '../Utils'
 
@@ -16,23 +16,62 @@ interface Props extends RX.CommonProps {
   token?: Token
   attachment?: Attachment
   isProcessing?: boolean
+  isSend?: boolean
+  setIsSend?: (isSend: boolean) => void
+  setModalMessage?: (config: ModalMessageConfig) => void
+  currentUser?: User,
 }
 
 export default class SendDetails extends RX.Component<Props, null> {
+
+  handleRequest() {
+    console.log(this.props)
+    let url = 'https://gluon.space/send/?'
+    if (this.props.sender) {
+      url = `${url}r=${this.props.sender.address}&n=${encodeURIComponent(this.props.sender.name)}`
+    }
+    if (this.props.token) {
+      url = `${url}&t=${this.props.token.address}`
+    }
+    if (this.props.token && this.props.token.networkId) {
+      url = `${url}&nid=${this.props.token.networkId}`
+    }
+    if (this.props.amount) {
+      url = `${url}&a=${this.props.amount}`
+    }
+    if (this.props.attachment) {
+      url = `${url}&at=${this.props.attachment.ipfs}`
+    }
+
+    this.props.setModalMessage({
+      type: Enums.MessageType.Success,
+      title: 'Request',
+      message: 'Share this URL with your friends',
+      inputText: url,
+      ctaTitle: 'Close',
+    } as ModalMessageConfig)
+  }
 
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
         {this.props.sender && <RX.View style={Theme.Styles.accountInfo.wrapper}>
           <AccountIcon
-            account={this.props.sender}
+            account={this.props.currentUser}
             type={AccountIcon.type.Large}
             />
           <RX.Text style={Theme.Styles.accountInfo.title}>
-            {this.props.sender.name}
+            {this.props.currentUser.name}
           </RX.Text>
+          {this.props.currentUser.address !== this.props.currentUser.name && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
+            {Utils.address.short(this.props.currentUser.address)}
+          </RX.Text>}
         </RX.View>}
-
+        <SegmentedControl
+          titles={['Send', 'Request']}
+          selectedIndex={this.props.isSend ? 0 : 1}
+          handleSelection={(index) => this.props.setIsSend(index === 0 ? true : false)}
+          />
         <ListItem
           disabled={!this.props.sender}
           type={ListItem.type.Default}
@@ -60,7 +99,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           isOff={!this.props.amount}
           onPress={() => this.props.navigate('Amount')}
           />
-        <ListItem
+        {this.props.isSend && <ListItem
           // disabled={!this.props.currentUser || !this.props.transaction.token || !this.props.transaction.amount}
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Receiver'}
@@ -71,7 +110,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           onPress={() => this.props.navigate('Receiver')}
           smallSeedIcon
           account={this.props.receiver}
-        />
+        />}
 
         <ListItem
           //disabled={!this.props.currentUser}
@@ -84,7 +123,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           isOff={!this.props.room}
         />
 
-        <ListItem
+        {/* <ListItem
           //disabled={!this.props.currentUser}
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Attachment'}
@@ -93,18 +132,18 @@ export default class SendDetails extends RX.Component<Props, null> {
           onPress={() => this.props.navigate('Attachment')}
           isOn={(!!this.props.attachment.message || !!this.props.attachment.data)}
           isOff={!(!!this.props.attachment.message || !!this.props.attachment.data)}
-        />
+        /> */}
 
       <RX.View style={styles.cta}><CallToAction
-        disabled={!this.props.sender
+        disabled={this.props.isSend && (!this.props.sender
           || !this.props.token
           || !this.props.amount
           || !this.props.receiver
-          || this.props.isProcessing
+          || this.props.isProcessing)
         }
         type={CallToAction.type.Main}
-        title='Send'
-        onPress={this.props.send}
+        title={this.props.isSend ? 'Send' : 'Request'}
+        onPress={this.props.isSend ? this.props.send : this.handleRequest.bind(this)}
         inProgress={this.props.isProcessing}
       /></RX.View>
 
