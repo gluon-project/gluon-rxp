@@ -73,8 +73,8 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   render() {
     const showInputRow = (this.props.currentMatrixUser !== null && this.props.room !== null) ? true : false
     return (
-      <RX.View style={Theme.Styles.scrollContainerNoMargins}>
-        <ScrollView>
+      <RX.View style={[Theme.Styles.scrollContainerNoMargins, {paddingBottom: 80}]}>
+        <ScrollView autoScrollToBottom>
           <RX.View style={Theme.Styles.scrollContainer}>
             {showInputRow && this.props.room.timeline.map(event =>
             (event.type === 'm.room.message' && event.content.body !== null) &&
@@ -92,13 +92,16 @@ class TokenActionsScreen extends RX.Component<Props, State> {
           </RX.View>
         </ScrollView>
         {showInputRow &&
-        <RX.View style={[Theme.Styles.containerWrapper, {flex: 0, height: 100,  alignItems: 'flex-end'}]}>
+        <RX.View style={[Theme.Styles.containerWrapper, {
+            position: 'absolute', bottom: 0, right: 0, left: 0, flex: 0, height: 80,
+            alignItems: 'flex-end', backgroundColor: Theme.Colors.background}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
             <RX.Image
               resizeMode={'cover'}
               style={Theme.Styles.chat.messageSenderAvatarInput}
               source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
             <TextInput
+              placeholder={'Send message...'}
               value={this.state.message}
               onKeyPress={this.handleKeyPress}
               onChangeText={(message) => this.setState({message})}
