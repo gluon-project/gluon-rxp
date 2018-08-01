@@ -94,19 +94,23 @@ class TokenActionsScreen extends RX.Component<Props, State> {
         {showInputRow &&
         <RX.View style={[Theme.Styles.containerWrapper, {
             position: 'absolute', bottom: 0, right: 0, left: 0, flex: 0, height: 80,
-            alignItems: 'flex-end', backgroundColor: Theme.Colors.background}]}>
+            alignItems: 'center', backgroundColor: Theme.Colors.background}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
             <RX.Image
               resizeMode={'cover'}
               style={Theme.Styles.chat.messageSenderAvatarInput}
               source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
-            <TextInput
+            <RX.TextInput
+              style={Theme.Styles.chat.textInput}
               placeholder={'Send message...'}
               value={this.state.message}
               onKeyPress={this.handleKeyPress}
+              onSubmitEditing={this.send}
+              returnKeyType='send'
+              placeholderTextColor={Theme.Colors.info}
               onChangeText={(message) => this.setState({message})}
               />
-            <RX.Button onPress={this.send}>
+            <RX.Button onPress={this.send} style={{height: 44, justifyContent: 'center'}}>
               <RX.Text style={Theme.Styles.chat.messageSendButton}>Send</RX.Text>
             </RX.Button>
             <RX.Button onPress={this.sendTx} style={{margin: 15}}>

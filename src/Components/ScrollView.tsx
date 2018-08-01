@@ -41,8 +41,11 @@ export default class ScrollView extends RX.Component<Props, State> {
     this.handleAutoScroll(this._ref)
   }
 
-  componentDidUpdate() {
-    this.handleAutoScroll(this._ref)
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevState.contentHeight !== this.state.contentHeight
+      || prevState.wrapperHeight !== this.state.wrapperHeight) {
+        this.handleAutoScroll(this._ref)
+      }
   }
 
   render() {

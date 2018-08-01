@@ -622,11 +622,12 @@ const Styles = {
     }),
     inputRow: RX.Styles.createViewStyle({
       // height: 60,
+      flex: 1,
       flexDirection: 'row',
-      alignItems: 'flex-end',
-      paddingRight: Metrics.baseMargin,
+      alignItems: 'center',
+      // paddingRight: Metrics.baseMargin,
       paddingLeft: Metrics.baseMargin,
-      paddingBottom: Metrics.smallMargin,
+      // paddingBottom: Metrics.smallMargin,
       borderTopWidth: 1,
       borderColor: Colors.borderColor,
     }),
@@ -640,7 +641,14 @@ const Styles = {
     messageSendButton: RX.Styles.createTextStyle({
       color: Colors.brand,
       fontSize: Fonts.size.small,
-      marginBottom: Metrics.baseMargin,
+    }),
+    textInput: RX.Styles.createTextInputStyle({
+      flex: 1,
+      backgroundColor: Colors.transparent,
+      height: Metrics.buttonHeight,
+      paddingLeft: Metrics.baseMargin,
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
     }),
   },
 }
