@@ -355,7 +355,6 @@ const Styles = {
     amount: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
-      flex: 1,
     }),
     title: RX.Styles.createTextStyle({
       color: Colors.light,
@@ -365,7 +364,6 @@ const Styles = {
     subTitle: RX.Styles.createTextStyle({
       color: Colors.info,
       fontSize: Fonts.size.small,
-      flex: 1,
     }),
     txInfo: RX.Styles.createViewStyle({
       flexDirection: 'row',

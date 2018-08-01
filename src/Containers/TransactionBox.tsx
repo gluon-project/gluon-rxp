@@ -40,22 +40,23 @@ class TransactionBox extends RX.Component<Props, null> {
   }
 
   render() {
+    //{moment(this.props.transaction.date).fromNow()}
     return (
       <RX.View>
         {this.props.transaction && this.props.sender && <RX.View style={[Theme.Styles.row, {
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           backgroundColor: Theme.Colors.backgroundSelected,
           padding: Theme.Metrics.baseMargin,
           borderRadius: Theme.Metrics.borderRadius,
           }]}>
-          <RX.View style={{alignItems: 'center'}}>
+          <RX.View style={{alignItems: 'center', flex: 1}}>
             <AccountIcon type={AccountIcon.type.Medium} account={this.props.sender} />
               <RX.Button onPress={() => this.handleContactPress(this.props.sender)}>
-                <RX.Text style={Theme.Styles.feed.title}>{this.props.sender.name}</RX.Text>
+                <RX.Text numberOfLines={2} style={Theme.Styles.feed.title}>{this.props.sender.name}</RX.Text>
               </RX.Button>
           </RX.View>
 
-          <RX.View style={{alignItems: 'center'}}>
+          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 0}}>
             <RX.Text style={Theme.Styles.feed.subTitle}>
                 Sent
             </RX.Text>
@@ -66,14 +67,14 @@ class TransactionBox extends RX.Component<Props, null> {
 
             <RX.Link
               url={`https://rinkeby.etherscan.io/tx/${this.props.hash}`}
-              style={Theme.Styles.feed.subTitle}>{moment(this.props.transaction.date).fromNow()} to</RX.Link>
+              style={Theme.Styles.feed.subTitle}>to</RX.Link>
 
           </RX.View>
 
-          <RX.View style={{alignItems: 'center'}}>
+          <RX.View style={{alignItems: 'center', flex: 1}}>
             <AccountIcon type={AccountIcon.type.Medium} account={this.props.receiver} />
               <RX.Button onPress={() => this.handleContactPress(this.props.receiver)}>
-                <RX.Text style={Theme.Styles.feed.title}>{this.props.receiver.name}</RX.Text>
+                <RX.Text numberOfLines={2} style={Theme.Styles.feed.title}>{this.props.receiver.name}</RX.Text>
               </RX.Button>
           </RX.View>
 
