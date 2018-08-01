@@ -278,3 +278,27 @@ export function* watchGetAvailableTokens(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.GetAvailableTokens}))
   }
 }
+
+export function* loadTransactionInfo(action: any): SagaIterator {
+  const hash = action.payload
+  yield put(Actions.Process.start({type: Enums.ProcessType.LoadTransactionInfo, data: hash}))
+  try {
+    const transaction: Transaction = yield call(Web3.loadTransactionInfo, hash)
+
+    // Add token if unknown
+    const existingToken = yield select(Selectors.Tokens.getTokenByAddress, transaction.token)
+    if (!existingToken) {
+      const token = yield call(Web3.getTokenInfo, transaction.token)
+      yield put(Actions.Tokens.addToken(token))
+    }
+
+    yield put(Actions.Transactions.addToCache(transaction))
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  yield put(Actions.Process.end({ type: Enums.ProcessType.LoadTransactionInfo, data: hash}))
+}
+
+export function* watchLoadTransactionInfo(): SagaIterator {
+  yield takeEvery(Actions.Transactions.startLoading, loadTransactionInfo)
+}

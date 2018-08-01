@@ -11,6 +11,8 @@ import * as _ from 'lodash'
 import * as moment from 'moment'
 import * as Enums from '../../Enums'
 
+import Etherscan from '../Etherscan'
+
 var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
 abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
@@ -337,6 +339,16 @@ const handlePendingTransaction = (
   }
 }
 
+const loadTransactionInfo = (txHash: string): Promise<Transaction> => {
+
+  return new Promise<Transaction>((resolve, reject) => {
+    handlePendingTransaction((txHash, response) => {
+      const tx = Etherscan.ethTransactionToGluonTransactionGeneric(response)
+      return tx
+    }, resolve, reject)(null, txHash)
+  })
+}
+
 const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
   const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.token)
   console.log(transaction)
@@ -538,4 +550,5 @@ export default {
   getTokenInfo,
   getTokenListInfo,
   createNewToken,
+  loadTransactionInfo,
 }

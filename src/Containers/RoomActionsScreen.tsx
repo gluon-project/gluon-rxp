@@ -10,6 +10,7 @@ import {
   Icons,
   TextInput,
   Graphs } from '../Components'
+import { TransactionBox } from '../Containers'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Theme from '../Theme'
@@ -85,8 +86,8 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 source={getMember(event.sender, this.props.room).avatarUrl} />
               <RX.View style={{flex: 1}}>
                 <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>
-                <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>
-                {event.content.attachment && <AttachmentCard attachment={event.content.attachment} />}
+                {!event.content.txHash && <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+                {event.content.txHash && <TransactionBox hash={event.content.txHash} />}
               </RX.View>
             </RX.View>)}
           </RX.View>

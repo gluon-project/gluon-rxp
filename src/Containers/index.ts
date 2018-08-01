@@ -29,6 +29,7 @@ import SettingsScreen from './SettingsScreen'
 import TokensFormScreen from './TokensFormScreen'
 import TokenActionsScreen from './TokenActionsScreen'
 import TokensScreen from './TokensScreen'
+import TransactionBox from './TransactionBox'
 import WalletMasterScreen from './WalletMasterScreen'
 
 export {
@@ -63,5 +64,6 @@ export {
   TokenActionsScreen,
   TokensFormScreen,
   TokensScreen,
+  TransactionBox,
   WalletMasterScreen,
 }

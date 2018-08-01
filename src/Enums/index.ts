@@ -21,6 +21,7 @@ export enum ProcessType {
   GetAvailableTokens,
   MatrixLogin,
   MatrixSendMessage,
+  LoadTransactionInfo,
 }
 
 export enum VisualType {

@@ -101,7 +101,7 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.RoomsMasterScreen,
     screen: TabNavigator(
       {
-        RoomActions: {screen: StackNavigator({ RoomActions }, navigationOptions)},
+        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm }, navigationOptions)},
       },
       navigationOptions,
     ),
@@ -166,7 +166,7 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   RoomsTab: {
     screen: StackNavigator(
-      { CompactRoomsMainScreen, RoomActions },
+      { CompactRoomsMainScreen, RoomActions, ContactForm },
       navigationOptions,
     ),
   },

@@ -29,6 +29,56 @@ const toIPFSHash = (str: string) => {
   return hash
 }
 
+const ethTransactionToGluonTransactionGeneric = (ethTx: any): Transaction => {
+  const decodedLogs = abiDecoder.decodeLogs([ethTx.logs[0]])[0]
+
+  const event: EthereumLogEvent[] = decodedLogs.events
+  // const date = moment(parseInt(ethTx.timeStamp.slice(2, ethTx.timeStamp.length), 16) * 1000).toISOString()
+  const date = moment().toISOString()
+  const hash = `${ethTx.transactionHash}`
+  if (decodedLogs.name === 'Transfer') {
+    const sender = _.find(event, {'name': 'from'}).value
+    const receiver = _.find(event, {'name': 'to'}).value
+    const amount = _.find(event, {'name': 'value'}).value
+    const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
+    const attachment = data ? toIPFSHash(data) : null
+
+    return {
+      hash,
+      sender,
+      receiver,
+      amount: amount,
+      token: ethTx.to,
+      date,
+      attachment,
+      type: decodedLogs.name,
+    }
+  } else if (decodedLogs.name === 'Minted') {
+    return {
+      hash,
+      sender: decodedLogs.name,
+      receiver: _.find(event, {'name': 'totalCost'}).value,
+      amount: _.find(event, {'name': 'amount'}).value,
+      token: ethTx.to,
+      date,
+      attachment: null,
+      type: decodedLogs.name,
+    }
+  } else if (decodedLogs.name === 'Burned') {
+    return {
+      hash,
+      sender: decodedLogs.name,
+      receiver: _.find(event, {'name': 'reward'}).value,
+      amount: _.find(event, {'name': 'amount'}).value,
+      token: ethTx.to,
+      date,
+      attachment: null,
+      type: decodedLogs.name,
+    }
+  }
+  return {}
+}
+
 const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction => {
   const decodedLogs = abiDecoder.decodeLogs([ethTx])[0]
 
@@ -122,4 +172,5 @@ address=${Config.tokens.communityTokenFactoryAddress}&apikey=${Config.etherscan.
 export default {
   fetchTransactions,
   fetchAvailableTokens,
+  ethTransactionToGluonTransactionGeneric,
 }

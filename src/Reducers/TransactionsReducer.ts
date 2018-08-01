@@ -6,10 +6,15 @@ import { resetToInitialState } from './AppReducer'
 import * as UserActions from './UserReducer'
 import * as FeedActions from './FeedReducer'
 
+interface HashToTransactionMap {
+  [hash: string]: Transaction
+}
+
 export interface TransactionState {
   isSend: boolean,
   new: Transaction,
   list: Transaction[],
+  cache: HashToTransactionMap,
 }
 
 const emptyTransaction = {
@@ -24,6 +29,7 @@ const initialState: TransactionState = {
   isSend: true,
   new: emptyTransaction,
   list: [],
+  cache: {},
 }
 
 export const reducer = createReducer({}, initialState)
@@ -151,5 +157,17 @@ reducer.on(resetNewTransaction, (state: TransactionState, payload?: Transaction)
   return {
     ...state,
     new: {...emptyTransaction, sender: payload.sender},
+  }
+})
+
+export const startLoading = createAction('Start loading transaction')
+
+export const addToCache = createAction('Add attachment to cache')
+reducer.on(addToCache, (state: TransactionState, payload?: Transaction) => {
+  let newCache = { ...state.cache }
+  newCache[payload.hash] = payload
+  return {
+    ...state,
+    cache: newCache,
   }
 })

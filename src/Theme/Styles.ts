@@ -350,8 +350,6 @@ const Styles = {
       paddingBottom: Metrics.baseMargin,
       paddingLeft: Metrics.baseMargin,
       paddingRight: Metrics.baseMargin,
-      borderBottomWidth: Metrics.borderWidth,
-      borderColor: Colors.borderColor,
       flex: 1,
     }),
     title: RX.Styles.createTextStyle({
