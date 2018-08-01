@@ -352,9 +352,14 @@ const Styles = {
       paddingRight: Metrics.baseMargin,
       flex: 1,
     }),
-    title: RX.Styles.createTextStyle({
+    amount: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
+      flex: 1,
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
       flex: 1,
     }),
     subTitle: RX.Styles.createTextStyle({

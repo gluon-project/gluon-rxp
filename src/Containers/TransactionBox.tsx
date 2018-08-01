@@ -41,54 +41,55 @@ class TransactionBox extends RX.Component<Props, null> {
 
   render() {
     return (
-      <RX.View style={Theme.Styles.containerWrapper}>
-        <RX.View style={Theme.Styles.container}>
-          <RX.View style={Theme.Styles.feed.item}>
-            {this.props.transaction && this.props.sender && <RX.View style={Theme.Styles.feed.txInfo}>
-              <AccountIcon type={AccountIcon.type.Medium} account={this.props.sender} />
-
-              <RX.View style={Theme.Styles.feed.txTitle}>
-                <RX.View style={Theme.Styles.row}>
-                  <RX.Button onPress={() => this.handleContactPress(this.props.sender)}>
-                    <RX.View>
-                        <RX.Text style={Theme.Styles.feed.title}>{this.props.sender.name}</RX.Text>
-                    </RX.View>
-                  </RX.Button>
-                  <RX.View style={Theme.Styles.feed.txDetails}>
-                    <RX.Text style={Theme.Styles.feed.title}>
-                      {Utils.number.numberToString(this.props.transaction.amount, this.props.token.decimals)} {this.props.token.code}
-                    </RX.Text>
-                  </RX.View>
-                </RX.View>
-
-                <RX.View style={Theme.Styles.row}>
-                  <RX.Button onPress={() => this.handleContactPress(this.props.receiver)}>
-                    <RX.View style={Theme.Styles.row}>
-                      <RX.Text style={Theme.Styles.feed.subTitle}>
-                        {'to '}
-                      </RX.Text>
-                      <AccountIcon type={AccountIcon.type.Micro} account={this.props.receiver} />
-                      <RX.Text style={Theme.Styles.feed.subTitle}>
-                        {this.props.receiver.name}
-                      </RX.Text>
-                    </RX.View>
-                  </RX.Button>
-                  <RX.View style={Theme.Styles.feed.txDetails}>
-                  <RX.Link
-                    url={`https://rinkeby.etherscan.io/tx/${this.props.hash}`}
-                    style={Theme.Styles.feed.subTitle}>{moment(this.props.transaction.date).fromNow()}</RX.Link>
-                  </RX.View>
-                </RX.View>
-              </RX.View>
-            </RX.View>}
-            {this.props.isProcessing && !this.props.transaction && <RX.View style={Theme.Styles.activityIndicator}>
-            <RX.Text style={Theme.Styles.feed.title}>Pending transaction</RX.Text>
-            <RX.ActivityIndicator
-              size='small'
-              color={Theme.Colors.light}
-              /></RX.View>}
+      <RX.View>
+        {this.props.transaction && this.props.sender && <RX.View style={[Theme.Styles.row, {
+          justifyContent: 'space-between',
+          backgroundColor: Theme.Colors.backgroundSelected,
+          padding: Theme.Metrics.baseMargin,
+          borderRadius: Theme.Metrics.borderRadius,
+          }]}>
+          <RX.View style={{alignItems: 'center'}}>
+            <AccountIcon type={AccountIcon.type.Medium} account={this.props.sender} />
+              <RX.Button onPress={() => this.handleContactPress(this.props.sender)}>
+                <RX.Text style={Theme.Styles.feed.title}>{this.props.sender.name}</RX.Text>
+              </RX.Button>
           </RX.View>
-        </RX.View>
+
+          <RX.View style={{alignItems: 'center'}}>
+            <RX.Text style={Theme.Styles.feed.subTitle}>
+                Sent
+            </RX.Text>
+
+            <RX.Text style={Theme.Styles.feed.amount}>
+                {Utils.number.numberToString(this.props.transaction.amount, this.props.token.decimals)} {this.props.token.code}
+            </RX.Text>
+
+            <RX.Link
+              url={`https://rinkeby.etherscan.io/tx/${this.props.hash}`}
+              style={Theme.Styles.feed.subTitle}>{moment(this.props.transaction.date).fromNow()} to</RX.Link>
+
+          </RX.View>
+
+          <RX.View style={{alignItems: 'center'}}>
+            <AccountIcon type={AccountIcon.type.Medium} account={this.props.receiver} />
+              <RX.Button onPress={() => this.handleContactPress(this.props.receiver)}>
+                <RX.Text style={Theme.Styles.feed.title}>{this.props.receiver.name}</RX.Text>
+              </RX.Button>
+          </RX.View>
+
+        </RX.View>}
+
+        {this.props.isProcessing && !this.props.transaction && <RX.View style={[Theme.Styles.activityIndicator, {
+          backgroundColor: Theme.Colors.backgroundSelected,
+          padding: Theme.Metrics.baseMargin,
+          borderRadius: Theme.Metrics.borderRadius,
+          }]}>
+        <RX.Text style={Theme.Styles.feed.title}>Pending transaction</RX.Text>
+        <RX.ActivityIndicator
+          size='small'
+          color={Theme.Colors.light}
+          /></RX.View>}
+
       </RX.View>
     )
   }
