@@ -169,7 +169,13 @@ declare interface MatrixRoomState {
 }
 declare interface MatrixTimelineEvent {
   type: string,
-  content: any,
+  content: {
+    body: string,
+    txHash?: string,
+    info?: {
+      mimetype: string,
+    },
+  },
   eventId: string,
   ts: number,
   sender: string,

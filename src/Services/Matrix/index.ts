@@ -2,6 +2,7 @@ const Matrix = require('matrix-js-sdk')
 import request from './Request'
 
 export let client: any = null
+export let fileFilter: any = null
 
 export const login = (username: string, password: string, baseUrl: string) => {
   const tmpClient = Matrix.createClient({baseUrl, request})
@@ -18,7 +19,9 @@ export const login = (username: string, password: string, baseUrl: string) => {
             userId: resp.user_id,
             accessToken: resp.access_token,
             request,
+            timelineSupport: true,
         })
+        createFileFilter()
         // client.startClient()
         resolve(resp)
       }
@@ -33,7 +36,9 @@ export const startClient = (options: MatrixUser) => {
     accessToken: options.access_token,
     deviceId: options.device_id,
     request,
+    timelineSupport: true,
   })
+  createFileFilter()
   // client.startClient()
   return true
 }
@@ -44,6 +49,23 @@ export const sendTextMessage = (roomId: string, message: string) => {
 
 export const sendMessage = (roomId: string, content: any) => {
   return client.sendMessage(roomId, content)
+}
+
+export const uploadFile = (roomId: string, file: any) => {
+  const { fileContent, fileName } = file
+  return client.uploadContent(fileContent, {name: fileName, type: 'application/json'})
+  .done(function(url: string) {
+    var content = {
+        msgtype: 'm.file',
+        body: fileName,
+        url: url,
+        info: {
+          size: fileContent.length,
+          mimetype: 'application/json',
+        },
+    }
+    return client.sendMessage(roomId, content)
+})
 }
 
 export const getEventData = (event: any): MatrixTimelineEvent => {
@@ -87,4 +109,46 @@ export const getRooms = (): MatrixRoom[] => {
   })
 
   return data
+}
+
+export const getClaims = (): any[] => {
+  const rooms = client.getRooms()
+  let urls: any[] = []
+  // rooms.forEach((room: any) => {
+
+  //   const timelineSet = room.getOrCreateFilteredTimelineSet(fileFilter)
+  //   const events: MatrixTimelineEvent[] = timelineSet.getLiveTimeline().getEvents().map(getEventData)
+  //   events.forEach((event) => {
+  //     console.log(event)
+  //     urls.push(client.mxcUrlToHttp(event.content.url))
+  //   })
+  // })
+
+  return urls
+}
+
+export const createFileFilter = () => {
+  fileFilter = new Matrix.Filter(client.credentials.userId)
+  fileFilter.setDefinition(
+    {
+      room: {
+        timeline: {
+          contains_url: true,
+          types: [
+              'm.room.message',
+          ],
+        },
+      },
+    },
+  )
+
+  client.getOrCreateFilter('FILTER_FILES_' + client.credentials.userId, fileFilter).then(
+      (filterId: string) => {
+        fileFilter.filterId = filterId
+        console.log('filterId', filterId)
+      },
+      (error: any) => {
+          console.error('Failed to get or create file filter', error)
+      },
+  )
 }

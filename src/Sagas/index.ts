@@ -20,6 +20,7 @@ export default function* root() {
   yield fork(MatrixSaga.watchStartLogin)
   yield fork(MatrixSaga.watchSendTextMessage)
   yield fork(MatrixSaga.watchSendMessage)
+  yield fork(MatrixSaga.watchSendFile)
   yield fork(ModalMessageSaga.watchCloseModalMessage)
   yield fork(NavigationSaga.watchNavigate)
   yield fork(UportSaga.watchStartLogin)

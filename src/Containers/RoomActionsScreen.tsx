@@ -17,7 +17,7 @@ import * as Theme from '../Theme'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import utils from '../Utils'
-import { find } from 'lodash'
+import { find, filter } from 'lodash'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
@@ -73,11 +73,20 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   }
   render() {
     const showInputRow = (this.props.currentMatrixUser !== null && this.props.room !== null) ? true : false
+    const timeline: MatrixTimelineEvent[] = filter(this.props.room.timeline,
+      (item: MatrixTimelineEvent) => {
+        if (item.content.info && item.content.info.mimetype && item.content.info.mimetype === 'application/json') {
+          return false
+        } else {
+          return true
+        }
+      })
+    console.log({timeline})
     return (
       <RX.View style={[Theme.Styles.scrollContainerNoMargins, {paddingBottom: 80}]}>
         <ScrollView autoScrollToBottom>
           <RX.View style={Theme.Styles.scrollContainer}>
-            {showInputRow && this.props.room.timeline.map(event =>
+            {showInputRow && timeline.map(event =>
             (event.type === 'm.room.message' && event.content.body !== null) &&
             <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
               <RX.Image

@@ -63,6 +63,23 @@ to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${re
         }
 
         yield put(Actions.Matrix.sendMessage(content))
+
+        const claims: any[] = []
+        claims.push({sub: sender.address, claim: {name: sender.name}})
+        if (sender.avatar) {
+          claims.push({sub: sender.address, claim: {avatar: sender.avatar}})
+        }
+        claims.push({sub: receiver.address, claim: {name: receiver.name}})
+        if (receiver.avatar) {
+          claims.push({sub: receiver.address, claim: {avatar: receiver.avatar}})
+        }
+
+        const file = {
+          fileName: 'claims.json',
+          fileContent: JSON.stringify({claims}),
+        }
+        yield put(Actions.Matrix.sendFile(file))
+
         yield put(Actions.Navigation.navigate('RoomsTab'))
       } else {
         yield put(Actions.User.refreshBalances())
