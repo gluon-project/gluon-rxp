@@ -12,6 +12,7 @@ interface Props extends RX.CommonProps {
   navigateBack?: () => void
   receiver?: User
   addContact?: (user: User) => void
+  signAnonymousClaim?: (claim: any) => void
   setReceiver?: (user: string) => void
 }
 
@@ -25,12 +26,28 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
   }
 
   private handleSave = () => {
-    this.props.addContact(this.state)
-    if (!this.props.formValues) {
-      this.props.setReceiver(this.state.address)
-    }
+    // this.props.addContact(this.state)
+    // if (!this.props.formValues) {
+    //   this.props.setReceiver(this.state.address)
+    // }
 
-    this.props.navigateBack()
+    // this.props.navigateBack()
+  }
+
+  private handleSaveAnonymous = () => {
+    // this.props.addContact(this.state)
+    // if (!this.props.formValues) {
+    //   this.props.setReceiver(this.state.address)
+    // }
+
+    // this.props.navigateBack()
+
+    this.props.signAnonymousClaim({
+      sub: `did:ethr:${this.state.address}`,
+      claim: {
+        name: this.state.name,
+      },
+    })
   }
 
   private isValid = () => {
@@ -57,6 +74,12 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
             onPress={this.handleSave}
             disabled={!this.isValid()}
           />
+          <CallToAction
+            type={CallToAction.type.Main}
+            title='Sign Anonymously'
+            onPress={this.handleSaveAnonymous}
+            disabled={!this.isValid()}
+          />
         </ScrollView>
       </RX.View>
     )
@@ -73,6 +96,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
     setReceiver: (user: string) => dispatch(Actions.Transactions.setReceiver(user)),
     addContact: (user: User) => dispatch(Actions.Contacts.addContact(user)),
+    signAnonymousClaim: (claim: any) => dispatch(Actions.Contacts.signAnonymousClaim(claim)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ReceiverFormScreen)

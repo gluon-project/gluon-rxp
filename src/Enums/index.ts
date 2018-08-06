@@ -22,6 +22,7 @@ export enum ProcessType {
   MatrixLogin,
   MatrixSendMessage,
   LoadTransactionInfo,
+  SignClaim,
 }
 
 export enum VisualType {

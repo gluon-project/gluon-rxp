@@ -9,11 +9,13 @@ import Config from '../Config'
 export interface ContactsState {
   editing: User,
   list: User[],
+  claims: VerifiableClaim[],
 }
 
 const initialState: ContactsState = {
   editing: null,
   list: Config.contacts.defaultList,
+  claims: Config.contacts.defaultClaimsList,
 }
 
 export const reducer = createReducer({}, initialState)
@@ -40,3 +42,13 @@ reducer.on(setForEditing, (state: ContactsState, payload?: User) => {
     editing: payload,
   }
 })
+
+export const addClaim = createAction('Add claim')
+reducer.on(addClaim, (state: ContactsState, payload?: VerifiableClaim) => {
+  return {
+    ...state,
+    claims: [ ...state.claims, payload ],
+  }
+})
+
+export const signAnonymousClaim = createAction('Sign anonymous claim')

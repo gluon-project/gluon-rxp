@@ -1,6 +1,7 @@
 import { fork } from 'redux-saga/effects'
 import * as AppSaga from './AppSaga'
 import * as AttachmentSaga from './AttachmentSaga'
+import * as ClaimsSaga from './ClaimsSaga'
 import * as MatrixSaga from './MatrixSaga'
 import * as ModalMessageSaga from './ModalMessageSaga'
 import * as NavigationSaga from './NavigationSaga'
@@ -17,6 +18,7 @@ export default function* root() {
   yield fork(AttachmentSaga.watchGetFromIpfs)
   yield fork(AttachmentSaga.watchSaveAttachment)
   yield fork(AttachmentSaga.watchStartDownload)
+  yield fork(ClaimsSaga.watchSignAnonymousClaim)
   yield fork(MatrixSaga.watchStartLogin)
   yield fork(MatrixSaga.watchSendTextMessage)
   yield fork(MatrixSaga.watchSendMessage)
