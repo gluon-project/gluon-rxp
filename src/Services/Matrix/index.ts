@@ -114,15 +114,18 @@ export const getRooms = (): MatrixRoom[] => {
 export const getClaims = (): any[] => {
   const rooms = client.getRooms()
   let urls: any[] = []
-  // rooms.forEach((room: any) => {
+  rooms.forEach((room: any) => {
 
-  //   const timelineSet = room.getOrCreateFilteredTimelineSet(fileFilter)
-  //   const events: MatrixTimelineEvent[] = timelineSet.getLiveTimeline().getEvents().map(getEventData)
-  //   events.forEach((event) => {
-  //     console.log(event)
-  //     urls.push(client.mxcUrlToHttp(event.content.url))
-  //   })
-  // })
+    const timelineSet = room.getOrCreateFilteredTimelineSet(fileFilter)
+    const events: MatrixTimelineEvent[] = timelineSet.getLiveTimeline().getEvents().map(getEventData)
+    events.forEach((event) => {
+      console.log(event)
+      if (event.content.info && event.content.info.mimetype === 'application/json') {
+        urls.push(client.mxcUrlToHttp(event.content.url))
+      }
+    })
+    room.removeFilteredTimelineSet(fileFilter)
+  })
 
   return urls
 }

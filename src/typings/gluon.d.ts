@@ -172,6 +172,7 @@ declare interface MatrixTimelineEvent {
   content: {
     body: string,
     txHash?: string,
+    url?: string,
     info?: {
       mimetype: string,
     },
