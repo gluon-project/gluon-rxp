@@ -334,7 +334,8 @@ const handlePendingTransaction = (
                     console.log('TX Error: ', error)
                     reject(err)
                   }
-                  resolve(handleResponse(txHash, response, block.timestamp))
+                  const timestamp = block ? block.timestamp : moment().format('X')
+                  resolve(handleResponse(txHash, response, timestamp))
                 })
               }
             })
