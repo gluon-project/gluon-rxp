@@ -28,6 +28,8 @@ declare interface ModalMessageConfig {
 declare const __DEV__: boolean
 
 declare interface User {
+  did?: string,
+  shortId?: string,
   address?: string,
   networkId?: string,
   name?: string,

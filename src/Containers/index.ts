@@ -6,13 +6,14 @@ import AboutMasterScreen from './AboutMasterScreen'
 import AmountScreen from './AmountScreen'
 import AttachmentScreen from './AttachmentScreen'
 import CompactAboutMainScreen from './CompactAboutMainScreen'
-import CompactFeedMainScreen from './CompactFeedMainScreen'
+import CompactContactsMainScreen from './CompactContactsMainScreen'
 import CompactRequestMainScreen from './CompactRequestMainScreen'
 import CompactRoomsMainScreen from './CompactRoomsMainScreen'
 import CompactSendMainScreen from './CompactSendMainScreen'
 import CompactWalletMainScreen from './CompactWalletMainScreen'
 import FeedItem from './FeedItem'
-import FeedMasterScreen from './FeedMasterScreen'
+import ContactsMasterScreen from './ContactsMasterScreen'
+import ContactActionsScreen from './ContactActionsScreen'
 import FeedScreen from './FeedScreen'
 import LoadingScreen from './LoadingScreen'
 import LoginScreen from './LoginScreen'
@@ -41,13 +42,14 @@ export {
   AmountScreen,
   AttachmentScreen,
   CompactAboutMainScreen,
-  CompactFeedMainScreen,
+  CompactContactsMainScreen,
+  ContactActionsScreen,
   CompactRequestMainScreen,
   CompactRoomsMainScreen,
   CompactSendMainScreen,
   CompactWalletMainScreen,
   FeedItem,
-  FeedMasterScreen,
+  ContactsMasterScreen,
   FeedScreen,
   LoadingScreen,
   LoginScreen,

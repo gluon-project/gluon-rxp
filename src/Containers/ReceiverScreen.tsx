@@ -34,7 +34,7 @@ class ReceiverScreen extends RX.Component<Props, null> {
             account={user}
             type={ListItem.type.Secondary}
             title={user.name}
-            subTitle={utils.address.short(user.address)}
+            subTitle={user.shortId}
             selected={this.props.selectedReceiver
               && user.address === this.props.selectedReceiver}
             onPress={() => this.handleSetReceiver(user)}

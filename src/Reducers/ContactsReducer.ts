@@ -8,12 +8,14 @@ import Config from '../Config'
 
 export interface ContactsState {
   editing: User,
+  selectedContact: string,
   list: User[],
   claims: VerifiableClaim[],
 }
 
 const initialState: ContactsState = {
   editing: null,
+  selectedContact: null,
   list: Config.contacts.defaultList,
   claims: Config.contacts.defaultClaimsList,
 }
@@ -48,6 +50,14 @@ reducer.on(addClaim, (state: ContactsState, payload?: VerifiableClaim) => {
   return {
     ...state,
     claims: [ ...state.claims, payload ],
+  }
+})
+
+export const selectContact = createAction('Select contact')
+reducer.on(selectContact, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    selectedContact: payload,
   }
 })
 

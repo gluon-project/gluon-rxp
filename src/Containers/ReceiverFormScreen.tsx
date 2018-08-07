@@ -35,19 +35,18 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
   }
 
   private handleSaveAnonymous = () => {
-    // this.props.addContact(this.state)
-    // if (!this.props.formValues) {
-    //   this.props.setReceiver(this.state.address)
-    // }
-
-    // this.props.navigateBack()
+    const address = utils.address.universalIdToDID(this.state.address)
 
     this.props.signAnonymousClaim({
-      sub: `did:ethr:${this.state.address}`,
+      sub: address,
       claim: {
         name: this.state.name,
       },
     })
+
+    this.props.setReceiver(this.state.address)
+    this.props.navigateBack()
+
   }
 
   private isValid = () => {
@@ -68,15 +67,15 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
             value={this.state.address}
             onChangeText={(value) => this.setState({ address: value })}
             />
-          <CallToAction
+          {/* <CallToAction
             type={CallToAction.type.Main}
             title='Save'
             onPress={this.handleSave}
             disabled={!this.isValid()}
-          />
+          /> */}
           <CallToAction
             type={CallToAction.type.Main}
-            title='Sign Anonymously'
+            title='Sign Anonymously and Save'
             onPress={this.handleSaveAnonymous}
             disabled={!this.isValid()}
           />

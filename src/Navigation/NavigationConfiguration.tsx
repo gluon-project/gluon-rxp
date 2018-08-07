@@ -71,6 +71,7 @@ const RequestReceiver = {screen: Screens.SenderScreen, navigationOptions: {title
 const Receiver = {screen: Screens.ReceiverScreen, navigationOptions: {title: 'Receiver'}}
 const ReceiverForm = {screen: Screens.ReceiverFormScreen, navigationOptions: {title: 'Add Receiver'}}
 const ContactForm = {screen: Screens.ReceiverFormScreen, navigationOptions: {title: 'Edit Contact'}}
+const ContactActions = {screen: Screens.ContactActionsScreen, navigationOptions: {title: 'Contact'}}
 const LoginStack = {screen: Screens.LoginScreen, navigationOptions: {title: 'Login'}}
 const Settings = { screen: Screens.SettingsScreen, navigationOptions: { title: 'Settings' } }
 const More = { screen: Screens.MoreMasterScreen, navigationOptions: { title: 'Settings' } }
@@ -92,7 +93,7 @@ const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
 const CompactAboutMainScreen = {screen: Screens.CompactAboutMainScreen, navigationOptions: {title: 'About'}}
-const CompactFeedMainScreen = {screen: Screens.CompactFeedMainScreen, navigationOptions: {title: 'Filter'}}
+const CompactContactsMainScreen = {screen: Screens.CompactContactsMainScreen, navigationOptions: {title: 'Contacts'}}
 const CompactRoomsMainScreen = {screen: Screens.CompactRoomsMainScreen, navigationOptions: {title: 'Rooms'}}
 const CompactWalletMainScreen = {screen: Screens.CompactWalletMainScreen, navigationOptions: {title: 'Wallet'}}
 
@@ -106,9 +107,9 @@ export const WideNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  FeedTab: {
-    masterScreen: Screens.FeedMasterScreen,
-    screen: StackNavigator({ Feed, ContactForm }, navigationOptions),
+  ContactsTab: {
+    masterScreen: Screens.ContactsMasterScreen,
+    screen: StackNavigator({ ContactActions }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -170,8 +171,8 @@ export const CompactNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  FeedTab: {
-    screen: StackNavigator({ CompactFeedMainScreen, Feed, ContactForm }, navigationOptions),
+  ContactsTab: {
+    screen: StackNavigator({ CompactContactsMainScreen, ContactActions }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(

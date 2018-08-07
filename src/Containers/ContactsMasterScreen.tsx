@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ListItem, NavBar, FeedDetails } from '../Components'
+import { CallToAction, ListItem, NavBar, ContactListDetails } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -10,24 +10,26 @@ import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
-  selectToken?: (tokenAddress: string) => void
-  selectedToken?: string,
-  uiTraits?: UITraits
-  tokens?: Token[]
+  navigateHome?: () => void
+  selectContact?: (did: string) => void
+  navigation?: any,
+  selectedContact?: string,
+  uiTraits?: UITraits,
+  contacts?: User[],
 }
 
-class FeedMasterScreen extends RX.Component<Props, null> {
+class ContactsMasterScreen extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.containerFull}>
-        <NavBar title='Filter' />
+        <NavBar title='Contacts' />
         <RX.ScrollView style={[Theme.Styles.scrollContainerNoMargins, Theme.Styles.masterViewContainer]}>
           <RX.View style={Theme.Styles.container}>
-            <FeedDetails
+            <ContactListDetails
               uiTraits={this.props.uiTraits}
-              tokens={this.props.tokens}
-              selectedToken={this.props.selectedToken}
-              selectToken={this.props.selectToken}
+              contacts={this.props.contacts}
+              selectedContact={this.props.selectedContact}
+              selectContact={this.props.selectContact}
               />
           </RX.View>
         </RX.ScrollView>
@@ -39,14 +41,15 @@ class FeedMasterScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     uiTraits: state.app.uiTraits,
-    tokens: Selectors.Tokens.getListForFeed(state),
-    selectedToken: Selectors.Feed.getSelectedToken(state),
+    contacts: Selectors.Contacts.getList(state),
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
-    selectToken: (tokenAddress: string) => dispatch(Actions.Feed.selectToken(tokenAddress)),
+    navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(FeedMasterScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsMasterScreen)
