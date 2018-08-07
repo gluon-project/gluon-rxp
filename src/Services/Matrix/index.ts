@@ -113,9 +113,9 @@ export const getRooms = (): MatrixRoom[] => {
 
 export const getClaims = (): any[] => {
   const rooms = client.getRooms()
-  let urls: any[] = []
+  let result: any[] = []
   rooms.forEach((room: any) => {
-
+    const urls: string[] = []
     const timelineSet = room.getOrCreateFilteredTimelineSet(fileFilter)
     const events: MatrixTimelineEvent[] = timelineSet.getLiveTimeline().getEvents().map(getEventData)
     events.forEach((event) => {
@@ -125,9 +125,10 @@ export const getClaims = (): any[] => {
       }
     })
     room.removeFilteredTimelineSet(fileFilter)
+    result.push({roomId: room.roomId, urls})
   })
 
-  return urls
+  return result
 }
 
 export const createFileFilter = () => {

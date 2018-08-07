@@ -35,6 +35,10 @@ declare interface User {
   name?: string,
   avatar?: string,
   hidden?: boolean,
+  claims?: {
+    name?: VerifiableClaim,
+    avatar?: VerifiableClaim,
+  }
 }
 
 // Claims

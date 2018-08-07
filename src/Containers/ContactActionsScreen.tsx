@@ -27,7 +27,8 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
             key={key}
             type={ListItem.type.Secondary}
             title={JSON.stringify(claim.claim)}
-            subTitle={`Issued by: ${utils.address.short(claim.iss)}`}
+            subTitle={`Issued by: ${utils.address.short(claim.iss)},\
+ source: ${claim.source.type} ${claim.source.id ? claim.source.id : ''}`}
             />)}
         </ScrollView>
       </RX.View>
