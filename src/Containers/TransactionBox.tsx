@@ -56,7 +56,7 @@ class TransactionBox extends RX.Component<Props, null> {
               </RX.Button>
           </RX.View>
 
-          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 0}}>
+          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 1}}>
             <RX.Text style={Theme.Styles.feed.subTitle}>
                 Sent
             </RX.Text>

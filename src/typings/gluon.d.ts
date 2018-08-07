@@ -35,6 +35,23 @@ declare interface User {
   hidden?: boolean,
 }
 
+// Claims
+
+declare interface VerifiableClaim {
+  iss: string,
+  sub?: string,
+  iat: number,
+  exp?: number,
+  claim: any,
+  jwt: string,
+  source: {
+    type: string, // 'local', 'matrix', etc.
+    id?: string, // 'folder', 'roomId', etc.
+  }
+}
+
+// Token
+
 declare interface Token {
   address?: string,
   networkId?: string,
@@ -169,7 +186,14 @@ declare interface MatrixRoomState {
 }
 declare interface MatrixTimelineEvent {
   type: string,
-  content: any,
+  content: {
+    body: string,
+    txHash?: string,
+    url?: string,
+    info?: {
+      mimetype: string,
+    },
+  },
   eventId: string,
   ts: number,
   sender: string,

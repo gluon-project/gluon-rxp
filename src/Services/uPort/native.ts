@@ -4,7 +4,7 @@ import RX = require('reactxp')
 import RN = require('react-native')
 
 var uportConnect = require('uport-connect/dist/uport-connect')
-const { Connect, SimpleSigner, MNID } = uportConnect
+const { Connect, SimpleSigner, MNID, JWT } = uportConnect
 const uuidv1 = require('uuid/v1')
 const URL = require('url-parse')
 const qs = require('qs')
@@ -95,8 +95,16 @@ const requestCredentials = (network: string) => {
 }
 const getProvider = () => uport.getWeb3()
 
+const signAnonymousClaim = (claim: any): VerifiableClaim => {
+  return JWT.createJWT({
+    address: Config.uport.app.address,
+    signer: SimpleSigner(Config.uport.app.privateKey),
+  }, claim)
+}
+
 export default {
   MNID,
+  signAnonymousClaim,
   requestCredentials,
   getProvider,
   rinkebyProvider: uportRinkeby.getWeb3(),

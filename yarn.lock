@@ -5593,6 +5593,16 @@ jsontokens@^0.7.6:
     key-encoder "^1.1.6"
     validator "^7.0.0"
 
+jsontokens@^0.7.8:
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/jsontokens/-/jsontokens-0.7.8.tgz#9210bb98944ee93a156c72754c1c281b2c52d419"
+  dependencies:
+    asn1.js "^4.9.1"
+    base64url "^3.0.0"
+    elliptic "^6.3.2"
+    key-encoder "^1.1.6"
+    validator "^7.0.0"
+
 jsprim@^1.2.2:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/jsprim/-/jsprim-1.4.0.tgz#a3b87e40298d8c380552d8cc7628a0bb95a22918"
@@ -5981,9 +5991,9 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
-matrix-js-sdk@^0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-0.10.6.tgz#f4ec27e5fddfc9a14bce858601ed824e6baf865b"
+matrix-js-sdk@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-0.10.7.tgz#ae95a0c0c726384e506155fe53e4946c9b63cfe9"
   dependencies:
     another-json "^0.2.0"
     babel-runtime "^6.26.0"

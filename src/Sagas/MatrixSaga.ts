@@ -82,7 +82,8 @@ export function * handleSyncEvent (event: any) {
   if (event === 'PREPARED') {
     const rooms = yield call(Services.Matrix.getRooms)
     yield put(Actions.Matrix.setRooms(rooms))
-    console.log(Services.Matrix.client)
+    const claims = yield call(Services.Matrix.getClaims)
+    console.log(claims)
 
     const timelineChannel = yield eventChannel(emitter => {
       Services.Matrix.client.on('Room.timeline', emitter)
@@ -165,6 +166,21 @@ export function* watchSendMessage(): SagaIterator {
     try {
       const currentRoomId = yield select(Selectors.Matrix.getSelectedRoomId)
       yield call(Services.Matrix.sendMessage, currentRoomId, action.payload)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSendMessage}))
+  }
+}
+
+export function* watchSendFile(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.sendFile)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixSendMessage}))
+
+    try {
+      const currentRoomId = yield select(Selectors.Matrix.getSelectedRoomId)
+      yield call(Services.Matrix.uploadFile, currentRoomId, action.payload)
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }

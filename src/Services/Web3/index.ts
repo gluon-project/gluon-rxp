@@ -315,7 +315,7 @@ const handlePendingTransaction = (
     } else {
       if (txHash) {
         console.log('Transaction sent')
-        console.log(txHash)
+        // console.log(txHash)
         if (returnWithoutWaiting === true) {
           console.log('Not waiting for blockchain confirmation')
           resolve(handleResponse(txHash, null))
@@ -327,14 +327,15 @@ const handlePendingTransaction = (
                 reject(error)
               }
               if (response) {
-                console.log('TX Response: ', txHash, response)
+                // console.log('TX Response: ', txHash, response)
                 clearInterval(interval)
                 ethSingleton.getEth().getBlock(response.blockNumber, (err: any, block: any) => {
                   if (err) {
                     console.log('TX Error: ', error)
                     reject(err)
                   }
-                  resolve(handleResponse(txHash, response, block.timestamp))
+                  const timestamp = block ? block.timestamp : moment().format('X')
+                  resolve(handleResponse(txHash, response, timestamp))
                 })
               }
             })
