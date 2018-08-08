@@ -30,6 +30,11 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
             subTitle={`Issued by: ${utils.address.short(claim.iss)},\
  source: ${claim.source.type} ${claim.source.id ? claim.source.id : ''}`}
             />)}
+          <CallToAction
+            type={CallToAction.type.Main}
+            title='New Claim'
+            onPress={() => this.props.navigate('ContactForm')}
+          />
         </ScrollView>
       </RX.View>
     )

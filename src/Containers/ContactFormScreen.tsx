@@ -8,7 +8,7 @@ import * as Theme from '../Theme'
 import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
-  formValues?: User
+  selectedContact?: string
   navigateBack?: () => void
   receiver?: User
   addContact?: (user: User) => void
@@ -16,12 +16,17 @@ interface Props extends RX.CommonProps {
   setReceiver?: (user: string) => void
 }
 
-class ReceiverFormScreen extends RX.Component<Props, User> {
+interface State {
+  claimType?: string,
+  claimValue?: string,
+}
+
+class ContactFormScreen extends RX.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      name: props.formValues ? this.props.formValues.name : '',
-      address: props.formValues ? this.props.formValues.address : '',
+      claimType: 'skill',
+      claimValue: '',
     }
   }
 
@@ -35,22 +40,20 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
   }
 
   private handleSaveAnonymous = () => {
-    const address = utils.address.universalIdToDID(this.state.address)
-
+    const claim: any = {}
+    claim[this.state.claimType] = this.state.claimValue
     this.props.signAnonymousClaim({
-      sub: address,
-      claim: {
-        name: this.state.name,
-      },
+      sub: this.props.selectedContact,
+      claim,
     })
 
-    this.props.setReceiver(this.state.address)
+    this.props.setReceiver(this.props.selectedContact)
     this.props.navigateBack()
 
   }
 
   private isValid = () => {
-    return this.state.name !== '' && this.state.address !== ''
+    return this.state.claimType !== '' && this.state.claimValue !== ''
   }
 
   render() {
@@ -58,14 +61,14 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <TextInput
-            label='Name'
-            value={this.state.name}
-            onChangeText={(value) => this.setState({ name: value })}
+            label='Claim Type'
+            value={this.state.claimType}
+            onChangeText={(value) => this.setState({ claimType: value })}
             />
           <TextInput
-            label='Address'
-            value={this.state.address}
-            onChangeText={(value) => this.setState({ address: value })}
+            label='Claim Value'
+            value={this.state.claimValue}
+            onChangeText={(value) => this.setState({ claimValue: value })}
             />
           {/* <CallToAction
             type={CallToAction.type.Main}
@@ -87,7 +90,7 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    formValues: state.contacts.editing,
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
@@ -98,4 +101,4 @@ const mapDispatchToProps = (dispatch: any): Props => {
     signAnonymousClaim: (claim: any) => dispatch(Actions.Contacts.signAnonymousClaim(claim)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiverFormScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactFormScreen)

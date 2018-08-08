@@ -30,6 +30,7 @@ class ContactsMasterScreen extends RX.Component<Props, null> {
               contacts={this.props.contacts}
               selectedContact={this.props.selectedContact}
               selectContact={this.props.selectContact}
+              navigate={this.props.navigate}
               />
           </RX.View>
         </RX.ScrollView>

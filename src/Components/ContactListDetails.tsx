@@ -20,7 +20,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
   handleSelectContact(token: string) {
     this.props.selectContact(token)
     if (this.props.uiTraits.horizontalIsCompact) {
-      this.props.navigate('Contacts')
+      this.props.navigate('ContactActions')
     }
   }
 
@@ -38,6 +38,11 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             onPress={() => this.handleSelectContact(contact.did)}
           />
         ))}
+        <CallToAction
+          type={CallToAction.type.Main}
+          title={'New Contact'}
+          onPress={() => this.props.navigate('NewContactForm')}
+        />
       </RX.View>
     )
   }

@@ -11,14 +11,15 @@ import CompactRequestMainScreen from './CompactRequestMainScreen'
 import CompactRoomsMainScreen from './CompactRoomsMainScreen'
 import CompactSendMainScreen from './CompactSendMainScreen'
 import CompactWalletMainScreen from './CompactWalletMainScreen'
-import FeedItem from './FeedItem'
 import ContactsMasterScreen from './ContactsMasterScreen'
 import ContactActionsScreen from './ContactActionsScreen'
+import ContactFormScreen from './ContactFormScreen'
+import ContactNewFormScreen from './ContactNewFormScreen'
+import FeedItem from './FeedItem'
 import FeedScreen from './FeedScreen'
 import LoadingScreen from './LoadingScreen'
 import LoginScreen from './LoginScreen'
 import MoreMasterScreen from './MoreMasterScreen'
-import ReceiverFormScreen from './ReceiverFormScreen'
 import ReceiverScreen from './ReceiverScreen'
 import RequestMasterScreen from './RequestMasterScreen'
 import RoomsMasterScreen from './RoomsMasterScreen'
@@ -44,6 +45,8 @@ export {
   CompactAboutMainScreen,
   CompactContactsMainScreen,
   ContactActionsScreen,
+  ContactFormScreen,
+  ContactNewFormScreen,
   CompactRequestMainScreen,
   CompactRoomsMainScreen,
   CompactSendMainScreen,
@@ -54,7 +57,6 @@ export {
   LoadingScreen,
   LoginScreen,
   MoreMasterScreen,
-  ReceiverFormScreen,
   ReceiverScreen,
   RequestMasterScreen,
   RoomActionsScreen,

@@ -20,6 +20,7 @@ interface Props extends RX.CommonProps {
   startLoadingTransaction?: (hash: string) => void
   setContactFormValue?: (contact: User) => void
   navigate?: (routeName: string) => void
+  selectContact?: (did: string) => void
 }
 
 class TransactionBox extends RX.Component<Props, null> {
@@ -35,7 +36,7 @@ class TransactionBox extends RX.Component<Props, null> {
   }
 
   handleContactPress(contact: User) {
-    this.props.setContactFormValue(contact)
+    this.props.selectContact(contact.did)
     this.props.navigate('ContactForm')
   }
 
@@ -110,7 +111,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     startLoadingTransaction: (hash: string) => dispatch(Actions.Transactions.startLoading(hash)),
-    setContactFormValue: (contact: User) => dispatch(Actions.Contacts.setForEditing(contact)),
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionBox)

@@ -41,7 +41,7 @@ const RightButton = ({navigation}: { navigation: any }) => {
       <RX.Button
       style={Theme.Styles.navBarItem}
       onPress={() => {
-          navigate(`${state.routeName}Form`)
+          navigate(state.routeName === 'Receiver' ? 'NewContactForm' : 'TokensForm')
         }}
       >
         <RX.Text style={Theme.Styles.navBarItemLabel}>
@@ -69,8 +69,8 @@ const navigationOptions = {
 const Sender = {screen: Screens.SenderScreen, navigationOptions: {title: 'Sender'}}
 const RequestReceiver = {screen: Screens.SenderScreen, navigationOptions: {title: 'Receiver'}}
 const Receiver = {screen: Screens.ReceiverScreen, navigationOptions: {title: 'Receiver'}}
-const ReceiverForm = {screen: Screens.ReceiverFormScreen, navigationOptions: {title: 'Add Receiver'}}
-const ContactForm = {screen: Screens.ReceiverFormScreen, navigationOptions: {title: 'Edit Contact'}}
+const NewContactForm = {screen: Screens.ContactNewFormScreen, navigationOptions: {title: 'New Contact'}}
+const ContactForm = {screen: Screens.ContactFormScreen, navigationOptions: {title: 'New Claim'}}
 const ContactActions = {screen: Screens.ContactActionsScreen, navigationOptions: {title: 'Contact'}}
 const LoginStack = {screen: Screens.LoginScreen, navigationOptions: {title: 'Login'}}
 const Settings = { screen: Screens.SettingsScreen, navigationOptions: { title: 'Settings' } }
@@ -109,7 +109,7 @@ export const WideNavigationConfiguration = {
   },
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
-    screen: StackNavigator({ ContactActions }, navigationOptions),
+    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -128,7 +128,7 @@ export const WideNavigationConfiguration = {
         // Sender: {screen: StackNavigator({ Sender }, navigationOptions)},
         Tokens: {screen: StackNavigator({ Tokens, TokensForm }, navigationOptions)},
         Amount: {screen: StackNavigator({ Amount }, navigationOptions)},
-        Receiver: {screen: StackNavigator({ Receiver, ReceiverForm }, navigationOptions)},
+        Receiver: {screen: StackNavigator({ Receiver, NewContactForm }, navigationOptions)},
         Rooms: {screen: StackNavigator({ Rooms }, navigationOptions)},
         Attachment: {screen: StackNavigator({ Attachment }, navigationOptions)},
       },
@@ -172,7 +172,7 @@ export const CompactNavigationConfiguration = {
     ),
   },
   ContactsTab: {
-    screen: StackNavigator({ CompactContactsMainScreen, ContactActions }, navigationOptions),
+    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(
@@ -182,7 +182,7 @@ export const CompactNavigationConfiguration = {
   },
   SendTab: {
     screen: StackNavigator(
-      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, ReceiverForm, Rooms, Attachment },
+      { CompactSendMainScreen, Sender, Tokens, TokensForm, Amount, Receiver, NewContactForm, Rooms, Attachment },
       navigationOptions,
     ),
   },
