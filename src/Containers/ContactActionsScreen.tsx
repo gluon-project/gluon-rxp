@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ScrollView, ListItem } from '../Components'
+import { CallToAction, ScrollView, ListItem, ClaimBox } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -22,14 +22,14 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          <RX.Text style={Theme.Styles.sectionTitle}>Decentralized Identifier: {this.props.selectedContact}</RX.Text>
-          {this.props.selectedContact !== null && map(this.props.claims, (claim, key) => <ListItem
-            key={key}
-            type={ListItem.type.Secondary}
-            title={JSON.stringify(claim.claim)}
-            subTitle={`Issued by: ${utils.address.short(claim.iss)},\
- source: ${claim.source.type} ${claim.source.id ? claim.source.id : ''}`}
-            />)}
+          <RX.View style={Theme.Styles.scrollContainer}>
+            <RX.Text style={Theme.Styles.sectionTitle}>Decentralized Identifier: {this.props.selectedContact}</RX.Text>
+            {this.props.selectedContact !== null && map(this.props.claims, (claim, key) => <ClaimBox
+              key={key}
+              hideSubject
+              claim={claim}
+              />)}
+          </RX.View>
           <CallToAction
             type={CallToAction.type.Main}
             title='New Claim'

@@ -652,6 +652,29 @@ const Styles = {
       fontSize: Fonts.size.medium,
     }),
   },
+  claimBox: {
+    wrapper: RX.Styles.createViewStyle({
+      backgroundColor: Colors.backgroundSelected,
+      borderRadius: 16,
+      marginBottom: Metrics.baseMargin,
+      padding: Metrics.baseMargin,
+    }),
+    issuer: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.micro,
+    }),
+    claimType: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+    }),
+    claimValue: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+    }),
+    claimValueView: RX.Styles.createViewStyle({
+      alignItems: 'center',
+    }),
+  },
 }
 
 export default Styles

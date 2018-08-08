@@ -53,7 +53,11 @@ declare interface VerifiableClaim {
   source: {
     type: string, // 'local', 'matrix', etc.
     id?: string, // 'folder', 'roomId', etc.
-  }
+  },
+  issuer?: User,
+  subject?: User,
+  claimType?: string,
+  claimValue?: string,
 }
 
 // Token
