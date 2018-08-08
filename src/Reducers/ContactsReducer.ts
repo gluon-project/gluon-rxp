@@ -80,4 +80,5 @@ reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => 
 })
 
 export const signAnonymousClaim = createAction('Sign anonymous claim')
+export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous claim and share in room')
 export const loadMatrixClaims = createAction('Load matrix claims')

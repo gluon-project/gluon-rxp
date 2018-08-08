@@ -72,6 +72,7 @@ const Receiver = {screen: Screens.ReceiverScreen, navigationOptions: {title: 'Re
 const NewContactForm = {screen: Screens.ContactNewFormScreen, navigationOptions: {title: 'New Contact'}}
 const ContactForm = {screen: Screens.ContactFormScreen, navigationOptions: {title: 'New Claim'}}
 const ContactActions = {screen: Screens.ContactActionsScreen, navigationOptions: {title: 'Contact'}}
+const ContactSelection = {screen: Screens.ContactSelectionScreen, navigationOptions: {title: 'Select Contact'}}
 const LoginStack = {screen: Screens.LoginScreen, navigationOptions: {title: 'Login'}}
 const Settings = { screen: Screens.SettingsScreen, navigationOptions: { title: 'Settings' } }
 const More = { screen: Screens.MoreMasterScreen, navigationOptions: { title: 'Settings' } }
@@ -89,6 +90,7 @@ const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 
 const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
 const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
+const RoomSelection = {screen: Screens.RoomSelectionScreen, navigationOptions: {title: 'Select Room'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
@@ -102,14 +104,14 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.RoomsMasterScreen,
     screen: TabNavigator(
       {
-        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm }, navigationOptions)},
+        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions)},
       },
       navigationOptions,
     ),
   },
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
-    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm }, navigationOptions),
+    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -167,12 +169,12 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   RoomsTab: {
     screen: StackNavigator(
-      { CompactRoomsMainScreen, RoomActions, ContactForm },
+      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection },
       navigationOptions,
     ),
   },
   ContactsTab: {
-    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm }, navigationOptions),
+    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(

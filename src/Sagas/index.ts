@@ -19,6 +19,7 @@ export default function* root() {
   yield fork(AttachmentSaga.watchSaveAttachment)
   yield fork(AttachmentSaga.watchStartDownload)
   yield fork(ClaimsSaga.watchSignAnonymousClaim)
+  yield fork(ClaimsSaga.watchSignAnonymousClaimAndShareInRoom)
   yield fork(ClaimsSaga.watchLoadMatrixClaims)
   yield fork(MatrixSaga.watchStartLogin)
   yield fork(MatrixSaga.watchSendTextMessage)

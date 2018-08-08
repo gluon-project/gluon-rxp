@@ -33,6 +33,39 @@ export function* watchSignAnonymousClaim(): SagaIterator {
   }
 }
 
+export function* watchSignAnonymousClaimAndShareInRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Contacts.signAnonymousClaimAndShareInRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.SignClaim}))
+
+    try {
+      const jwt = yield call(Services.uPort.signAnonymousClaim, action.payload.unsigned)
+      const decodedClaim = yield call(decodeToken, jwt)
+      const signedClaim: VerifiableClaim = {
+        ...decodedClaim.payload,
+        jwt,
+        source: {
+          type: 'local',
+        },
+      }
+
+      yield put(Actions.Contacts.addClaim(signedClaim))
+      const claims: any[] = []
+      claims.push(jwt)
+
+      const file = {
+        fileName: 'claims.json',
+        fileContent: JSON.stringify({claims}),
+      }
+      yield put(Actions.Matrix.sendFile(file))
+
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.SignClaim}))
+  }
+}
+
 export function* watchLoadMatrixClaims(): SagaIterator {
   while (true) {
     const action = yield take(Actions.Contacts.loadMatrixClaims)
