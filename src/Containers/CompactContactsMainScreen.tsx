@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, FeedDetails, ScrollView } from '../Components'
+import { CallToAction, ContactListDetails, ScrollView } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -11,24 +11,24 @@ import utils from '../Utils'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateHome?: () => void
-  selectToken?: (tokenAddress: string) => void
+  selectContact?: (did: string) => void
   navigation?: any,
-  selectedToken?: string,
-  uiTraits?: UITraits
-  tokens?: Token[]
+  selectedContact?: string,
+  uiTraits?: UITraits,
+  contacts?: User[],
 }
 
-class CompactFeedMasterScreen extends RX.Component<Props, null> {
+class CompactContactsMasterScreen extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          <FeedDetails
+          <ContactListDetails
             navigate={this.props.navigate}
             uiTraits={this.props.uiTraits}
-            tokens={this.props.tokens}
-            selectedToken={this.props.selectedToken}
-            selectToken={this.props.selectToken}
+            contacts={this.props.contacts}
+            selectedContact={this.props.selectedContact}
+            selectContact={this.props.selectContact}
             />
         </ScrollView>
       </RX.View>
@@ -38,15 +38,15 @@ class CompactFeedMasterScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     uiTraits: state.app.uiTraits,
-    tokens: Selectors.Tokens.getListForFeed(state),
-    selectedToken: Selectors.Feed.getSelectedToken(state),
+    contacts: Selectors.Contacts.getList(state),
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
-    selectToken: (tokenAddress: string) => dispatch(Actions.Feed.selectToken(tokenAddress)),
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CompactFeedMasterScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CompactContactsMasterScreen)

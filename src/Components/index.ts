@@ -2,7 +2,8 @@ import AboutDetails from './AboutDetails'
 import AccountIcon from './AccountIcon'
 import AttachmentCard from './AttachmentCard'
 import CallToAction from './CallToAction'
-import FeedDetails from './FeedDetails'
+import ContactListDetails from './ContactListDetails'
+import ClaimBox from './ClaimBox'
 import Graphs from './Graphs'
 import Icons from './Icons'
 import ImagePicker from './ImagePicker'
@@ -28,7 +29,8 @@ export {
   AccountIcon,
   AttachmentCard,
   CallToAction,
-  FeedDetails,
+  ClaimBox,
+  ContactListDetails,
   Graphs,
   Icons,
   ImagePicker,

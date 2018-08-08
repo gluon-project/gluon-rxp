@@ -8,14 +8,18 @@ import Config from '../Config'
 
 export interface ContactsState {
   editing: User,
+  selectedContact: string,
   list: User[],
   claims: VerifiableClaim[],
+  matrixClaims: VerifiableClaim[],
 }
 
 const initialState: ContactsState = {
   editing: null,
+  selectedContact: null,
   list: Config.contacts.defaultList,
   claims: Config.contacts.defaultClaimsList,
+  matrixClaims: [],
 }
 
 export const reducer = createReducer({}, initialState)
@@ -51,4 +55,30 @@ reducer.on(addClaim, (state: ContactsState, payload?: VerifiableClaim) => {
   }
 })
 
+export const selectContact = createAction('Select contact')
+reducer.on(selectContact, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    selectedContact: payload,
+  }
+})
+
+export const setMatrixClaims = createAction('Set Matrix Claims')
+reducer.on(setMatrixClaims, (state: ContactsState, payload?: VerifiableClaim[]) => {
+  return {
+    ...state,
+    matrixClaims: payload,
+  }
+})
+
+export const addMatrixClaim = createAction('Add claim')
+reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => {
+  return {
+    ...state,
+    matrixClaims: [ ...state.matrixClaims, payload ],
+  }
+})
+
 export const signAnonymousClaim = createAction('Sign anonymous claim')
+export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous claim and share in room')
+export const loadMatrixClaims = createAction('Load matrix claims')

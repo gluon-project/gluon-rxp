@@ -72,6 +72,9 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     this.props.navigate('SendTab')
   }
   render() {
+    if (!this.props.room) {
+      return null
+    }
     const showInputRow = (this.props.currentMatrixUser !== null && this.props.room !== null) ? true : false
     const timeline: MatrixTimelineEvent[] = filter(this.props.room.timeline,
       (item: MatrixTimelineEvent) => {

@@ -65,13 +65,17 @@ to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${re
         yield put(Actions.Matrix.sendMessage(content))
 
         const claims: any[] = []
-        claims.push({sub: sender.address, claim: {name: sender.name}})
-        if (sender.avatar) {
-          claims.push({sub: sender.address, claim: {avatar: sender.avatar}})
+        if (sender.claims && sender.claims.name) {
+          claims.push(sender.claims.name.jwt)
         }
-        claims.push({sub: receiver.address, claim: {name: receiver.name}})
-        if (receiver.avatar) {
-          claims.push({sub: receiver.address, claim: {avatar: receiver.avatar}})
+        if (sender.claims && sender.claims.avatar) {
+          claims.push(sender.claims.avatar.jwt)
+        }
+        if (receiver.claims && receiver.claims.name) {
+          claims.push(receiver.claims.name.jwt)
+        }
+        if (receiver.claims && receiver.claims.avatar) {
+          claims.push(receiver.claims.avatar.jwt)
         }
 
         const file = {

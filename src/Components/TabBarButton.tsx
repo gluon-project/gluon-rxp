@@ -24,6 +24,7 @@ export enum IconType {
   Settings,
   Wallet,
   Transfers,
+  Contacts,
 }
 
 export default class TabBarButton extends RX.Component<Props, null> {
@@ -72,6 +73,9 @@ export default class TabBarButton extends RX.Component<Props, null> {
         break
       case IconType.Transfers:
         Icon = Icons.TransfersIcon
+        break
+      case IconType.Contacts:
+        Icon = Icons.ContactsIcon
         break
     }
 

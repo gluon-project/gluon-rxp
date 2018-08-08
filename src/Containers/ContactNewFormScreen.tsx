@@ -16,12 +16,12 @@ interface Props extends RX.CommonProps {
   setReceiver?: (user: string) => void
 }
 
-class ReceiverFormScreen extends RX.Component<Props, User> {
+class ContactNewFormScreen extends RX.Component<Props, User> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      name: props.formValues ? this.props.formValues.name : '',
-      address: props.formValues ? this.props.formValues.address : '',
+      name: '',
+      address: '',
     }
   }
 
@@ -35,19 +35,18 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
   }
 
   private handleSaveAnonymous = () => {
-    // this.props.addContact(this.state)
-    // if (!this.props.formValues) {
-    //   this.props.setReceiver(this.state.address)
-    // }
-
-    // this.props.navigateBack()
+    const address = utils.address.universalIdToDID(this.state.address)
 
     this.props.signAnonymousClaim({
-      sub: `did:ethr:${this.state.address}`,
+      sub: address,
       claim: {
         name: this.state.name,
       },
     })
+
+    this.props.setReceiver(this.state.address)
+    this.props.navigateBack()
+
   }
 
   private isValid = () => {
@@ -59,24 +58,24 @@ class ReceiverFormScreen extends RX.Component<Props, User> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <TextInput
-            label='Name'
-            value={this.state.name}
-            onChangeText={(value) => this.setState({ name: value })}
-            />
-          <TextInput
             label='Address'
             value={this.state.address}
             onChangeText={(value) => this.setState({ address: value })}
             />
-          <CallToAction
+          <TextInput
+            label='Name'
+            value={this.state.name}
+            onChangeText={(value) => this.setState({ name: value })}
+            />
+          {/* <CallToAction
             type={CallToAction.type.Main}
             title='Save'
             onPress={this.handleSave}
             disabled={!this.isValid()}
-          />
+          /> */}
           <CallToAction
             type={CallToAction.type.Main}
-            title='Sign Anonymously'
+            title='Sign Anonymously and Save'
             onPress={this.handleSaveAnonymous}
             disabled={!this.isValid()}
           />
@@ -99,4 +98,4 @@ const mapDispatchToProps = (dispatch: any): Props => {
     signAnonymousClaim: (claim: any) => dispatch(Actions.Contacts.signAnonymousClaim(claim)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiverFormScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactNewFormScreen)

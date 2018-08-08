@@ -67,6 +67,7 @@ export default class SendDetails extends RX.Component<Props, null> {
             {Utils.address.short(this.props.currentUser.address)}
           </RX.Text>}
         </RX.View>}
+        {this.props.sender && <RX.View>
         <SegmentedControl
           titles={['Send', 'Request']}
           selectedIndex={this.props.isSend ? 0 : 1}
@@ -147,6 +148,7 @@ export default class SendDetails extends RX.Component<Props, null> {
         inProgress={this.props.isProcessing}
       /></RX.View>
 
+    </RX.View>}
     </RX.View>
     )
   }

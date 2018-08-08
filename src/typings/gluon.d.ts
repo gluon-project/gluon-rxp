@@ -28,11 +28,17 @@ declare interface ModalMessageConfig {
 declare const __DEV__: boolean
 
 declare interface User {
+  did?: string,
+  shortId?: string,
   address?: string,
   networkId?: string,
   name?: string,
   avatar?: string,
   hidden?: boolean,
+  claims?: {
+    name?: VerifiableClaim,
+    avatar?: VerifiableClaim,
+  }
 }
 
 // Claims
@@ -47,7 +53,11 @@ declare interface VerifiableClaim {
   source: {
     type: string, // 'local', 'matrix', etc.
     id?: string, // 'folder', 'roomId', etc.
-  }
+  },
+  issuer?: User,
+  subject?: User,
+  claimType?: string,
+  claimValue?: string,
 }
 
 // Token

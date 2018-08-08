@@ -12,17 +12,15 @@ interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateBack?: () => void
   contacts?: User[]
-  selectedReceiver?: string,
-  setReceiver?: (user: string) => void
+  selectedContact?: string,
+  selectContact?: (address: string) => void
   uiTraits?: UITraits
 }
 
-class ReceiverScreen extends RX.Component<Props, null> {
+class ContactSelectionScreen extends RX.Component<Props, null> {
   handleSetReceiver(user: User) {
-    this.props.setReceiver(user.address)
-    if (this.props.uiTraits.horizontalIsCompact) {
-      this.props.navigateBack()
-    }
+    this.props.selectContact(user.did)
+    this.props.navigateBack()
   }
 
   render() {
@@ -35,18 +33,10 @@ class ReceiverScreen extends RX.Component<Props, null> {
             type={ListItem.type.Secondary}
             title={user.name}
             subTitle={user.shortId}
-            selected={this.props.selectedReceiver
-              && user.address === this.props.selectedReceiver}
+            selected={this.props.selectedContact
+              && user.did === this.props.selectedContact}
             onPress={() => this.handleSetReceiver(user)}
             />)}
-          {this.props.contacts.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
-            <RX.Text style={Theme.Styles.infoBox.title}>You don't have any contacts</RX.Text>
-            <CallToAction
-              type={CallToAction.type.Main}
-              title='Add contact'
-              onPress={() => this.props.navigate('ReceiversForm')}
-            />
-          </RX.View>}
 
         </ScrollView>
       </RX.View>
@@ -57,7 +47,7 @@ class ReceiverScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     contacts: Selectors.Contacts.getList(state),
-    selectedReceiver: state.transactions.new.receiver,
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
     uiTraits: state.app.uiTraits,
   }
 }
@@ -65,7 +55,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
-    setReceiver: (user: string) => dispatch(Actions.Transactions.setReceiver(user)),
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiverScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactSelectionScreen)
