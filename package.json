@@ -17,6 +17,7 @@
     "run-ios": "./node_modules/.bin/react-native run-ios",
     "run-android": "./node_modules/.bin/react-native run-android",
     "codepush": "ts-node bin/deploy.ts local",
+    "clean": "rm node_modules/matrix-js-sdk/.babelrc",
     "android-publish": "tsc && bash bin/pull_service_key.sh && cd android && fastlane beta && cd -"
   },
   "devDependencies": {
