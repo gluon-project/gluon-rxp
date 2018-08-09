@@ -116,7 +116,7 @@ export function * watchMatrixUpdates () {
 
   yield takeEvery(synchChannel, handleSyncEvent)
 
-  Services.Matrix.client.startClient({initialSyncLimit: 500})
+  Services.Matrix.client.startClient({initialSyncLimit: 100})
 }
 
 export function* watchStartLogin(): SagaIterator {
