@@ -7,14 +7,14 @@ import { map, forEach, isArray } from 'lodash'
 import Config from '../Config'
 import * as Services from '../Services'
 
-import { decodeToken } from 'jsontokens'
+import { decodeJWT } from 'did-jwt'
 
 export function* signAnonymousClaim(action: any): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.SignClaim}))
 
   try {
     const jwt = yield call(Services.uPort.signAnonymousClaim, action.payload)
-    const decodedClaim = yield call(decodeToken, jwt)
+    const decodedClaim = yield call(decodeJWT, jwt)
     const signedClaim: VerifiableClaim = {
       ...decodedClaim.payload,
       jwt,
@@ -41,7 +41,7 @@ export function* watchSignAnonymousClaimAndShareInRoom(): SagaIterator {
 
     try {
       const jwt = yield call(Services.uPort.signAnonymousClaim, action.payload.unsigned)
-      const decodedClaim = yield call(decodeToken, jwt)
+      const decodedClaim = yield call(decodeJWT, jwt)
       const signedClaim: VerifiableClaim = {
         ...decodedClaim.payload,
         jwt,
@@ -127,7 +127,7 @@ const loadClaim = (url: string, roomId: string) => {
     if (json.claims && isArray(json.claims)) {
       forEach(json.claims, (jwt: string) => {
         try {
-          const decodedClaim = decodeToken(jwt)
+          const decodedClaim = decodeJWT(jwt)
           if (decodedClaim) {
             const signedClaim: VerifiableClaim = {
               ...decodedClaim.payload,

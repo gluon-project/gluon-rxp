@@ -8,6 +8,7 @@ import * as moment from 'moment'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import Utils from '../Utils'
+import { isObject, isString } from 'lodash'
 
 interface Props extends RX.CommonProps {
   transactionPreview?: Transaction
@@ -49,7 +50,7 @@ class TransactionBox extends RX.Component<Props, null> {
         backgroundColor: Theme.Colors.lightBackground,
         borderRadius: Theme.Metrics.borderRadius,
         }]}>
-        {transaction && this.props.sender && <RX.View style={[Theme.Styles.row, {
+        {isObject(transaction) &&  isObject(this.props.sender) && <RX.View style={[Theme.Styles.row, {
           justifyContent: 'flex-start',
           padding: Theme.Metrics.baseMargin,
         }]}>
@@ -65,7 +66,7 @@ class TransactionBox extends RX.Component<Props, null> {
                 Sent
             </RX.Text>
 
-            {this.props.token && transaction.amount && <RX.Text style={Theme.Styles.feed.amount}>
+            {isObject(this.props.token) && isString(transaction.amount) && <RX.Text style={Theme.Styles.feed.amount}>
                 {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
             </RX.Text>}
 
@@ -83,22 +84,19 @@ class TransactionBox extends RX.Component<Props, null> {
 
         </RX.View>}
         <RX.View style={{backgroundColor: Theme.Colors.backgroundSelected}}>
-          {this.props.isProcessing && <RX.View style={[{
+          {this.props.isProcessing === true && <RX.View style={[{
             padding: Theme.Metrics.smallMargin,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             }]}>
-            <RX.Link
-              url={`https://rinkeby.etherscan.io/tx/${transaction.hash}`}
-              style={Theme.Styles.feed.subTitle}>
               <RX.ActivityIndicator
               size='tiny'
               color={Theme.Colors.light}
-              /></RX.Link>
+              />
           </RX.View>}
 
-          {!this.props.isProcessing && <RX.View style={[{
+          {this.props.isProcessing === false && <RX.View style={[{
             padding: Theme.Metrics.smallMargin,
             alignItems: 'center',
             }]}>

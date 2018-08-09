@@ -4,7 +4,7 @@ import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
 import * as S from 'string'
-import { decodeToken } from 'jsontokens'
+import { decodeJWT } from 'did-jwt'
 
 interface DidToUserMap {
   [did: string]: User
@@ -17,7 +17,7 @@ export const decodeAndExtendClaims = (state: CombinedState, encodedClaims: strin
   const claims = _.map(encodedClaims, (jwt: string) => {
     let result: VerifiableClaim = null
     try {
-      const decodedClaim = decodeToken(jwt)
+      const decodedClaim = decodeJWT(jwt)
       result = {
         ...decodedClaim.payload,
         jwt,

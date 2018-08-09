@@ -8,6 +8,7 @@ import * as moment from 'moment'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import Utils from '../Utils'
+import { isObject, isString } from 'lodash'
 
 interface Props extends RX.CommonProps {
   transaction?: Transaction
@@ -64,7 +65,7 @@ class RequestBox extends RX.Component<Props, null> {
           <RX.Text style={Theme.Styles.feed.subTitle}>
               Request
           </RX.Text>
-        {this.props.sender && <RX.View style={[{
+        {isObject(this.props.sender) && <RX.View style={[{
           justifyContent: 'center',
           alignItems: 'center',
         }]}>
@@ -78,10 +79,10 @@ class RequestBox extends RX.Component<Props, null> {
 
           <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 1}}>
 
-            {transaction.amount && this.props.token && <RX.Text style={Theme.Styles.feed.amount}>
+            {isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.feed.amount}>
                 {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
             </RX.Text>}
-            {!transaction.amount && this.props.token && <RX.Text style={Theme.Styles.feed.amount}>
+            {!isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.feed.amount}>
                 {this.props.token.code}
             </RX.Text>}
 
