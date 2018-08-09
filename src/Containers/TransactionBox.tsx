@@ -65,9 +65,9 @@ class TransactionBox extends RX.Component<Props, null> {
                 Sent
             </RX.Text>
 
-            <RX.Text style={Theme.Styles.feed.amount}>
+            {this.props.token && transaction.amount && <RX.Text style={Theme.Styles.feed.amount}>
                 {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
-            </RX.Text>
+            </RX.Text>}
 
             <RX.Text
               style={Theme.Styles.feed.subTitle}>to</RX.Text>
