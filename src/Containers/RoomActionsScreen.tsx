@@ -79,7 +79,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     const timeline: MatrixTimelineEvent[] = filter(this.props.room.timeline,
       (item: MatrixTimelineEvent) => {
         if (item.content.info && item.content.info.mimetype && item.content.info.mimetype === 'application/json') {
-          return false
+          return true
         } else {
           return true
         }
@@ -98,8 +98,8 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 source={getMember(event.sender, this.props.room).avatarUrl} />
               <RX.View style={{flex: 1}}>
                 <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>
-                {!event.content.txHash && <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
-                {event.content.txHash && <TransactionBox hash={event.content.txHash} />}
+                {!event.content.transaction && <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+                {event.content.transaction && <TransactionBox transactionPreview={event.content.transaction} />}
               </RX.View>
             </RX.View>)}
           </RX.View>

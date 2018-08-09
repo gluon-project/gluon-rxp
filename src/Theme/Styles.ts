@@ -670,6 +670,7 @@ const Styles = {
     claimValue: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
+      padding: Metrics.baseMargin,
     }),
     claimValueView: RX.Styles.createViewStyle({
       alignItems: 'center',

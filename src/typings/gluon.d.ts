@@ -198,11 +198,11 @@ declare interface MatrixTimelineEvent {
   type: string,
   content: {
     body: string,
-    txHash?: string,
     url?: string,
     info?: {
       mimetype: string,
     },
+    transaction?: Transaction,
   },
   eventId: string,
   ts: number,

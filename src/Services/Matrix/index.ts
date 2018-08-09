@@ -63,6 +63,7 @@ export const uploadFile = (roomId: string, file: any) => {
           size: fileContent.length,
           mimetype: 'application/json',
         },
+        fileContent: JSON.parse(fileContent),
     }
     return client.sendMessage(roomId, content)
 })

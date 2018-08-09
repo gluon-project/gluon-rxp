@@ -47,19 +47,15 @@ export function* watchStartSavingTransaction(): SagaIterator {
         yield put(Actions.Matrix.selectRoom(transaction.room))
         const sender: User = yield select(Selectors.Contacts.getAccountByAddress, newTransaction.sender)
         const receiver: User = yield select(Selectors.Contacts.getAccountByAddress, newTransaction.receiver)
-        const attachment: Attachment = yield select(Selectors.Attachment.getNew)
-        const attachmentHtml = simpleHtmlForAttachment(attachment)
         const content = {
-          body: `${attachment.message}${attachment.message !== '' ? '\n\n' : ''}\
-${sender.name} sent ${newTransaction.amount} ${token.code} to ${receiver.name}`,
-          formatted_body: `${attachment.message}<br/>\
-<h2><strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${sender.name}</a></strong> sent \
+          body: `${sender.name} sent ${newTransaction.amount} ${token.code} to ${receiver.name}`,
+          formatted_body: `<strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${sender.name}</a></strong> sent \
 <a href="https://rinkeby.etherscan.io/tx/${newTransaction.hash}">${newTransaction.amount} ${token.code}</a> \
-to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${receiver.name}</a></strong></h2>${attachmentHtml}`,
+to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${receiver.name}</a></strong>`,
           format: 'org.matrix.custom.html',
           msgtype: 'm.text',
           txHash: newTransaction.hash,
-          attachment,
+          transaction: newTransaction,
         }
 
         yield put(Actions.Matrix.sendMessage(content))
