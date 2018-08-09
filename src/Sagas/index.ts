@@ -21,6 +21,7 @@ export default function* root() {
   yield fork(ClaimsSaga.watchSignAnonymousClaim)
   yield fork(ClaimsSaga.watchSignAnonymousClaimAndShareInRoom)
   yield fork(ClaimsSaga.watchLoadMatrixClaims)
+  yield fork(MatrixSaga.watchRequest)
   yield fork(MatrixSaga.watchStartLogin)
   yield fork(MatrixSaga.watchSendTextMessage)
   yield fork(MatrixSaga.watchSendMessage)

@@ -187,3 +187,67 @@ export function* watchSendFile(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSendMessage}))
   }
 }
+
+export function* watchRequest(): SagaIterator {
+  while (true) {
+    yield take(Actions.Transactions.requestInMatrix)
+    yield put(Actions.Process.start({type: Enums.ProcessType.RequestInMatrix}))
+    const transaction: Transaction = yield select(Selectors.Transactions.getNew)
+
+    const token: Token = yield select(Selectors.Tokens.getTokenByAddress, transaction.token)
+    try {
+
+      if (transaction.room) {
+        // Send message
+
+        yield put(Actions.Matrix.selectRoom(transaction.room))
+        const sender: User = yield select(Selectors.Contacts.getAccountByAddress, transaction.sender)
+
+        let url = 'https://gluon.space/send/?'
+        if (sender) {
+          url = `${url}r=${sender.address}&n=${encodeURIComponent(sender.name)}`
+        }
+        if (token) {
+          url = `${url}&t=${token.address}`
+        }
+        if (token && token.networkId) {
+          url = `${url}&nid=${token.networkId}`
+        }
+        if (transaction.amount) {
+          url = `${url}&a=${transaction.amount}`
+        }
+
+        const content = {
+          body: `${sender.name} requests ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}`,
+          formatted_body: `<strong><a href="${url}">${sender.name} is requesting \
+${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></strong>`,
+          format: 'org.matrix.custom.html',
+          msgtype: 'm.text',
+          request: transaction,
+        }
+
+        yield put(Actions.Matrix.sendMessage(content))
+
+        const claims: any[] = []
+        if (sender.claims && sender.claims.name) {
+          claims.push(sender.claims.name.jwt)
+        }
+        if (sender.claims && sender.claims.avatar) {
+          claims.push(sender.claims.avatar.jwt)
+        }
+
+        const file = {
+          fileName: 'claims.json',
+          fileContent: JSON.stringify({claims}),
+        }
+        yield put(Actions.Matrix.sendFile(file))
+
+        yield put(Actions.Navigation.navigate('RoomsTab'))
+      }
+      yield put(Actions.Transactions.resetNewTransaction(transaction))
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.RequestInMatrix}))
+  }
+}

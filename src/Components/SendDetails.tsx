@@ -8,6 +8,7 @@ interface Props extends RX.CommonProps {
   startLogin?: () => void
   navigate?: (routeName: string) => void
   send?: () => void
+  request?: () => void
   routeName: string,
   sender?: User
   receiver?: User
@@ -25,31 +26,33 @@ interface Props extends RX.CommonProps {
 export default class SendDetails extends RX.Component<Props, null> {
 
   handleRequest() {
-    console.log(this.props)
-    let url = 'https://gluon.space/send/?'
-    if (this.props.sender) {
-      url = `${url}r=${this.props.sender.address}&n=${encodeURIComponent(this.props.sender.name)}`
-    }
-    if (this.props.token) {
-      url = `${url}&t=${this.props.token.address}`
-    }
-    if (this.props.token && this.props.token.networkId) {
-      url = `${url}&nid=${this.props.token.networkId}`
-    }
-    if (this.props.amount) {
-      url = `${url}&a=${this.props.amount}`
-    }
-    if (this.props.attachment) {
-      url = `${url}&at=${this.props.attachment.ipfs}`
+
+    if (this.props.room) {
+      this.props.request()
+    } else {
+      let url = 'https://gluon.space/send/?'
+      if (this.props.sender) {
+        url = `${url}r=${this.props.sender.address}&n=${encodeURIComponent(this.props.sender.name)}`
+      }
+      if (this.props.token) {
+        url = `${url}&t=${this.props.token.address}`
+      }
+      if (this.props.token && this.props.token.networkId) {
+        url = `${url}&nid=${this.props.token.networkId}`
+      }
+      if (this.props.amount) {
+        url = `${url}&a=${this.props.amount}`
+      }
+
+      this.props.setModalMessage({
+        type: Enums.MessageType.Success,
+        title: 'Request',
+        message: 'Share this URL with your friends',
+        inputText: url,
+        ctaTitle: 'Close',
+      } as ModalMessageConfig)
     }
 
-    this.props.setModalMessage({
-      type: Enums.MessageType.Success,
-      title: 'Request',
-      message: 'Share this URL with your friends',
-      inputText: url,
-      ctaTitle: 'Close',
-    } as ModalMessageConfig)
   }
 
   render() {
@@ -122,6 +125,9 @@ export default class SendDetails extends RX.Component<Props, null> {
           onPress={() => this.props.navigate('Rooms')}
           account={this.props.room && {avatar: this.props.room.avatarUrl}}
           isOff={!this.props.room}
+          isOn={!!this.props.room}
+          smallSeedIcon
+
         />
 
         {/* <ListItem

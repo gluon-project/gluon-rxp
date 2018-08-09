@@ -16,6 +16,7 @@ interface Props extends RX.CommonProps {
   transaction?: Transaction,
   isProcessing?: boolean
   send?: () => void
+  request?: () => void
   uiTraits?: UITraits
   startLogin?: () => void
   receiver?: User
@@ -39,6 +40,7 @@ class CompactSendMasterScreen extends RX.Component<Props, null> {
               navigate={this.props.navigate}
               startLogin={this.props.startLogin}
               send={this.props.send}
+              request={this.props.request}
               isProcessing={this.props.isProcessing}
               routeName={''}
               sender={this.props.sender}
@@ -83,6 +85,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     send: () => dispatch(Actions.Transactions.startSaving()),
+    request: () => dispatch(Actions.Transactions.requestInMatrix()),
     startLogin: () => dispatch(Actions.User.startLogin()),
     setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),
     setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),

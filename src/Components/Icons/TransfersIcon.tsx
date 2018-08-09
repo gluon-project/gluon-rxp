@@ -23,7 +23,7 @@ class TransfersIcon extends RX.Component <Props, null> {
         fillColor={this.props.fill}
         strokeColor={this.props.strokeColor}
         strokeWidth={this.props.strokeWidth}
-        d={'M4.821 18.022l3.282 3.325-.645.653L3 17.483 7.424 13l.645.653-3.32 3.364H22v1.005H4.821zm15.358-11H3V6.017h17.252l-3.32-3.364.644-.653L22 6.483 17.542 11l-.645-.653 3.282-3.325z'}
+        d={'M5.821 20.022l3.282 3.325-.645.653L4 19.483 8.424 15l.645.653-3.32 3.364H23v1.005H5.821zm15.358-11H4V8.017h17.252l-3.32-3.364.644-.653L23 8.483 18.542 13l-.645-.653 3.282-3.325z'}
       />
 
     </RXImageSvg>
@@ -32,8 +32,8 @@ class TransfersIcon extends RX.Component <Props, null> {
 }
 
 TransfersIcon.defaultProps = {
-  width: 25,
-  height: 25,
+  width: 28,
+  height: 28,
   strokeColor: '#fff',
   strokeWidth: 0,
   fill: 'transparent',

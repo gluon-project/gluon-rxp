@@ -24,6 +24,7 @@ export enum ProcessType {
   LoadTransactionInfo,
   SignClaim,
   LoadMatrixClaims,
+  RequestInMatrix,
 }
 
 export enum VisualType {

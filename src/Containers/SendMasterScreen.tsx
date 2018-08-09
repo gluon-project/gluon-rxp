@@ -16,6 +16,7 @@ interface Props extends RX.CommonProps {
   transaction?: Transaction,
   isProcessing?: boolean
   send?: () => void
+  request?: () => void
   uiTraits?: UITraits
   startLogin?: () => void
   createNewToken?: (token: Token) => void
@@ -43,6 +44,7 @@ class SendMasterScreen extends RX.Component<Props, null> {
             navigate={this.props.navigate}
             startLogin={this.props.startLogin}
             send={this.props.send}
+            request={this.props.request}
             isProcessing={this.props.isProcessing}
             routeName={routeName}
             sender={this.props.sender}
@@ -82,6 +84,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     send: () => dispatch(Actions.Transactions.startSaving()),
+    request: () => dispatch(Actions.Transactions.requestInMatrix()),
     startLogin: () => dispatch(Actions.User.startLogin()),
     createNewToken: (token: Token) => dispatch(Actions.Tokens.createNewToken(token)),
     setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),

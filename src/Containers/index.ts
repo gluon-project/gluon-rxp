@@ -23,6 +23,7 @@ import LoadingScreen from './LoadingScreen'
 import LoginScreen from './LoginScreen'
 import MoreMasterScreen from './MoreMasterScreen'
 import ReceiverScreen from './ReceiverScreen'
+import RequestBox from './RequestBox'
 import RequestMasterScreen from './RequestMasterScreen'
 import RoomsMasterScreen from './RoomsMasterScreen'
 import RoomActionsScreen from './RoomActionsScreen'
@@ -63,6 +64,7 @@ export {
   LoginScreen,
   MoreMasterScreen,
   ReceiverScreen,
+  RequestBox,
   RequestMasterScreen,
   RoomActionsScreen,
   RoomsMasterScreen,

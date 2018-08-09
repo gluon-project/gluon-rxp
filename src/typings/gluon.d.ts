@@ -203,6 +203,7 @@ declare interface MatrixTimelineEvent {
       mimetype: string,
     },
     transaction?: Transaction,
+    request?: Transaction,
     fileContent?: {
       claims: string[],
     },

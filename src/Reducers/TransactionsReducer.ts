@@ -37,6 +37,14 @@ reducer.on(resetToInitialState, (state: TransactionState) => {
   return initialState
 })
 
+export const setNewTransaction = createAction('Set New Transaction')
+reducer.on(setNewTransaction, (state: TransactionState, payload?: Transaction) => {
+  return {
+    ...state,
+    new: payload,
+  }
+})
+
 export const setRoom = createAction('Set Room')
 reducer.on(setRoom, (state: TransactionState, payload?: string) => {
   return {
@@ -159,6 +167,8 @@ reducer.on(resetNewTransaction, (state: TransactionState, payload?: Transaction)
     new: {...emptyTransaction, sender: payload.sender},
   }
 })
+
+export const requestInMatrix = createAction('Request in matrix')
 
 export const startLoading = createAction('Start loading transaction')
 

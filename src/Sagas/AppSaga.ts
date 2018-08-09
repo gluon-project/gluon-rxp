@@ -141,13 +141,6 @@ function* handleRequest(uri: string): SagaIterator {
       if (url.query.a) {
         yield put(Actions.Transactions.setAmount(parseInt(url.query.a, 10)))
       }
-      if (url.query.at) {
-        const existingAttachment = yield select(Selectors.Attachment.getFromCache, url.query.at)
-        if (!existingAttachment) {
-          yield put(Actions.Attachment.getFromIpfs(url.query.at))
-        }
-        yield put(Actions.Transactions.setAttachment(url.query.at))
-      }
       yield put(Actions.Navigation.navigate('SendTab'))
       break
   }

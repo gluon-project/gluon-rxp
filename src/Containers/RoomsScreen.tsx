@@ -21,8 +21,8 @@ interface Props extends RX.CommonProps {
 }
 
 class RoomsScreen extends RX.Component<Props, null> {
-  handleSelectRoom(room: MatrixRoom) {
-    this.props.setRoom(room.id)
+  handleSelectRoom(roomId: string) {
+    this.props.setRoom(roomId)
     if (this.props.uiTraits.horizontalIsCompact) {
       this.props.navigateBack()
     }
@@ -32,6 +32,14 @@ class RoomsScreen extends RX.Component<Props, null> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
+          <ListItem
+            isOff
+            title={'None'}
+            subTitle={'Don\'t share'}
+            type={ListItem.type.Secondary}
+            selected={!this.props.selectedRoomId}
+            onPress={() => this.handleSelectRoom(null)}
+          />
           {this.props.rooms && <RX.View>
             {this.props.rooms.map((room, key) => {
               return <ListItem
@@ -42,7 +50,7 @@ class RoomsScreen extends RX.Component<Props, null> {
                 type={ListItem.type.Secondary}
                 selected={this.props.selectedRoomId
                   && room.id === this.props.selectedRoomId}
-                onPress={() => this.handleSelectRoom(room)}
+                onPress={() => this.handleSelectRoom(room.id)}
               />
             })}
           </RX.View>}
