@@ -654,7 +654,7 @@ const Styles = {
   },
   claimBox: {
     wrapper: RX.Styles.createViewStyle({
-      backgroundColor: Colors.backgroundSelected,
+      backgroundColor: Colors.lightBackground,
       borderRadius: 16,
       marginBottom: Metrics.baseMargin,
       padding: Metrics.baseMargin,

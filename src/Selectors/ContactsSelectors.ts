@@ -4,15 +4,35 @@ import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
 import * as S from 'string'
+import { decodeToken } from 'jsontokens'
+
 interface DidToUserMap {
   [did: string]: User
 }
 
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
 export const getAllClaims = (state: CombinedState) => state.contacts.claims.concat(state.contacts.matrixClaims)
-export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] => {
-  const allClaims = getAllClaims(state)
-  const extendedClaims = _.map(allClaims, (claim: VerifiableClaim) => {
+
+export const decodeAndExtendClaims = (state: CombinedState, encodedClaims: string[]) => {
+  const claims = _.map(encodedClaims, (jwt: string) => {
+    let result: VerifiableClaim = null
+    try {
+      const decodedClaim = decodeToken(jwt)
+      result = {
+        ...decodedClaim.payload,
+        jwt,
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    return result
+  })
+
+  return getExtendedClaims(state, claims)
+}
+
+export const getExtendedClaims = (state: CombinedState, claims: VerifiableClaim[]) => {
+  const extendedClaims = _.map(claims, (claim: VerifiableClaim) => {
     const keys = _.keys(claim.claim)
     const key = keys[0]
     const value = typeof claim.claim[key] === 'string' ? claim.claim[key] : JSON.stringify(claim.claim[key])
@@ -25,6 +45,11 @@ export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] =>
       subject: getAccountByDid(state, claim.sub),
     }
   })
+  return extendedClaims
+}
+export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] => {
+  const allClaims = getAllClaims(state)
+  const extendedClaims = getExtendedClaims(state, allClaims)
   const uniqClaims: VerifiableClaim[] = _.uniqWith(extendedClaims, (claimA: any, claimB: any): boolean => {
     return `${claimA.jwt}${claimA.source.type}${claimA.source.id}` === `${claimB.jwt}${claimB.source.type}${claimB.source.id}`
   })

@@ -16,6 +16,7 @@ import ContactActionsScreen from './ContactActionsScreen'
 import ContactFormScreen from './ContactFormScreen'
 import ContactNewFormScreen from './ContactNewFormScreen'
 import ContactSelectionScreen from './ContactSelectionScreen'
+import ClaimListBox from './ClaimListBox'
 import FeedItem from './FeedItem'
 import FeedScreen from './FeedScreen'
 import LoadingScreen from './LoadingScreen'
@@ -54,6 +55,7 @@ export {
   CompactRoomsMainScreen,
   CompactSendMainScreen,
   CompactWalletMainScreen,
+  ClaimListBox,
   FeedItem,
   ContactsMasterScreen,
   FeedScreen,

@@ -10,7 +10,7 @@ import {
   Icons,
   TextInput,
   Graphs } from '../Components'
-import { TransactionBox } from '../Containers'
+import { TransactionBox, ClaimListBox } from '../Containers'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Theme from '../Theme'
@@ -89,17 +89,22 @@ class TokenActionsScreen extends RX.Component<Props, State> {
       <RX.View style={[Theme.Styles.scrollContainerNoMargins, {paddingBottom: 80}]}>
         <ScrollView autoScrollToBottom>
           <RX.View style={Theme.Styles.scrollContainer}>
-            {showInputRow && timeline.map(event =>
+            {showInputRow && timeline.map((event, key) =>
             (event.type === 'm.room.message' && event.content.body !== null) &&
             <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
-              <RX.Image
+              {(!timeline[key - 1] || (timeline[key - 1].sender !== event.sender)) && <RX.Image
                 resizeMode={'cover'}
                 style={Theme.Styles.chat.messageSenderAvatar}
-                source={getMember(event.sender, this.props.room).avatarUrl} />
-              <RX.View style={{flex: 1}}>
-                <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>
-                {!event.content.transaction && <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+                source={getMember(event.sender, this.props.room).avatarUrl} />}
+              <RX.View style={[{flex: 1}, !(!timeline[key - 1] || (timeline[key - 1].sender !== event.sender)) && {marginLeft: 50}]}>
+                {(!timeline[key - 1] || (timeline[key - 1].sender !== event.sender)) &&
+                <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>}
+                {!event.content.transaction &&
+                !((event.content.info && event.content.info.mimetype && event.content.info.mimetype === 'application/json')) &&
+                <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
                 {event.content.transaction && <TransactionBox transactionPreview={event.content.transaction} />}
+                {event.content.fileContent && event.content.fileContent.claims
+                  && <ClaimListBox encodedClaims={event.content.fileContent.claims} />}
               </RX.View>
             </RX.View>)}
           </RX.View>
