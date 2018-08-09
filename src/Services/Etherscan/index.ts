@@ -30,52 +30,66 @@ const toIPFSHash = (str: string) => {
 }
 
 const ethTransactionToGluonTransactionGeneric = (ethTx: any, timestamp: number): Transaction => {
-  const decodedLogs = abiDecoder.decodeLogs([ethTx.logs[0]])[0]
+  try {
+    const decodedLogs = abiDecoder.decodeLogs([ethTx.logs[0]])[0]
 
-  const event: EthereumLogEvent[] = decodedLogs.events
-  const date = moment.unix(timestamp).toISOString()
-  const hash = `${ethTx.transactionHash}`
-  if (decodedLogs.name === 'Transfer') {
-    const sender = _.find(event, {'name': 'from'}).value
-    const receiver = _.find(event, {'name': 'to'}).value
-    const amount = _.find(event, {'name': 'value'}).value
-    const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
-    const attachment = data ? toIPFSHash(data) : null
-
-    return {
-      hash,
-      sender,
-      receiver,
-      amount: amount,
-      token: ethTx.to,
-      date,
-      attachment,
-      type: decodedLogs.name,
+    const event: EthereumLogEvent[] = decodedLogs.events
+    const date = moment.unix(timestamp).toISOString()
+    const hash = `${ethTx.transactionHash}`
+    if (decodedLogs.name === 'Transfer') {
+      const sender = _.find(event, {'name': 'from'}).value
+      const receiver = _.find(event, {'name': 'to'}).value
+      const amount = _.find(event, {'name': 'value'}).value
+      const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
+      const attachment = data ? toIPFSHash(data) : null
+  
+      return {
+        hash,
+        sender,
+        receiver,
+        amount: amount,
+        token: ethTx.to,
+        date,
+        attachment,
+        type: decodedLogs.name,
+      }
+    } else if (decodedLogs.name === 'Minted') {
+      return {
+        hash,
+        sender: decodedLogs.name,
+        receiver: _.find(event, {'name': 'totalCost'}).value,
+        amount: _.find(event, {'name': 'amount'}).value,
+        token: ethTx.to,
+        date,
+        attachment: null,
+        type: decodedLogs.name,
+      }
+    } else if (decodedLogs.name === 'Burned') {
+      return {
+        hash,
+        sender: decodedLogs.name,
+        receiver: _.find(event, {'name': 'reward'}).value,
+        amount: _.find(event, {'name': 'amount'}).value,
+        token: ethTx.to,
+        date,
+        attachment: null,
+        type: decodedLogs.name,
+      }
     }
-  } else if (decodedLogs.name === 'Minted') {
+    return {}
+  } catch (e) {
     return {
-      hash,
-      sender: decodedLogs.name,
-      receiver: _.find(event, {'name': 'totalCost'}).value,
-      amount: _.find(event, {'name': 'amount'}).value,
-      token: ethTx.to,
-      date,
+      hash: ethTx.transactionHash,
+      sender: ethTx.from,
+      receiver: ethTx.to,
+      amount: ethTx.value,
+      token: Config.tokens.etherAddress,
+      date: moment.unix(timestamp).toISOString(),
       attachment: null,
-      type: decodedLogs.name,
-    }
-  } else if (decodedLogs.name === 'Burned') {
-    return {
-      hash,
-      sender: decodedLogs.name,
-      receiver: _.find(event, {'name': 'reward'}).value,
-      amount: _.find(event, {'name': 'amount'}).value,
-      token: ethTx.to,
-      date,
-      attachment: null,
-      type: decodedLogs.name,
+      type: 'Transfer',
     }
   }
-  return {}
+
 }
 
 const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction => {

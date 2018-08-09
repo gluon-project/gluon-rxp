@@ -84,7 +84,6 @@ class TokenActionsScreen extends RX.Component<Props, State> {
           return true
         }
       })
-    console.log({timeline})
     return (
       <RX.View style={[Theme.Styles.scrollContainerNoMargins, {paddingBottom: 80}]}>
         <ScrollView autoScrollToBottom>
