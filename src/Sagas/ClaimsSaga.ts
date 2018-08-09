@@ -67,6 +67,26 @@ export function* watchSignAnonymousClaimAndShareInRoom(): SagaIterator {
   }
 }
 
+export function* loadAndAppendMatrixClaims(action: any): SagaIterator {
+  yield put(Actions.Process.start({type: Enums.ProcessType.LoadMatrixClaims}))
+
+  try {
+    const roomId = action.payload.roomId
+    const url = action.payload.url
+    console.log({roomId, url})
+    const claims = yield call(loadClaim, url, roomId)
+
+    yield put(Actions.Contacts.appendMatrixClaims(claims))
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  yield put(Actions.Process.end({type: Enums.ProcessType.LoadMatrixClaims}))
+}
+
+export function* watchLoadAndAppendMatrixClaims(): SagaIterator {
+  yield takeEvery(Actions.Contacts.loadAndAppendMatrixClaims, loadAndAppendMatrixClaims)
+}
+
 export function* watchLoadMatrixClaims(): SagaIterator {
   while (true) {
     const action = yield take(Actions.Contacts.loadMatrixClaims)

@@ -41,7 +41,7 @@ class ClaimListBox extends RX.Component<Props, State> {
       <RX.View>
         <RX.Button onPress={() => this.setState({showDetails: !this.state.showDetails})}>
           <RX.Text style={Theme.Styles.chat.messageBody}>
-            {this.state.showDetails ? 'Hide claims ▴' : `${this.props.encodedClaims.length} claims ▾`}
+            {this.state.showDetails ? 'Hide signed data ^' : `${this.props.encodedClaims.length} signed data v`}
           </RX.Text>
         </RX.Button>
         {this.state.showDetails && <RX.View>

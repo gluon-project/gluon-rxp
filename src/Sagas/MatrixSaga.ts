@@ -95,9 +95,14 @@ export function * handleSyncEvent (event: any) {
 }
 
 export function * handleTimelineEvent (event: any) {
-  // const data = Services.Matrix.getEventData(event)
+  const data = Services.Matrix.getEventData(event)
   // console.log('New message', data)
   // yield put(Actions.Matrix.addTimelineEvent(data))
+  if (data.content.info && data.content.info.mimetype === 'application/json') {
+    const claimUrl = Services.Matrix.client.mxcUrlToHttp(data.content.url)
+    yield put(Actions.Contacts.loadAndAppendMatrixClaims({roomId: data.roomId, url: claimUrl}))
+  }
+
   const rooms = yield call(Services.Matrix.getRooms)
   yield put(Actions.Matrix.setRooms(rooms))
 
@@ -111,7 +116,7 @@ export function * watchMatrixUpdates () {
 
   yield takeEvery(synchChannel, handleSyncEvent)
 
-  Services.Matrix.client.startClient()
+  Services.Matrix.client.startClient({initialSyncLimit: 500})
 }
 
 export function* watchStartLogin(): SagaIterator {

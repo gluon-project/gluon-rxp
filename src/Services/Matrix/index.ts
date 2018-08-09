@@ -120,7 +120,7 @@ export const getClaims = (): any[] => {
     const timelineSet = room.getOrCreateFilteredTimelineSet(fileFilter)
     const events: MatrixTimelineEvent[] = timelineSet.getLiveTimeline().getEvents().map(getEventData)
     events.forEach((event) => {
-      console.log(event)
+      // console.log(event)
       if (event.content.info && event.content.info.mimetype === 'application/json') {
         urls.push(client.mxcUrlToHttp(event.content.url))
       }

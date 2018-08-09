@@ -71,6 +71,15 @@ reducer.on(setMatrixClaims, (state: ContactsState, payload?: VerifiableClaim[]) 
   }
 })
 
+export const appendMatrixClaims = createAction('Append Matrix Claims')
+reducer.on(appendMatrixClaims, (state: ContactsState, payload?: VerifiableClaim[]) => {
+  const allClaims = state.matrixClaims.concat(payload)
+  return {
+    ...state,
+    matrixClaims: allClaims,
+  }
+})
+
 export const addMatrixClaim = createAction('Add claim')
 reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => {
   return {
@@ -82,3 +91,4 @@ reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => 
 export const signAnonymousClaim = createAction('Sign anonymous claim')
 export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous claim and share in room')
 export const loadMatrixClaims = createAction('Load matrix claims')
+export const loadAndAppendMatrixClaims = createAction('Load matrix and append claims')
