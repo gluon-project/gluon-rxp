@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { CombinedState } from '../Reducers'
+import { getRoomById } from './MatrixSelectors'
 import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
@@ -31,6 +32,19 @@ export const decodeAndExtendClaims = (state: CombinedState, encodedClaims: strin
   return getExtendedClaims(state, claims)
 }
 
+export const getSourceAccountForClaim = (state: CombinedState, claim: VerifiableClaim): User => {
+  let account = {
+    name: 'Local',
+    avatar: 'https://gluon.space/Assets/Images/logo.png',
+  }
+  if (claim.source && claim.source.type === 'matrix') {
+    const room: MatrixRoom = getRoomById(state, claim.source.id)
+    account.name = room.name
+    account.avatar = room.avatarUrl
+  }
+  return account
+}
+
 export const getExtendedClaims = (state: CombinedState, claims: VerifiableClaim[]) => {
   const extendedClaims = _.map(claims, (claim: VerifiableClaim) => {
     const keys = _.keys(claim.claim)
@@ -42,7 +56,11 @@ export const getExtendedClaims = (state: CombinedState, claims: VerifiableClaim[
       claimType: S(key).humanize().titleCase().s,
       claimValue: value,
       issuer: getAccountByDid(state, claim.iss),
-      subject: getAccountByDid(state, claim.sub),
+      subject: getAccountByDid(state, Utils.address.universalIdToDID(claim.sub)),
+      source: {
+        ...claim.source,
+        account: getSourceAccountForClaim(state, claim),
+      },
     }
   })
   return extendedClaims

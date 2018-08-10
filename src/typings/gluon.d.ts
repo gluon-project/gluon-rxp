@@ -53,6 +53,10 @@ declare interface VerifiableClaim {
   source: {
     type: string, // 'local', 'matrix', etc.
     id?: string, // 'folder', 'roomId', etc.
+    account?: {
+      name?: string,
+      avatar?: string,
+    },
   },
   issuer?: User,
   subject?: User,

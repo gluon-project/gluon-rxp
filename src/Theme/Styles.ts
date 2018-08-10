@@ -662,6 +662,8 @@ const Styles = {
     issuer: RX.Styles.createTextStyle({
       color: Colors.info,
       fontSize: Fonts.size.micro,
+      marginTop: Metrics.smallMargin,
+      alignItems: 'center',
     }),
     claimType: RX.Styles.createTextStyle({
       color: Colors.info,
@@ -673,6 +675,37 @@ const Styles = {
       padding: Metrics.baseMargin,
     }),
     claimValueView: RX.Styles.createViewStyle({
+      alignItems: 'center',
+    }),
+  },
+  contact: {
+    groupTitle: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.medium,
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin,
+    }),
+    groupListItem: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+      marginLeft: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin,
+    }),
+    info: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.micro,
+      marginLeft: Metrics.smallMargin,
+    }),
+    detailsWrapper: RX.Styles.createViewStyle({
+      marginLeft: Metrics.baseMargin * 2,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.smallMargin,
+      paddingBottom: Metrics.smallMargin,
+    }),
+    sourceRow: RX.Styles.createViewStyle({
+      marginLeft: Metrics.baseMargin,
+      flexDirection: 'row',
       alignItems: 'center',
     }),
   },

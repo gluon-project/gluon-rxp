@@ -33,7 +33,11 @@ export default class ClaimBox extends RX.Component<Props, null> {
         </RX.View>
         {!this.props.hideSubject && <RX.Text style={Theme.Styles.claimBox.issuer}>Subject: {this.props.claim.subject.name}</RX.Text>}
         {this.props.claim.source && <RX.View style={Theme.Styles.row}>
-          <RX.Text style={Theme.Styles.claimBox.issuer}>Source: {this.props.claim.source.type} {this.props.claim.source.id} </RX.Text>
+          <RX.Text style={Theme.Styles.claimBox.issuer}>Source: </RX.Text>
+            <AccountIcon
+            account={this.props.claim.source.account}
+            type={AccountIcon.type.Micro}/>
+          <RX.Text style={Theme.Styles.claimBox.issuer}>{this.props.claim.source.account.name} </RX.Text>
         </RX.View>}
       </RX.View>
     )
