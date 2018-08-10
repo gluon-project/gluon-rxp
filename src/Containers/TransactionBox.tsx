@@ -49,12 +49,14 @@ class TransactionBox extends RX.Component<Props, null> {
       <RX.View style={[{
         backgroundColor: Theme.Colors.lightBackground,
         borderRadius: Theme.Metrics.borderRadius,
+        height: 150,
         }]}>
         {isObject(transaction) &&  isObject(this.props.sender) && <RX.View style={[Theme.Styles.row, {
           justifyContent: 'flex-start',
           padding: Theme.Metrics.baseMargin,
+          height: 120,
         }]}>
-          <RX.View style={{flex: 1}}>
+          <RX.View style={{}}>
             <RX.Button style={{alignItems: 'center', flex: 1}} onPress={() => this.handleContactPress(this.props.sender)}>
               <AccountIcon type={AccountIcon.type.Medium} account={this.props.sender} />
               <RX.Text numberOfLines={2} style={[Theme.Styles.feed.title, {textAlign: 'center'}]}>{this.props.sender.name}</RX.Text>

@@ -61,6 +61,7 @@ class RequestBox extends RX.Component<Props, null> {
         backgroundColor: Theme.Colors.lightBackground,
         borderRadius: Theme.Metrics.borderRadius,
         padding: Theme.Metrics.baseMargin,
+        height: 280,
       }]}>
           <RX.Text style={Theme.Styles.feed.subTitle}>
               Request
@@ -70,14 +71,14 @@ class RequestBox extends RX.Component<Props, null> {
           alignItems: 'center',
         }]}>
 
-          <RX.View style={{flex: 1}}>
-            <RX.Button style={{alignItems: 'center', flex: 1}} onPress={() => this.handleContactPress(this.props.sender)}>
+          <RX.View style={{height: 150}}>
+            <RX.Button style={{alignItems: 'center'}} onPress={() => this.handleContactPress(this.props.sender)}>
               <AccountIcon type={AccountIcon.type.Large} account={this.props.sender} />
               <RX.Text numberOfLines={2} style={[Theme.Styles.feed.title, {textAlign: 'center'}]}>{this.props.sender.name}</RX.Text>
             </RX.Button>
           </RX.View>
 
-          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 1}}>
+          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
 
             {isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.feed.amount}>
                 {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
