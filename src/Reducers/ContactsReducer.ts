@@ -4,6 +4,7 @@ import {
 } from 'redux-act'
 import { remove } from 'lodash'
 import { resetToInitialState } from './AppReducer'
+import { logout } from './MatrixReducer'
 import Config from '../Config'
 
 export interface ContactsState {
@@ -68,6 +69,13 @@ reducer.on(setMatrixClaims, (state: ContactsState, payload?: VerifiableClaim[]) 
   return {
     ...state,
     matrixClaims: payload,
+  }
+})
+
+reducer.on(logout, (state: ContactsState) => {
+  return {
+    ...state,
+    matrixClaims: [],
   }
 })
 

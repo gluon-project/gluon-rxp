@@ -19,6 +19,8 @@ interface Props extends RX.CommonProps {
   resetToInitialState?: () => void
   environment?: string
   showEnvironmentPicker?: () => void
+  logout?: () => void
+  currentMatrixUser?: MatrixUser
 }
 
 class SettingsScreen extends RX.Component<Props, null> {
@@ -26,11 +28,18 @@ class SettingsScreen extends RX.Component<Props, null> {
     return (
       <ScrollView>
         <RX.View style={Theme.Styles.about.wrapper}>
+          {this.props.currentMatrixUser && <CallToAction
+              type={CallToAction.type.Default}
+              title={'Logout from Matrix'}
+              onPress={() => this.props.logout()}
+            />}
+
           <CallToAction
             type={CallToAction.type.Default}
             title={'Clear local cache'}
             onPress={() => this.props.resetToInitialState()}
           />
+
           <RX.Text style={Theme.Styles.about.warning}>
             All your contact and token lists are stored locally.
           </RX.Text>
@@ -54,6 +63,7 @@ class SettingsScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
+    currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
     codePushDeployments: Selectors.App.getCodePushDeployments(state),
     appVersion: state.app.version,
   }
@@ -63,6 +73,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     syncCodePushDeployment: (codePushDeployment: CodePushDeployment) =>
       dispatch(AppReducer.syncCodePushDeployment(codePushDeployment)),
     resetToInitialState: () => dispatch(Actions.App.resetToInitialState()),
+    logout: () => dispatch(Actions.Matrix.logout()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)

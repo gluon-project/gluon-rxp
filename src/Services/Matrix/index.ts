@@ -4,6 +4,21 @@ import request from './Request'
 export let client: any = null
 export let fileFilter: any = null
 
+export const logout = () => {
+  return new Promise<MatrixUser>((resolve, reject) => {
+    client.logout((err: any, resp: any) => {
+      console.log(err)
+      if (err) {
+        reject(err)
+      } else {
+        console.log(resp)
+        client.stopClient()
+        resolve(resp)
+      }
+    })
+  })
+}
+
 export const login = (username: string, password: string, baseUrl: string) => {
   const tmpClient = Matrix.createClient({baseUrl, request})
   return new Promise<MatrixUser>((resolve, reject) => {

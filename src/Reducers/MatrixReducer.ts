@@ -22,6 +22,10 @@ export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: MatrixState) => {
   return initialState
 })
+export const logout = createAction('Matrix logout')
+reducer.on(logout, (state: MatrixState) => {
+  return initialState
+})
 
 export const setRooms = createAction('Set rooms')
 reducer.on(setRooms, (state: MatrixState, payload?: MatrixRoom[]) => {
