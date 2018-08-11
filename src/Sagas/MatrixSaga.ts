@@ -135,6 +135,23 @@ export function* watchStartLogin(): SagaIterator {
   }
 }
 
+export function* watchStartRegister(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.register)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixRegister}))
+
+    try {
+      console.log('geter')
+      const currentUser = yield call(Services.Matrix.register, action.payload.username, action.payload.password, action.payload.baseUrl)
+      // yield put(Actions.Matrix.setCurrentUser(currentUser))
+      // yield fork(watchMatrixUpdates)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixRegister}))
+  }
+}
+
 export function* watchLogout(): SagaIterator {
   while (true) {
     const action = yield take(Actions.Matrix.logout)

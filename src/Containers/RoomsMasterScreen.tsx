@@ -18,7 +18,9 @@ interface Props extends RX.CommonProps {
   rooms?: MatrixRoom[]
   handleSelectRoom?: (roomId: string) => void
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
+  matrixRegister?: (username: string, password: string, baseUrl: string) => void
   isLoggingIn?: boolean
+  isRegistering?: boolean
   currentMatrixUser?: MatrixUser
 }
 
@@ -34,7 +36,9 @@ class RoomsMasterScreen extends RX.Component<Props, null> {
           <RoomsDetails
             currentMatrixUser={this.props.currentMatrixUser}
             matrixLogin={this.props.matrixLogin}
+            matrixRegister={this.props.matrixRegister}
             isLoggingIn={this.props.isLoggingIn}
+            isRegistering={this.props.isRegistering}
             navigate={this.props.navigate}
             routeName={routeName}
             currentUser={this.props.currentUser}
@@ -56,12 +60,15 @@ const mapStateToProps = (state: CombinedState): Props => {
     uiTraits: state.app.uiTraits,
     selectedRoomId: Selectors.Matrix.getSelectedRoomId(state),
     isLoggingIn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLogin),
+    isRegistering: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixRegister),
     currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     matrixLogin: (username: string, password: string, baseUrl: string) => dispatch(Actions.Matrix.login({username, password, baseUrl})),
+    matrixRegister: (username: string, password: string, baseUrl: string) =>
+    dispatch(Actions.Matrix.register({username, password, baseUrl})),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateHome: () => dispatch(Actions.Navigation.navigateHome()),
     handleSelectRoom: (roomId: string) => {

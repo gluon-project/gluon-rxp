@@ -1,16 +1,20 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { TextInput, CallToAction } from '../Components'
+import { TextInput, CallToAction, SegmentedControl } from '../Components'
 
 interface Props extends RX.CommonProps {
   login?: (username: string, password: string, baseUrl: string) => void
+  register?: (username: string, password: string, baseUrl: string) => void
   isLoggingIn?: boolean
+  isRegistering?: boolean
 }
 
-interface State extends RX.CommonProps {
+interface State {
   baseUrl?: string
   username?: string
   password?: string
+  password2?: string
+  register?: boolean
 }
 
 export default class MatrixLogin extends RX.Component<Props, State> {
@@ -20,12 +24,28 @@ export default class MatrixLogin extends RX.Component<Props, State> {
       baseUrl: 'https://matrix.org',
       username: '',
       password: '',
+      password2: '',
+      register: false,
+    }
+  }
+
+  handleSubmit() {
+    console.log(this.state)
+    if (this.state.register) {
+      this.props.register(this.state.username, this.state.password, this.state.baseUrl)
+    } else {
+      this.props.login(this.state.username, this.state.password, this.state.baseUrl)
     }
   }
 
   render() {
     return (
       <RX.View >
+        <SegmentedControl
+          titles={['Login', 'Register']}
+          selectedIndex={this.state.register ? 1 : 0}
+          handleSelection={(index) => this.setState({register: (index === 1 ? true : false)})}
+          />
         <TextInput
           label='Home server'
           value={this.state.baseUrl}
@@ -42,11 +62,23 @@ export default class MatrixLogin extends RX.Component<Props, State> {
           value={this.state.password}
           onChangeText={(password) => this.setState({password})}
           />
+        {this.state.register && <TextInput
+          secureTextEntry={true}
+          label='Confirm password'
+          value={this.state.password2}
+          onChangeText={(password2) => this.setState({password2})}
+          />}
         <RX.View style={Theme.Styles.scrollContainer}>
           <CallToAction
-            title={'Login'}
-            onPress={() => this.props.login(this.state.username, this.state.password, this.state.baseUrl)}
-            inProgress={this.props.isLoggingIn}
+            disabled={this.state.password === ''
+            || this.state.username === ''
+            || this.state.baseUrl === ''
+            || this.state.register
+            // || (this.state.register && this.state.password !== this.state.password2)
+          }
+            title={this.state.register ? 'Not supported' : 'Login'}
+            onPress={this.handleSubmit.bind(this)}
+            inProgress={this.props.isLoggingIn || this.props.isRegistering}
             />
         </RX.View>
       </RX.View>

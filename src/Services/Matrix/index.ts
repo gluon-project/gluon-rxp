@@ -19,6 +19,16 @@ export const logout = () => {
   })
 }
 
+export const register = (username: string, password: string, baseUrl: string) => {
+  const tmpClient = Matrix.createClient({baseUrl, request})
+  return new Promise<MatrixUser>((resolve, reject) => {
+    tmpClient.register(username, password, (err: any, resp: any) => {
+      console.log({err, resp})
+
+    })
+  })
+}
+
 export const login = (username: string, password: string, baseUrl: string) => {
   const tmpClient = Matrix.createClient({baseUrl, request})
   return new Promise<MatrixUser>((resolve, reject) => {

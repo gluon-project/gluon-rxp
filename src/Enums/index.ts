@@ -20,6 +20,7 @@ export enum ProcessType {
   BurnTokens,
   GetAvailableTokens,
   MatrixLogin,
+  MatrixRegister,
   MatrixSendMessage,
   LoadTransactionInfo,
   SignClaim,

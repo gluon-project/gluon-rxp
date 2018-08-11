@@ -71,6 +71,7 @@ reducer.on(addTimelineEvent, (state: MatrixState, payload?: MatrixTimelineEvent)
 })
 
 export const login = createAction('Matrix login')
+export const register = createAction('Matrix register')
 export const sendTextMessage = createAction('Send text message')
 export const sendMessage = createAction('Send message')
 export const sendFile = createAction('Send file')

@@ -14,6 +14,8 @@ interface Props extends RX.CommonProps {
   uiTraits?: UITraits
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
   isLoggingIn?: boolean
+  matrixRegister?: (username: string, password: string, baseUrl: string) => void
+  isRegistering?: boolean
 }
 
 export default class RoomsDetails extends RX.Component<Props, null> {
@@ -26,7 +28,12 @@ export default class RoomsDetails extends RX.Component<Props, null> {
             {this.props.currentMatrixUser.user_id}
           </RX.Text>
         </RX.View>}
-        {!this.props.currentMatrixUser && <MatrixLogin login={this.props.matrixLogin} isLoggingIn={this.props.isLoggingIn} />}
+        {!this.props.currentMatrixUser && <MatrixLogin
+          login={this.props.matrixLogin}
+          register={this.props.matrixRegister}
+          isLoggingIn={this.props.isLoggingIn}
+          isRegistering={this.props.isRegistering}
+          />}
 
         {this.props.rooms.length > 0 && <RX.View>
             {/* <ListItem
