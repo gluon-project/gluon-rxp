@@ -127,6 +127,16 @@ export function* watchStartLogin(): SagaIterator {
     try {
       const currentUser = yield call(Services.Matrix.login, action.payload.username, action.payload.password, action.payload.baseUrl)
       yield put(Actions.Matrix.setCurrentUser(currentUser))
+      const uportDid = yield select(Selectors.User.getUportDid)
+      if (uportDid !== null) {
+        const credentials = {
+          sub: uportDid,
+          claim: {
+            matrixUser: currentUser,
+          },
+        }
+        yield call(Services.uPort.attestCredentials, credentials)
+      }
       yield fork(watchMatrixUpdates)
     } catch (e) {
       yield put(Actions.App.handleError(e))
@@ -141,7 +151,6 @@ export function* watchStartRegister(): SagaIterator {
     yield put(Actions.Process.start({type: Enums.ProcessType.MatrixRegister}))
 
     try {
-      console.log('geter')
       const currentUser = yield call(Services.Matrix.register, action.payload.username, action.payload.password, action.payload.baseUrl)
       // yield put(Actions.Matrix.setCurrentUser(currentUser))
       // yield fork(watchMatrixUpdates)
@@ -158,6 +167,16 @@ export function* watchLogout(): SagaIterator {
 
     try {
       yield call(Services.Matrix.logout)
+      const uportDid = yield select(Selectors.User.getUportDid)
+      if (uportDid !== null) {
+        const credentials = {
+          sub: uportDid,
+          claim: {
+            matrixUser: false,
+          },
+        }
+        yield call(Services.uPort.attestCredentials, credentials)
+      }
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }

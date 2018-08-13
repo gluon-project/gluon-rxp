@@ -1,11 +1,12 @@
 import { delay, SagaIterator } from 'redux-saga'
-import { call, put, select, spawn, take } from 'redux-saga/effects'
+import { call, put, select, spawn, take, fork } from 'redux-saga/effects'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import Config from '../Config'
 import * as Services from '../Services'
 import utils from '../Utils'
+import { startClient } from './MatrixSaga'
 
 export function* watchStartLogin(): SagaIterator {
   while (true) {
@@ -18,6 +19,11 @@ export function* watchStartLogin(): SagaIterator {
           name: result.name,
           address: result.address,
           avatar: result.avatar ? result.avatar.uri : null,
+        }
+        yield put(Actions.User.setUportDid(result.did))
+        if (result.matrixUser) {
+          yield put(Actions.Matrix.setCurrentUser(result.matrixUser))
+          yield fork(startClient)
         }
         yield put(Actions.User.setAccounts([result.address]))
         yield put(Actions.User.setCurrent(user))

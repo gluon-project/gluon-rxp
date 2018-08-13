@@ -106,9 +106,13 @@ const signAnonymousClaim = (claim: any): VerifiableClaim => {
 const verifyJWT = (jwt: string): VerifiableClaim => {
   return JWT.verifyJWT(jwt)
 }
+const attestCredentials = (credentials: {sub: string, claim: any, exp: number}) => {
+  return uport.attestCredentials(credentials)
+}
 
 export default {
   MNID,
+  attestCredentials,
   verifyJWT,
   signAnonymousClaim,
   requestCredentials,

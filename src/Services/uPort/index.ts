@@ -28,13 +28,15 @@ const requestCredentials = (network: string) => {
   })
 
   return uport.requestCredentials({
-    requested: ['name', 'avatar'],
+    requested: ['name', 'avatar', 'matrixUser'],
     notifications: true,
     accountType: 'keypair',
   }).then((result: any) => {
+    console.log({result})
     return {
       ...result,
       address: MNID.decode(result.networkAddress).address,
+      did: result.did,
     }
   })
 }
@@ -51,8 +53,17 @@ const verifyJWT = (jwt: string): VerifiableClaim => {
 }
 const getProvider = () => uport.getWeb3()
 
+const attestCredentials = (credentials: any) => {
+  const claim = {
+    ...credentials,
+  }
+  console.log({claim})
+  return uport.attestCredentials(claim)
+}
+
 export default {
   MNID,
+  attestCredentials,
   signAnonymousClaim,
   verifyJWT,
   requestCredentials,
