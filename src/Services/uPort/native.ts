@@ -85,7 +85,7 @@ const requestCredentials = (network: string) => {
   }
 
   return uport.requestCredentials({
-    requested: ['name', 'avatar'],
+    requested: ['name', 'avatar', 'matrixUser'],
     accountType: 'keypair',
   }).then((result: any) => {
     return {
@@ -106,8 +106,11 @@ const signAnonymousClaim = (claim: any): VerifiableClaim => {
 const verifyJWT = (jwt: string): VerifiableClaim => {
   return JWT.verifyJWT(jwt)
 }
-const attestCredentials = (credentials: {sub: string, claim: any, exp: number}) => {
-  return uport.attestCredentials(credentials)
+const attestCredentials = (credentials: any) => {
+  const claim = {
+    ...credentials,
+  }
+  return uport.attestCredentials(claim)
 }
 
 export default {

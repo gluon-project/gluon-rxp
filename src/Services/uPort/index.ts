@@ -57,7 +57,6 @@ const attestCredentials = (credentials: any) => {
   const claim = {
     ...credentials,
   }
-  console.log({claim})
   return uport.attestCredentials(claim)
 }
 
