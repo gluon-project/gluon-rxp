@@ -37,6 +37,7 @@ import TokenActionsScreen from './TokenActionsScreen'
 import TokensScreen from './TokensScreen'
 import TransactionBox from './TransactionBox'
 import WalletMasterScreen from './WalletMasterScreen'
+import WebOfTrustScreen from './WebOfTrustScreen'
 
 export {
   About1Screen,
@@ -78,4 +79,5 @@ export {
   TokensScreen,
   TransactionBox,
   WalletMasterScreen,
+  WebOfTrustScreen,
 }

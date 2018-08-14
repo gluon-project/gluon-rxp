@@ -80,6 +80,7 @@ const About1 = { screen: Screens.About1Screen, navigationOptions: { title: 'What
 const About2 = { screen: Screens.About2Screen, navigationOptions: { title: 'What can you do with Gluon?' } }
 const About3 = { screen: Screens.About3Screen, navigationOptions: { title: 'Who can use Gluon?' } }
 const About4 = { screen: Screens.About4Screen, navigationOptions: { title: 'How Gluon works?' } }
+const WebOfTrust = { screen: Screens.WebOfTrustScreen, navigationOptions: { title: 'WebOfTrust' } }
 
 const Tokens = {screen: Screens.TokensScreen, navigationOptions: {title: 'Tokens'}}
 const TokensForm = {screen: Screens.TokensFormScreen, navigationOptions: {title: 'Add Token'}}
@@ -161,7 +162,7 @@ export const WideNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  Settings: { screen: StackNavigator({ Settings }, navigationOptions) },
+  Settings: { screen: StackNavigator({ Settings, WebOfTrust }, navigationOptions) },
 } as any
 
 export const moreStack = {  }
@@ -200,7 +201,7 @@ export const CompactNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  Settings: { screen: StackNavigator({ Settings }, navigationOptions) },
+  Settings: { screen: StackNavigator({ Settings, WebOfTrust }, navigationOptions) },
   // More: {
   //   screen: StackNavigator(moreStack, navigationOptions),
   // },
