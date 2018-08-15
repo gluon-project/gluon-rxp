@@ -8,6 +8,7 @@ interface Props extends RX.CommonProps {
   hideMainVisual?: () => void
   visualBoxType?: Enums.VisualType
   autoScrollToBottom?: boolean
+  transparent?: boolean
 }
 
 interface State {
@@ -55,7 +56,7 @@ export default class ScrollView extends RX.Component<Props, State> {
         onContentSizeChange={(width: number, height: number) => this.setState({contentHeight: height})}
         onLayout={(e: RX.Types.ViewOnLayoutEvent) => this.setState({wrapperHeight: e.height})}
         ref={(ref: any) => this._ref = ref}
-        style={Theme.Styles.containerFull}>
+        style={this.props.transparent ? Theme.Styles.containerFullTransparent : Theme.Styles.containerFull}>
         {this.props.visualBoxType !== undefined && this.props.visualBoxType !== null && <VisualBox
           hideMainVisual={this.props.hideMainVisual}
           type={this.props.visualBoxType}

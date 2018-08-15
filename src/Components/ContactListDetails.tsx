@@ -8,6 +8,7 @@ interface Props extends RX.CommonProps {
   selectedContact?: string
   contacts: User[]
   uiTraits?: UITraits
+  isLoadingMatrixClaims?: boolean
 }
 
 export default class ContactListDetails extends RX.Component<Props, null> {
@@ -38,6 +39,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             onPress={() => this.handleSelectContact(contact.did)}
           />
         ))}
+        {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
         <CallToAction
           type={CallToAction.type.Main}
           title={'New Contact'}

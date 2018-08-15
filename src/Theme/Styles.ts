@@ -8,9 +8,15 @@ const Styles = {
     backgroundColor: Colors.navBarBackground,
     height: RX.UserInterface.measureWindow().height === 812 ? 20 : 0,
   }),
+  bgImage: RX.Styles.createViewStyle({
+    flex: 1,
+  }),
   containerFull: RX.Styles.createViewStyle({
     flex: 1,
     backgroundColor: Colors.background,
+  }),
+  containerFullTransparent: RX.Styles.createViewStyle({
+    flex: 1,
   }),
   container: RX.Styles.createViewStyle({
     flex: 1,
@@ -275,10 +281,15 @@ const Styles = {
 
   navBar: RX.Styles.createViewStyle({
     backgroundColor: Colors.navBarBackground,
-    height: RX.Platform.getType() === 'web' ? 44 : 64,
+    height: RX.Platform.getType() === 'web' ? 64 : 64,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: RX.Platform.getType() === 'web' ? 10 : 30,
+    paddingTop: RX.Platform.getType() === 'web' ? 30 : 30,
+  }),
+  navBarSystem: RX.Styles.createViewStyle({
+    backgroundColor: Colors.navBarBackground,
+    height: RX.Platform.getType() === 'web' ? 64 : 64,
+    paddingTop: RX.Platform.getType() === 'web' ? 20 : 20,
   }),
   navBarLabel: RX.Styles.createTextStyle({
     flex: 1,
@@ -398,8 +409,8 @@ const Styles = {
   segmentedControl: {
     wrapper: RX.Styles.createViewStyle({
       flexDirection: 'row',
-      borderRadius: Metrics.borderRadius,
-      borderColor: Colors.brand,
+      borderRadius: Metrics.borderRadiusMax,
+      borderColor: Colors.light,
       borderWidth: Metrics.borderWidth,
       overflow: 'hidden',
       height: Metrics.buttonHeight - 10,
@@ -410,16 +421,16 @@ const Styles = {
       flex: 1,
     }),
     label: RX.Styles.createTextStyle({
-      color: Colors.brand,
+      color: Colors.light,
       fontSize: Fonts.size.medium - 4,
       alignSelf: 'center',
     }),
     selectedButton: RX.Styles.createButtonStyle({
-      backgroundColor: Colors.brandBackGround,
+      backgroundColor: Colors.light,
       flex: 1,
     }),
     selectedLabel: RX.Styles.createTextStyle({
-      color: Colors.light,
+      color: Colors.background,
       fontSize: Fonts.size.medium - 4,
       alignSelf: 'center',
     }),
@@ -446,14 +457,13 @@ const Styles = {
       color: Colors.info,
       fontSize: Fonts.size.small,
       marginBottom: Metrics.smallMargin,
+      marginLeft: Metrics.baseMargin,
     }),
     input: RX.Styles.createTextInputStyle({
       flex: 1,
       backgroundColor: Colors.backgroundSelected,
       height: Metrics.buttonHeight,
       paddingLeft: Metrics.baseMargin,
-      borderWidth: Metrics.borderWidth,
-      borderColor: Colors.borderColor,
       borderRadius: Metrics.borderRadius,
       color: Colors.light,
       fontSize: Fonts.size.medium,
@@ -709,6 +719,14 @@ const Styles = {
       alignItems: 'center',
     }),
   },
+  riotWrapper: RX.Styles.createViewStyle({
+    width: 150,
+    height: 150,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: Metrics.borderRadiusMax,
+  }),
 }
 
 export default Styles

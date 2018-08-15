@@ -82,6 +82,8 @@ export function * handleSyncEvent (event: any) {
   if (event === 'PREPARED') {
     const rooms = yield call(Services.Matrix.getRooms)
     yield put(Actions.Matrix.setRooms(rooms))
+
+    yield put(Actions.Process.start({type: Enums.ProcessType.LoadMatrixClaims}))
     const claimUrls = yield call(Services.Matrix.getClaims)
     yield put(Actions.Contacts.loadMatrixClaims(claimUrls))
 

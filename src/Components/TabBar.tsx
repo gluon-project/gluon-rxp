@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { TabBarButton } from '../Components'
+import { TabBarButton, Icons } from '../Components'
 
 enum TabBarType {
   Horizontal,
@@ -45,14 +45,19 @@ export default class TabBar extends RX.Component<Props, null> {
           this.props.type === TabBarType.Horizontal && styles.horizontalTabBar,
         ]}
       >
-        {this.props.type === TabBarType.Vertical && <RX.Button
-          onPress={() => this.props.navigate('AboutTab')}
-          >
-          <RX.Image
-            source={require('../../src/Assets/logo.png')}
-            style={Theme.Styles.logo}
-          />
-        </RX.Button>}
+        {this.props.type === TabBarType.Vertical && <RX.View style={{
+          height: 64,
+          borderBottomWidth: 1,
+          borderTopWidth: 0,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          borderColor: Theme.Colors.borderColor,
+          justifyContent: 'center',
+          alignItems: 'center',
+          }}>
+          <Icons.LogoIcon
+            fill={'rgba(255,255,255,0.3)'}
+          /></RX.View>}
 
         <TabBarButton
           type={type}
@@ -90,6 +95,7 @@ export default class TabBar extends RX.Component<Props, null> {
           selected={tabRouteName === 'AboutTab'}
         /> */}
         <TabBarButton
+          style={this.props.type === TabBarType.Vertical && {position: 'absolute', bottom: 15}}
           type={type}
           title='Settings'
           iconType={TabBarButton.icon.Settings}

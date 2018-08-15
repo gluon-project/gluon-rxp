@@ -1,9 +1,9 @@
 const colors = {
   loadingBackground: 'black',
   transparent: 'rgba(0,0,0,0)',
-  background: 'rgb(45,45,45)',
+  background: 'rgb(47,24,56)',
   tabBarBackground: 'rgb(0,0,0)',
-  backgroundSelected: 'rgba(0,0,0,0.2)',
+  backgroundSelected: 'rgba(0,0,0,0.5)',
   lightBackground: 'rgba(255,255,255,0.1)',
   brand: '#BD10E0',
   brandBackGround: 'rgba(189, 16, 224, 0.3)',
@@ -21,7 +21,7 @@ const colors = {
   successStatusBackground: 'rgba(116,191,98,1)',
   warningBackground: 'rgba(255,255,0,0.4)',
   errorBackground: 'rgba(255,0,0,0.4)',
-  navBarBackground: 'rgb(60, 60, 60)',
+  navBarBackground: 'rgba(60, 60, 60, 0.7)',
   sidebar: 'rgb(239, 226, 181)',
   selectedLine: 'rgba(0,0,0,0.2)',
   text: {

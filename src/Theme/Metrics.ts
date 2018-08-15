@@ -19,6 +19,7 @@ const metrics = {
   iconSize: 46,
   borderWidth: 1,
   borderRadius: 8,
+  borderRadiusMax: 22,
 }
 
 export default metrics

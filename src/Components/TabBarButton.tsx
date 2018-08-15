@@ -8,6 +8,7 @@ interface Props extends RX.CommonProps {
   title: string
   onPress?: (e: RX.Types.SyntheticEvent) => void
   selected?: boolean
+  style?: any
 }
 
 export enum ButtonType {
@@ -80,7 +81,7 @@ export default class TabBarButton extends RX.Component<Props, null> {
     }
 
     return (
-      <RX.Button style={buttonStyle} onPress={this.props.onPress}>
+      <RX.Button style={[this.props.style, buttonStyle]} onPress={this.props.onPress}>
         <Icon
           height={28} width={28} fill={this.props.selected ? Theme.Colors.brand : Theme.Colors.tabBarIcon}
           />

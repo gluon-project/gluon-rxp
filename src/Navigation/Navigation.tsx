@@ -20,6 +20,7 @@ interface Props extends RX.CommonProps {
   closeModalMessage?: () => void
   closeModalMessageAndNextAction?: () => void,
   currentUser?: User,
+  currentMatrixUser?: MatrixUser,
   isAppProcessing?: boolean
 }
 
@@ -34,11 +35,13 @@ class Navigation extends RX.Component<Props, null> {
   }
 
   render() {
+    const showLogin = !this.props.currentUser || !this.props.currentMatrixUser
     return (
-      <ResponsiveLayout>
+        <ResponsiveLayout>
         <RX.View style={Theme.Styles.containerFull}>
-          {this.props.loadingInitialData && <LoadingScreen/>}
-          {!this.props.loadingInitialData
+          {showLogin && <LoginScreen />}
+          {this.props.loadingInitialData && <LoadingScreen />}
+          {!this.props.loadingInitialData && !showLogin
             && <MasterDetailNavigator />}
         </RX.View>
         {this.props.modalMessage && <ModalMessage
@@ -57,6 +60,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     uiTraits: state.app.uiTraits,
     modalMessage: state.modalMessage,
     currentUser: state.user.current,
+    currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
     isAppProcessing: Selectors.Process.isAppProcessing(state),
   }
 }

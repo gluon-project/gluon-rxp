@@ -58,7 +58,7 @@ const navigationOptions = {
   navigationOptions: (navigation: any) => {
     return {
       headerTitleStyle: {color: Theme.Colors.buttonLabel},
-      headerStyle: {backgroundColor: Theme.Colors.navBarBackground},
+      headerStyle: Theme.Styles.navBarSystem,
       headerLeft: <LeftButton navigation={navigation}/>,
       headerRight: <RightButton navigation={navigation} />,
     }
