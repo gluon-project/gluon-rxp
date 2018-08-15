@@ -18,6 +18,7 @@ import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import * as Services from '../Services'
+import utils from '../Utils'
 
 // const client = Matrix.createClient({
 //   baseUrl: 'https://matrix.org',
@@ -128,6 +129,34 @@ export function* watchStartLogin(): SagaIterator {
 
     try {
       const currentUser = yield call(Services.Matrix.login, action.payload.username, action.payload.password, action.payload.baseUrl)
+      const profileInfo = yield call(Services.Matrix.getProfileInfo)
+      const currentWeb3User: User = yield select(Selectors.User.getCurrent)
+      console.log({profileInfo, currentWeb3User})
+
+      yield put(Actions.Contacts.signAnonymousClaim({
+        sub: utils.address.universalIdToDID(currentWeb3User.address),
+        claim: {
+          matrixId: currentUser.user_id,
+        },
+      }))
+
+      if (profileInfo.displayname) {
+        yield put(Actions.Contacts.signAnonymousClaim({
+          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          claim: {
+            name: profileInfo.displayname,
+          },
+        }))
+      }
+      if (profileInfo.avatar_url) {
+        yield put(Actions.Contacts.signAnonymousClaim({
+          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          claim: {
+            avatar: profileInfo.avatar_url,
+          },
+        }))
+      }
+
       yield put(Actions.Matrix.setCurrentUser(currentUser))
       const uportDid = yield select(Selectors.User.getUportDid)
       if (uportDid !== null) {

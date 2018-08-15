@@ -54,6 +54,25 @@ export const login = (username: string, password: string, baseUrl: string) => {
   })
 }
 
+export const getProfileInfo = () => {
+  return new Promise<MatrixUser>((resolve, reject) => {
+    client.getProfileInfo(client.credentials.userId, (err: any, resp: any) => {
+      console.log(err)
+      if (err) {
+        reject(err)
+      } else {
+        console.log(resp)
+        const result = resp
+        if (result.avatar_url) {
+          result.avatar_url = client.mxcUrlToHttp(result.avatar_url)
+        }
+        resolve(result)
+      }
+    })
+  })
+}
+
+
 export const startClient = (options: MatrixUser) => {
   client = Matrix.createClient({
     baseUrl: `https://${options.home_server}`,

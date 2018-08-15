@@ -55,7 +55,7 @@ class RoomsMasterScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    currentUser: state.user.current,
+    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     rooms: Selectors.Matrix.getRooms(state),
     uiTraits: state.app.uiTraits,
     selectedRoomId: Selectors.Matrix.getSelectedRoomId(state),

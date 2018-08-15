@@ -24,7 +24,14 @@ export default class RoomsDetails extends RX.Component<Props, null> {
     return (
       <RX.View style={Theme.Styles.container}>
         {this.props.currentMatrixUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
+          <AccountIcon
+            account={this.props.currentUser}
+            type={AccountIcon.type.Large}
+            />
           <RX.Text style={Theme.Styles.accountInfo.title}>
+            {this.props.currentUser.name}
+          </RX.Text>
+          <RX.Text style={Theme.Styles.accountInfo.subTitle}>
             {this.props.currentMatrixUser.user_id}
           </RX.Text>
         </RX.View>}

@@ -555,6 +555,7 @@ const Styles = {
     }),
     p: RX.Styles.createTextStyle({
       color: Colors.info,
+      backgroundColor: Colors.transparent,
       fontSize: Fonts.size.medium,
       marginBottom: Metrics.baseMargin,
     }),
