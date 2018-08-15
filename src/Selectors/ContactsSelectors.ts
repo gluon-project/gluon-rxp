@@ -92,6 +92,15 @@ export const getList = (state: CombinedState): User[] => {
         claims: {},
       }
     }
+    // if (!contactsByDid[claim.iss]) {
+    //   contactsByDid[claim.iss] = {
+    //     name: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.iss)),
+    //     address: Utils.address.universalIdToNetworkAddress(claim.iss),
+    //     did: Utils.address.universalIdToDID(claim.iss),
+    //     shortId: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.iss)),
+    //     claims: {},
+    //   }
+    // }
     if (key === 'name') {
       contactsByDid[claim.sub].name = value
       contactsByDid[claim.sub].claims.name = claim

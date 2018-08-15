@@ -5,6 +5,7 @@ import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
+import * as S from 'string'
 import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
@@ -17,6 +18,8 @@ interface Props extends RX.CommonProps {
   signAnonymousClaimAndShareInRoom?: (payload: any) => void
   setReceiver?: (user: string) => void
   room?: MatrixRoom
+  newClaimType?: string
+  newClaimValue?: string
 }
 
 interface State {
@@ -28,8 +31,8 @@ class ContactFormScreen extends RX.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      claimType: 'skill',
-      claimValue: '',
+      claimType: props.newClaimType ? props.newClaimType : 'Skill',
+      claimValue: props.newClaimValue ? props.newClaimValue : '',
     }
   }
 
@@ -44,7 +47,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
 
   private handleSaveAnonymous = () => {
     const claim: any = {}
-    claim[this.state.claimType] = this.state.claimValue
+    claim[S(this.state.claimType).camelize().s] = this.state.claimValue
     const unsigned = {
       sub: this.props.selectedContact,
       claim,
@@ -120,6 +123,8 @@ const mapStateToProps = (state: CombinedState): Props => {
 
     selectedContact: contact,
     room: Selectors.Matrix.getRoomById(state, state.matrix.selectedRoomId),
+    newClaimType: state.contacts.newClaimType,
+    newClaimValue: state.contacts.newClaimValue,
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {

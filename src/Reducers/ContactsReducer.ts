@@ -8,6 +8,8 @@ import { logout } from './MatrixReducer'
 import Config from '../Config'
 
 export interface ContactsState {
+  newClaimType: string,
+  newClaimValue: string,
   editing: User,
   selectedContact: string,
   list: User[],
@@ -17,6 +19,8 @@ export interface ContactsState {
 
 const initialState: ContactsState = {
   editing: null,
+  newClaimType: null,
+  newClaimValue: null,
   selectedContact: null,
   list: Config.contacts.defaultList,
   claims: Config.contacts.defaultClaimsList,
@@ -61,6 +65,22 @@ reducer.on(selectContact, (state: ContactsState, payload?: string) => {
   return {
     ...state,
     selectedContact: payload,
+  }
+})
+
+export const setNewClaimType = createAction('New Claim Type')
+reducer.on(setNewClaimType, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    newClaimType: payload,
+  }
+})
+
+export const setNewClaimValue = createAction('New Claim Value')
+reducer.on(setNewClaimValue, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    newClaimValue: payload,
   }
 })
 

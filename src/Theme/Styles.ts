@@ -691,34 +691,70 @@ const Styles = {
     }),
   },
   contact: {
+    group: RX.Styles.createViewStyle({
+      marginBottom: Metrics.baseMargin,
+    }),
     groupTitle: RX.Styles.createTextStyle({
-      color: Colors.info,
+      color: Colors.light,
       fontSize: Fonts.size.medium,
+      fontWeight: '100',
+      textAlign: 'center',
       marginTop: Metrics.baseMargin,
       marginBottom: Metrics.smallMargin,
     }),
-    groupListItem: RX.Styles.createTextStyle({
+    groupListItem: RX.Styles.createViewStyle({
+      marginBottom: 2,
+      backgroundColor: Colors.lightBackground,
+      padding: Metrics.baseMargin,
+      borderRadius: Metrics.borderRadius,
+    }),
+    groupListItemTitle: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.small,
-      marginLeft: Metrics.baseMargin,
-      marginBottom: Metrics.smallMargin,
+      textAlign: 'center',
+      fontSize: Fonts.size.medium,
+      marginBottom: Metrics.baseMargin,
+    }),
+    groupListItemAvatar: RX.Styles.createTextStyle({
+      marginBottom: Metrics.baseMargin,
+      alignSelf: 'center',
     }),
     info: RX.Styles.createTextStyle({
       color: Colors.info,
       fontSize: Fonts.size.micro,
       marginLeft: Metrics.smallMargin,
     }),
-    detailsWrapper: RX.Styles.createViewStyle({
-      marginLeft: Metrics.baseMargin * 2,
-      borderBottomWidth: Metrics.borderWidth,
+    detailsInfoRow: RX.Styles.createViewStyle({
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderTopWidth: Metrics.borderWidth,
       borderColor: Colors.borderColor,
-      paddingTop: Metrics.smallMargin,
-      paddingBottom: Metrics.smallMargin,
+      paddingTop: Metrics.baseMargin,
     }),
-    sourceRow: RX.Styles.createViewStyle({
-      marginLeft: Metrics.baseMargin,
+    detailsLabel: RX.Styles.createTextStyle({
+      color: Colors.brand,
+      fontSize: Fonts.size.micro,
+      marginLeft: Metrics.smallMargin,
+    }),
+    detailsWrapper: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingBottom: Metrics.baseMargin,
+    }),
+    row: RX.Styles.createViewStyle({
       flexDirection: 'row',
       alignItems: 'center',
+      marginBottom: Metrics.smallMargin,
+    }),
+    detailsBoxLabel: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.micro,
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin,
+    }),
+    detailsBoxValue: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.micro,
+      marginBottom: Metrics.smallMargin,
     }),
   },
   riotWrapper: RX.Styles.createViewStyle({
