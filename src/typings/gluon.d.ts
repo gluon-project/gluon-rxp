@@ -38,6 +38,7 @@ declare interface User {
   claims?: {
     name?: VerifiableClaim,
     avatar?: VerifiableClaim,
+    matrixId?: VerifiableClaim,
   }
 }
 

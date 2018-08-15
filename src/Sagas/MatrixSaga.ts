@@ -316,6 +316,9 @@ ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></
         if (sender.claims && sender.claims.name) {
           claims.push(sender.claims.name.jwt)
         }
+        if (sender.claims && sender.claims.matrixId) {
+          claims.push(sender.claims.matrixId.jwt)
+        }
         if (sender.claims && sender.claims.avatar) {
           claims.push(sender.claims.avatar.jwt)
         }

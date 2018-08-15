@@ -64,11 +64,17 @@ to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${re
         if (sender.claims && sender.claims.name) {
           claims.push(sender.claims.name.jwt)
         }
+        if (sender.claims && sender.claims.matrixId) {
+          claims.push(sender.claims.matrixId.jwt)
+        }
         if (sender.claims && sender.claims.avatar) {
           claims.push(sender.claims.avatar.jwt)
         }
         if (receiver.claims && receiver.claims.name) {
           claims.push(receiver.claims.name.jwt)
+        }
+        if (receiver.claims && receiver.claims.matrixId) {
+          claims.push(receiver.claims.matrixId.jwt)
         }
         if (receiver.claims && receiver.claims.avatar) {
           claims.push(receiver.claims.avatar.jwt)
