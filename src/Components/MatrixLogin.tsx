@@ -40,7 +40,7 @@ export default class MatrixLogin extends RX.Component<Props, State> {
 
   render() {
     return (
-      <RX.View >
+      <RX.View style={RX.Platform.getType() !== 'web' && { paddingBottom: 500}}>
         <SegmentedControl
           titles={['Login', 'Register']}
           selectedIndex={this.state.register ? 1 : 0}

@@ -48,7 +48,7 @@ const Styles = {
     width: Metrics.tabBar.widthWide,
   }),
   masterViewContainer: RX.Styles.createViewStyle({
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   }),
   detailView: RX.Styles.createViewStyle({
     backgroundColor: Colors.background,
@@ -280,7 +280,7 @@ const Styles = {
   }),
 
   navBar: RX.Styles.createViewStyle({
-    backgroundColor: Colors.navBarBackground,
+    backgroundColor: Colors.navBarBackground2,
     height: RX.Platform.getType() === 'web' ? 64 : 64,
     justifyContent: 'center',
     alignItems: 'center',
@@ -458,6 +458,7 @@ const Styles = {
       fontSize: Fonts.size.small,
       marginBottom: Metrics.smallMargin,
       marginLeft: Metrics.baseMargin,
+      backgroundColor: Colors.transparent,
     }),
     input: RX.Styles.createTextInputStyle({
       flex: 1,
