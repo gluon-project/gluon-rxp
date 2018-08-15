@@ -75,11 +75,11 @@ class ClaimActionsScreen extends RX.Component<Props, State> {
               <RX.Text style={Theme.Styles.sectionTitle}>Decentralized Identifier: {this.props.selectedContact}</RX.Text>
             </RX.View>}
           </RX.View>
-          <CallToAction
+          {/* <CallToAction
             type={CallToAction.type.Secondary}
             title={this.state.showDetails ? 'Hide details' : 'Show details'}
             onPress={() => this.setState({showDetails: !this.state.showDetails})}
-          />
+          /> */}
           <CallToAction
             type={CallToAction.type.Main}
             title='New Claim'
@@ -139,7 +139,7 @@ class GroupItem extends RX.Component<GroupItemProps, State> {
               <AccountIcon account={group[0].issuer} type={AccountIcon.type.Small}/>
               <RX.Text style={Theme.Styles.contact.detailsBoxValue}> {group[0].issuer.name} </RX.Text>
             </RX.View>
-            <RX.Text style={Theme.Styles.contact.detailsBoxLabel}>Issued: {moment.unix(group[0].iat).calendar()}</RX.Text>
+            <RX.Text style={Theme.Styles.contact.detailsBoxLabel}>Issued: </RX.Text>
             <RX.Text style={Theme.Styles.contact.detailsBoxValue}>{moment.unix(group[0].iat).calendar()}</RX.Text>
             {isNumber(group[0].exp) &&
             <RX.Text style={Theme.Styles.contact.detailsBoxLabel}>Expires: </RX.Text>}
