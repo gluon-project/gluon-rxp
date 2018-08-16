@@ -23,16 +23,6 @@ class AccountIcon extends RX.Component<Props, null> {
     let style
     let size
     const blockieRatio = 0.3
-    let blockieStyle = RX.Styles.createImageStyle({
-      width: 20,
-      height: 20,
-      borderRadius: 10,
-      marginRight: Theme.Metrics.smallMargin,
-      overflow: 'hidden',
-      position: 'absolute',
-      left: 0,
-      top: 0,
-    })
     switch (this.props.type) {
       case AccountIconType.Micro:
         style = Theme.Styles.accountIconMicro
@@ -57,18 +47,18 @@ class AccountIcon extends RX.Component<Props, null> {
           borderRadius: this.props.size / 2,
           overflow: 'hidden',
         })
-        blockieStyle = RX.Styles.createImageStyle({
-          width: this.props.size * blockieRatio,
-          height: this.props.size * blockieRatio,
-          borderRadius: this.props.size * blockieRatio / 2,
-          overflow: 'hidden',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-        })
         size = this.props.size
         break
     }
+    const blockieStyle = RX.Styles.createImageStyle({
+      width: size * blockieRatio,
+      height: size * blockieRatio,
+      borderRadius: size * blockieRatio / 2,
+      overflow: 'hidden',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+    })
     if (!this.props.account.avatar) {
       return (
         <Blockies
