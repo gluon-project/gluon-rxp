@@ -153,7 +153,7 @@ class WebOfTrust extends RX.Component <Props, State> {
             })}
 
           </RXImageSvg>
-        {nodes.map((node: any) => <RX.View key={node.account.did}
+        {nodes.map((node: any) => node !== undefined && <RX.View key={node.account.did}
           style={{position: 'absolute', top: node.y - node.size / 2, left: node.x - node.size / 2}}>
           <AccountIcon account={node.account} type={AccountIcon.type.Custom} size={node.size}/>
         </RX.View>)}
