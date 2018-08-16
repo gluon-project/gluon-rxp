@@ -1,6 +1,7 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, CallToAction } from '../Components'
+import { ListItem, CallToAction, AccountIcon } from '../Components'
+import { filter } from 'lodash'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -9,6 +10,7 @@ interface Props extends RX.CommonProps {
   contacts: User[]
   uiTraits?: UITraits
   isLoadingMatrixClaims?: boolean
+  currentUser?: User,
 }
 
 export default class ContactListDetails extends RX.Component<Props, null> {
@@ -26,9 +28,20 @@ export default class ContactListDetails extends RX.Component<Props, null> {
   }
 
   render() {
+    const contacts = filter(this.props.contacts, (contact: User) => { return contact.did !== this.props.currentUser.did})
     return (
       <RX.View style={Theme.Styles.container}>
-        {this.props.contacts.map(contact => (
+        {this.props.currentUser &&
+          <ListItem
+            type={ListItem.type.Default}
+            title={this.props.currentUser.name}
+            account={this.props.currentUser}
+            subTitle={this.props.currentUser.shortId}
+            selected={this.props.selectedContact === this.props.currentUser.did}
+            onPress={() => this.handleSelectContact(this.props.currentUser.did)}
+          />}
+
+        {contacts.map(contact => (
           <ListItem
             key={contact.address}
             type={ListItem.type.Default}
