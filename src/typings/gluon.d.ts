@@ -35,6 +35,7 @@ declare interface User {
   name?: string,
   avatar?: string,
   hidden?: boolean,
+  uniqueIssuers?: string[],
   claims?: {
     name?: VerifiableClaim,
     avatar?: VerifiableClaim,

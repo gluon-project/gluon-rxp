@@ -90,7 +90,11 @@ export const getList = (state: CombinedState): User[] => {
         did: Utils.address.universalIdToDID(claim.sub),
         shortId: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.sub)),
         claims: {},
+        uniqueIssuers: [Utils.address.universalIdToDID(claim.iss)],
       }
+    } else {
+      contactsByDid[claim.sub].uniqueIssuers = _.uniq(
+        [...contactsByDid[claim.sub].uniqueIssuers, Utils.address.universalIdToDID(claim.iss)])
     }
     // if (!contactsByDid[claim.iss]) {
     //   contactsByDid[claim.iss] = {

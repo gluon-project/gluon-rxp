@@ -36,7 +36,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             type={ListItem.type.Default}
             title={this.props.currentUser.name}
             account={this.props.currentUser}
-            subTitle={this.props.currentUser.shortId}
+            subTitle={`${this.props.currentUser.uniqueIssuers.length} signers`}
             selected={this.props.selectedContact === this.props.currentUser.did}
             onPress={() => this.handleSelectContact(this.props.currentUser.did)}
           />}
@@ -46,7 +46,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             key={contact.address}
             type={ListItem.type.Default}
             title={contact.name}
-            subTitle={contact.shortId}
+            subTitle={`${contact.uniqueIssuers.length} signers`}
             account={contact}
             selected={this.props.selectedContact === contact.did}
             onPress={() => this.handleSelectContact(contact.did)}
