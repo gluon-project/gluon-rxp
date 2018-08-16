@@ -114,7 +114,6 @@ class WebOfTrust extends RX.Component <Props, State> {
       })
     })
 
-    console.log({interactionCounts})
 
     forEach(interactionCounts, (item: any, id: string) => {
       graph.setEdge(item.start, item.end, {weight: calcEdgeWeight(item.count), id: id})
@@ -124,7 +123,6 @@ class WebOfTrust extends RX.Component <Props, State> {
 
     const nodes = graph.nodes().map((node: any) => graph.node(node))
     const edges = graph.edges().map((node: any) => graph.edge(node))
-    console.log({edges, nodes})
     const l: (any) = line()
     .x(function(d: any) { return d.x })
     .y(function(d: any) { return d.y })
