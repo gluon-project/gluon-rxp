@@ -14,20 +14,22 @@ import * as Enums from '../Enums'
 import WebOfTrust from '../Components/Graphs/WebOfTrust'
 
 interface Props extends RX.CommonProps {
+  claims?: VerifiableClaim[]
 }
 
 class WebOfTrustScreen extends RX.Component<Props, null> {
   render() {
     return (
-      <RX.View>
-        <WebOfTrust />
-      </RX.View>
+      <ScrollView>
+          <WebOfTrust claims={this.props.claims}/>
+      </ScrollView>
     )
   }
 }
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
+    claims: Selectors.Contacts.getAllClaimsExtended(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {

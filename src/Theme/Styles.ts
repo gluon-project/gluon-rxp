@@ -84,6 +84,7 @@ const Styles = {
     borderRadius: 24,
     backgroundColor: Colors.transparent,
     marginRight: Metrics.baseMargin,
+    overflow: 'visible',
   }),
 
   listItemIconEmpty: RX.Styles.createViewStyle({

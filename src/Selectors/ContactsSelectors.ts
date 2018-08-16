@@ -103,6 +103,7 @@ export const getList = (state: CombinedState): User[] => {
     //     did: Utils.address.universalIdToDID(claim.iss),
     //     shortId: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.iss)),
     //     claims: {},
+    //     uniqueIssuers: [],
     //   }
     // }
     if (key === 'name') {
@@ -133,6 +134,7 @@ export const getAccountByAddress = (state: CombinedState, address: string): User
   const account = _.find(getList(state), (a) => a.address.toLocaleLowerCase() === address.toLocaleLowerCase())
   if (!account) {
     return {
+      did: Utils.address.universalIdToDID(address),
       address,
       name: Utils.address.short(address),
     }
@@ -149,6 +151,7 @@ export const getAccountByDid = (state: CombinedState, did: string): User => {
   const account = _.find(getList(state), (a) => a.did.toLocaleLowerCase() === did.toLocaleLowerCase())
   if (!account) {
     return {
+      did: did,
       address: Utils.address.universalIdToNetworkAddress(did),
       name: Utils.address.short(did),
     }

@@ -5,6 +5,7 @@ import Blockies from './Blockies'
 interface Props extends RX.CommonProps {
   account?: User
   type: AccountIconType
+  size?: number
 }
 
 export enum AccountIconType {
@@ -12,6 +13,7 @@ export enum AccountIconType {
   Small,
   Medium,
   Large,
+  Custom,
 }
 
 class AccountIcon extends RX.Component<Props, null> {
@@ -20,6 +22,17 @@ class AccountIcon extends RX.Component<Props, null> {
   render() {
     let style
     let size
+    const blockieRatio = 0.3
+    let blockieStyle = RX.Styles.createImageStyle({
+      width: 20,
+      height: 20,
+      borderRadius: 10,
+      marginRight: Theme.Metrics.smallMargin,
+      overflow: 'hidden',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+    })
     switch (this.props.type) {
       case AccountIconType.Micro:
         style = Theme.Styles.accountIconMicro
@@ -36,6 +49,24 @@ class AccountIcon extends RX.Component<Props, null> {
       case AccountIconType.Large:
         style = Theme.Styles.accountIconLarge
         size = 100
+        break
+      case AccountIconType.Custom:
+        style = RX.Styles.createImageStyle({
+          width: this.props.size,
+          height: this.props.size,
+          borderRadius: this.props.size / 2,
+          overflow: 'hidden',
+        })
+        blockieStyle = RX.Styles.createImageStyle({
+          width: this.props.size * blockieRatio,
+          height: this.props.size * blockieRatio,
+          borderRadius: this.props.size * blockieRatio / 2,
+          overflow: 'hidden',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+        })
+        size = this.props.size
         break
     }
     if (!this.props.account.avatar) {
@@ -70,8 +101,8 @@ class AccountIcon extends RX.Component<Props, null> {
             resizeMode={'cover'}
             />
           {this.props.account.address && <Blockies
-            style={Theme.Styles.accountIconSmallAbsolute}
-            width={20}
+            style={blockieStyle}
+            width={size / 5}
             seed={this.props.account.address}
             />}
         </RX.View>
