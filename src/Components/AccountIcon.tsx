@@ -102,7 +102,7 @@ class AccountIcon extends RX.Component<Props, null> {
             />
           {this.props.account.address && <Blockies
             style={blockieStyle}
-            width={size / 5}
+            width={size * blockieRatio}
             seed={this.props.account.address}
             />}
         </RX.View>
