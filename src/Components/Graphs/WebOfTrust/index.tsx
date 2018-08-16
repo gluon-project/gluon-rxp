@@ -84,8 +84,8 @@ class WebOfTrust extends RX.Component <Props, State> {
     }
 
     const allUserCount = keys(users).length
-    const minAvatarSize = 50
-    const maxAvatarSize = 70
+    const minAvatarSize = 30
+    const maxAvatarSize = 40
     const calcNodeSize = (uniqueIssuers: number) => {
       const ratio = uniqueIssuers / allUserCount
       return minAvatarSize + (maxAvatarSize - minAvatarSize) * ratio
