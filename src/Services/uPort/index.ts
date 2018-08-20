@@ -1,72 +1,54 @@
 import Config from '../../Config'
-// import { Connect, SimpleSigner, MNID } from 'uport-connect'
-var uportConnect = require('uport-connect/dist/uport-connect')
-var { JWT } = require ('uport')
-const { Connect, SimpleSigner, MNID } = uportConnect
+import RX = require('reactxp')
+const Web3 = require('web3')
 
-let uport = new Connect(Config.uport.app.name, {
-  clientId: Config.uport.app.address,
-  signer: SimpleSigner(Config.uport.app.privateKey),
+import Connect from 'uport-connect'
+import { Credentials } from 'uport'
+import { createJWT, SimpleSigner } from 'did-jwt'
+import * as MNID from 'mnid'
+
+const credentials = new Credentials({
+  address: Config.uport.app.address,
+  privateKey: Config.uport.app.privateKey,
 })
 
-const uportRinkeby = new Connect(Config.uport.app.name, {
-  clientId: Config.uport.app.address,
-  signer: SimpleSigner(Config.uport.app.privateKey),
+const uportConnect = new Connect(Config.uport.app.name, {
+  isMobile: false,
+  useStore: false,
 })
 
-const uportMainnet = new Connect(Config.uport.app.name, {
-  clientId: Config.uport.app.address,
-  signer: SimpleSigner(Config.uport.app.privateKey),
-  network: 'mainnet',
-})
+uportConnect.credentials = credentials
 
 const requestCredentials = (network: string) => {
-  uport = new Connect(Config.uport.app.name, {
-    clientId: Config.uport.app.address,
-    signer: SimpleSigner(Config.uport.app.privateKey),
-    network,
-  })
-
-  return uport.requestCredentials({
+  return uportConnect.requestDisclosure({
     requested: ['name', 'avatar', 'matrixUser'],
     notifications: true,
     accountType: 'keypair',
-  }).then((result: any) => {
-    console.log({result})
-    return {
-      ...result,
-      address: MNID.decode(result.networkAddress).address,
-      did: result.did,
-    }
   })
 }
+const getProvider = () => new Web3(uportConnect.getProvider())
 
 const signAnonymousClaim = (claim: any): VerifiableClaim => {
-  return JWT.createJWT({
-    address: Config.uport.app.address,
+  return createJWT(claim, {
+    issuer: Config.uport.app.address,
     signer: SimpleSigner(Config.uport.app.privateKey),
-  }, claim)
+  })
 }
-
-const verifyJWT = (jwt: string): VerifiableClaim => {
-  return JWT.verifyJWT(jwt)
-}
-const getProvider = () => uport.getWeb3()
 
 const attestCredentials = (credentials: any) => {
   const claim = {
     ...credentials,
   }
-  return uport.attestCredentials(claim)
+  return uportConnect.attest(claim)
 }
 
 export default {
+  uportConnect,
   MNID,
   attestCredentials,
   signAnonymousClaim,
-  verifyJWT,
   requestCredentials,
   getProvider,
-  rinkebyProvider: uportRinkeby.getWeb3(),
-  mainnetProvider: uportMainnet.getWeb3(),
+  rinkebyProvider: getProvider(),
+  mainnetProvider: getProvider(),
 }

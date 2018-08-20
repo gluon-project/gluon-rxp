@@ -32,6 +32,7 @@ export default function* root() {
   yield fork(ModalMessageSaga.watchCloseModalMessage)
   yield fork(NavigationSaga.watchNavigate)
   yield fork(UportSaga.watchStartLogin)
+  yield fork(UportSaga.subscribeEvents)
   yield fork(Web3Saga.watchAddToken)
   yield fork(Web3Saga.watchCreateNewToken)
   yield fork(Web3Saga.watchGetTokenInfo)
