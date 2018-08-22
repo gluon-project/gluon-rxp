@@ -16,10 +16,12 @@ interface Props extends RX.CommonProps {
   addContact?: (user: User) => void
   signAnonymousClaim?: (claim: any) => void
   signAnonymousClaimAndShareInRoom?: (payload: any) => void
+  signClaimAndShareInRoom?: (payload: any) => void
   setReceiver?: (user: string) => void
   room?: MatrixRoom
   newClaimType?: string
   newClaimValue?: string
+  currentUser?: User
 }
 
 interface State {
@@ -37,12 +39,21 @@ class ContactFormScreen extends RX.Component<Props, State> {
   }
 
   private handleSave = () => {
-    // this.props.addContact(this.state)
-    // if (!this.props.formValues) {
-    //   this.props.setReceiver(this.state.address)
-    // }
+    const claim: any = {}
+    claim[S(this.state.claimType).camelize().s] = this.state.claimValue
+    const unsigned = {
+      iss: `did:ethr:${this.props.currentUser.address}`,
+      sub: this.props.selectedContact,
+      unsignedClaim: claim,
+    }
 
-    // this.props.navigateBack()
+    if (this.props.room) {
+      this.props.signClaimAndShareInRoom({unsigned, roomId: this.props.room.id})
+    } else {
+      // this.props.signAnonymousClaim(unsigned)
+    }
+
+    this.props.navigateBack()
   }
 
   private handleSaveAnonymous = () => {
@@ -67,6 +78,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
+    console.log(this.props.currentUser)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -107,6 +119,12 @@ class ContactFormScreen extends RX.Component<Props, State> {
           <CallToAction
             type={CallToAction.type.Main}
             title={this.props.room ? 'Sign, Save and Share' : 'Sign and Save'}
+            onPress={this.handleSave}
+            disabled={!this.isValid()}
+          />
+          <CallToAction
+            type={CallToAction.type.Secondary}
+            title={this.props.room ? 'Sign anonymously, Save and Share' : 'Sign and Save'}
             onPress={this.handleSaveAnonymous}
             disabled={!this.isValid()}
           />
@@ -125,6 +143,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     room: Selectors.Matrix.getRoomById(state, state.matrix.selectedRoomId),
     newClaimType: state.contacts.newClaimType,
     newClaimValue: state.contacts.newClaimValue,
+    currentUser: Selectors.User.getCurrent(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
@@ -135,6 +154,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     addContact: (user: User) => dispatch(Actions.Contacts.addContact(user)),
     signAnonymousClaim: (claim: any) => dispatch(Actions.Contacts.signAnonymousClaim(claim)),
     signAnonymousClaimAndShareInRoom: (payload: any) => dispatch(Actions.Contacts.signAnonymousClaimAndShareInRoom(payload)),
+    signClaimAndShareInRoom: (payload: any) => dispatch(Actions.Contacts.signClaimAndShareInRoom(payload)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ContactFormScreen)

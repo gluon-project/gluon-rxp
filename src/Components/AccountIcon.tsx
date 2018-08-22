@@ -41,16 +41,16 @@ class AccountIcon extends RX.Component<Props, null> {
         size = 100
         break
       case AccountIconType.Custom:
-        style = RX.Styles.createImageStyle({
+        style = [{
           width: this.props.size,
           height: this.props.size,
           borderRadius: this.props.size / 2,
           overflow: 'hidden',
-        })
+        }]
         size = this.props.size
         break
     }
-    const blockieStyle = RX.Styles.createImageStyle({
+    const blockieStyle = [{
       width: size * blockieRatio,
       height: size * blockieRatio,
       borderRadius: size * blockieRatio / 2,
@@ -58,7 +58,7 @@ class AccountIcon extends RX.Component<Props, null> {
       position: 'absolute',
       left: 0,
       top: 0,
-    })
+    }]
     if (!this.props.account.avatar) {
       return (
         <Blockies

@@ -7,6 +7,7 @@ import Config from '../Config'
 import * as Services from '../Services'
 import utils from '../Utils'
 import { startClient } from './MatrixSaga'
+import { handleSignedClaim } from './ClaimsSaga'
 
 export function* watchStartLogin(): SagaIterator {
   while (true) {
@@ -20,6 +21,16 @@ export function* watchStartLogin(): SagaIterator {
 }
 
 export function * subscribeEvents () {
+
+  const signClaimChannel = yield eventChannel(emitter => {
+    Services.uPort.uportConnect.onResponse('signClaimReq', (err: any, data: any) => {
+      emitter(data.res)
+    })
+    return () => {
+      console.log('SAGA unsubscribe')
+    }
+  })
+
   const loginChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('disclosureReq', (err: any, data: any) => {
       emitter(data)
@@ -30,6 +41,7 @@ export function * subscribeEvents () {
   })
 
   yield takeEvery(loginChannel, handleLoginResponse)
+  yield takeEvery(signClaimChannel, handleSignedClaim)
 }
 
 export function* handleLoginResponse(action: any): SagaIterator {

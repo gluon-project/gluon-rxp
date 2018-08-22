@@ -67,6 +67,48 @@ export function* watchSignAnonymousClaimAndShareInRoom(): SagaIterator {
   }
 }
 
+export function* watchSignClaimAndShareInRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Contacts.signClaimAndShareInRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.SignClaim}))
+
+    try {
+      yield call(Services.uPort.signClaim, action.payload.unsigned)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+  }
+}
+
+export function* handleSignedClaim(jwt: string): SagaIterator {
+
+  try {
+    const decodedClaim = yield call(decodeJWT, jwt)
+    const signedClaim: VerifiableClaim = {
+      ...decodedClaim.payload,
+      jwt,
+      source: {
+        type: 'local',
+      },
+    }
+
+    yield put(Actions.Contacts.addClaim(signedClaim))
+    const claims: any[] = []
+    claims.push(jwt)
+
+    const file = {
+      fileName: 'claims.json',
+      fileContent: JSON.stringify({claims}),
+    }
+    yield put(Actions.Matrix.sendFile(file))
+
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  yield put(Actions.Process.end({type: Enums.ProcessType.SignClaim}))
+
+}
+
 export function* loadAndAppendMatrixClaims(action: any): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.LoadMatrixClaims}))
 

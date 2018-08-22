@@ -159,6 +159,7 @@ class GroupItem extends RX.Component<GroupItemProps, State> {
         <RX.View style={Theme.Styles.contact.detailsInfoRow}>
           <RX.View style={Theme.Styles.row}>
             {map(signers, (issuer: User) => <AccountIcon
+                key={issuer.did}
                 account={issuer}
                 type={AccountIcon.type.Micro}/>)}
             <RX.Button style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}

@@ -35,6 +35,10 @@ const signAnonymousClaim = (claim: any): VerifiableClaim => {
   })
 }
 
+const signClaim = (claim: any) => {
+  return uportConnect.createVerificationRequest(claim)
+}
+
 const attestCredentials = (credentials: any) => {
   const claim = {
     ...credentials,
@@ -44,6 +48,7 @@ const attestCredentials = (credentials: any) => {
 
 export default {
   uportConnect,
+  signClaim,
   MNID,
   attestCredentials,
   signAnonymousClaim,
