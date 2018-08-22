@@ -36,7 +36,15 @@ const signAnonymousClaim = (claim: any): VerifiableClaim => {
 }
 
 const signClaim = (claim: any) => {
-  return uportConnect.createVerificationRequest(claim)
+  // return uportConnect.createVerificationRequest(claim)
+  const id = 'signClaimReq'
+  return uportConnect.credentials.signJWT({
+    unsignedClaim: claim.unsignedClaim,
+    sub: claim.sub,
+    riss: claim.riss,
+    callback: uportConnect.genCallback(id),
+    type: 'verReq',
+  }).then((jwt: string) => uportConnect.send(jwt, id))
 }
 
 const attestCredentials = (credentials: any) => {

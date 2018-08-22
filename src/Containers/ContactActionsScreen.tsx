@@ -136,7 +136,7 @@ class GroupItem extends RX.Component<GroupItemProps, State> {
 
             <RX.Text style={Theme.Styles.contact.detailsBoxLabel}>Issued by: </RX.Text>
             <RX.View style={Theme.Styles.contact.row}>
-              <AccountIcon account={group[0].issuer} type={AccountIcon.type.Small}/>
+              <AccountIcon account={group[0].issuer} type={AccountIcon.type.Custom} size={20}/>
               <RX.Text style={Theme.Styles.contact.detailsBoxValue}> {group[0].issuer.name} </RX.Text>
             </RX.View>
             <RX.Text style={Theme.Styles.contact.detailsBoxLabel}>Issued: </RX.Text>
@@ -149,7 +149,7 @@ class GroupItem extends RX.Component<GroupItemProps, State> {
             {map(group, (claim, key2) => <RX.View style={Theme.Styles.contact.row} key={key2}>
                 <AccountIcon
                 account={claim.source.account}
-                type={AccountIcon.type.Small}/>
+                type={AccountIcon.type.Custom} size={20}/>
               <RX.Text style={Theme.Styles.contact.detailsBoxValue}>{claim.source.account.name} </RX.Text>
             </RX.View>)}
 
@@ -161,7 +161,7 @@ class GroupItem extends RX.Component<GroupItemProps, State> {
             {map(signers, (issuer: User) => <AccountIcon
                 key={issuer.did}
                 account={issuer}
-                type={AccountIcon.type.Micro}/>)}
+                type={AccountIcon.type.Custom} size={20}/>)}
             <RX.Button style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}
             onPress={this.props.signClaim}>
               <RX.Text style={Theme.Styles.contact.detailsLabel}>Sign</RX.Text>

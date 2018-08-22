@@ -34,9 +34,9 @@ export default class WalletDetails extends RX.Component<Props, null> {
         </RX.View>}
 
         {this.props.balances.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
-            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
+            {/* {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
               No Web3 provider detected. Please use Metamask, Parity, Cipher or:
-            </RX.Text>}
+            </RX.Text>} */}
             <CallToAction
               type={CallToAction.type.Main}
               title='Login with uPort (Rinkeby)'

@@ -42,7 +42,8 @@ class ContactFormScreen extends RX.Component<Props, State> {
     const claim: any = {}
     claim[S(this.state.claimType).camelize().s] = this.state.claimValue
     const unsigned = {
-      iss: `did:ethr:${this.props.currentUser.address}`,
+      // riss: `did:ethr:${this.props.currentUser.address}`,
+      riss: `${this.props.currentUser.mnid}`,
       sub: this.props.selectedContact,
       unsignedClaim: claim,
     }

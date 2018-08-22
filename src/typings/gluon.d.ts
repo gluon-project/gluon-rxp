@@ -29,6 +29,7 @@ declare const __DEV__: boolean
 
 declare interface User {
   did?: string,
+  mnid?: string,
   shortId?: string,
   address?: string,
   networkId?: string,

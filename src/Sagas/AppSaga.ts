@@ -25,9 +25,10 @@ import { startClient } from './MatrixSaga'
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
   const web3Provider = uPort.getProvider()
-  if ((<any>window).web3 && (<any>window).web3.currentProvider) {
-    web3Provider.setProvider((<any>window).web3.currentProvider)
-  }
+  // TODO Re-enable metamask
+  // if ((<any>window).web3 && (<any>window).web3.currentProvider) {
+  //   web3Provider.setProvider((<any>window).web3.currentProvider)
+  // }
   yield call(Web3.ethSingleton.setProvider, web3Provider)
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
   yield  call(delay, 500)

@@ -18,7 +18,7 @@ import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import * as Services from '../Services'
-import utils from '../Utils'
+import Utils from '../Utils'
 
 // const client = Matrix.createClient({
 //   baseUrl: 'https://matrix.org',
@@ -134,7 +134,7 @@ export function* watchStartLogin(): SagaIterator {
       console.log({profileInfo, currentWeb3User})
 
       yield put(Actions.Contacts.signAnonymousClaim({
-        sub: utils.address.universalIdToDID(currentWeb3User.address),
+        sub: currentWeb3User.did,
         claim: {
           matrixId: currentUser.user_id,
         },
@@ -142,7 +142,7 @@ export function* watchStartLogin(): SagaIterator {
 
       if (profileInfo.displayname) {
         yield put(Actions.Contacts.signAnonymousClaim({
-          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          sub: currentWeb3User.did,
           claim: {
             name: profileInfo.displayname,
           },
@@ -150,7 +150,7 @@ export function* watchStartLogin(): SagaIterator {
       }
       if (profileInfo.avatar_url) {
         yield put(Actions.Contacts.signAnonymousClaim({
-          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          sub: currentWeb3User.did,
           claim: {
             avatar: profileInfo.avatar_url,
           },
@@ -302,7 +302,8 @@ export function* watchRequest(): SagaIterator {
         }
 
         const content = {
-          body: `${sender.name} requests ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}`,
+          body: `${sender.name} requests ${transaction.amount ?
+            Utils.number.numberToString(transaction.amount, token.decimals) : ''} ${token ? token.code : ''}`,
           formatted_body: `<strong><a href="${url}">${sender.name} is requesting \
 ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></strong>`,
           format: 'org.matrix.custom.html',

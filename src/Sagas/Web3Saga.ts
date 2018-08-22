@@ -18,6 +18,7 @@ import * as Enums from '../Enums'
 import Config from '../Config'
 import { Web3, Etherscan } from '../Services'
 import { simpleHtmlForAttachment } from '../Components/AttachmentCard'
+import Utils from '../Utils'
 
 export function* watchStartSavingTransaction(): SagaIterator {
   while (true) {
@@ -48,9 +49,11 @@ export function* watchStartSavingTransaction(): SagaIterator {
         const sender: User = yield select(Selectors.Contacts.getAccountByAddress, newTransaction.sender)
         const receiver: User = yield select(Selectors.Contacts.getAccountByAddress, newTransaction.receiver)
         const content = {
-          body: `${sender.name} sent ${newTransaction.amount} ${token.code} to ${receiver.name}`,
+          body: `${sender.name} sent ${Utils.number.numberToString(newTransaction.amount, token.decimals)} \
+ ${token.code} to ${receiver.name}`,
           formatted_body: `<strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${sender.name}</a></strong> sent \
-<a href="https://rinkeby.etherscan.io/tx/${newTransaction.hash}">${newTransaction.amount} ${token.code}</a> \
+<a href="https://rinkeby.etherscan.io/tx/${newTransaction.hash}">\
+${Utils.number.numberToString(newTransaction.amount, token.decimals)} ${token.code}</a> \
 to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${receiver.name}</a></strong>`,
           format: 'org.matrix.custom.html',
           msgtype: 'm.text',

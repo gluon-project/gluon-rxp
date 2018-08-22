@@ -70,13 +70,13 @@ const ethSingleton =  {
     return web3.eth.contract(erc20abi).at(address)
   },
 }
-
-if ((<any>window).web3 && (<any>window).web3.currentProvider) {
-  // ethSingleton.setProvider(new Web3((<any>window).web3.currentProvider))
-  const w3 = Uport.getProvider()
-  w3.setProvider((<any>window).web3.currentProvider)
-  ethSingleton.setProvider(w3)
-}
+// TODO Re-enable metamask
+// if ((<any>window).web3 && (<any>window).web3.currentProvider) {
+//   // ethSingleton.setProvider(new Web3((<any>window).web3.currentProvider))
+//   const w3 = Uport.getProvider()
+//   w3.setProvider((<any>window).web3.currentProvider)
+//   ethSingleton.setProvider(w3)
+// }
 
 const getNewBalances = (address: string, tokens: Token[]) => {
   let promises: Promise<Balance>[] = []

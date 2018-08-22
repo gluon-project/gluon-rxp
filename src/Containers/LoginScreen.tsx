@@ -51,8 +51,9 @@ class LoginScreen extends RX.Component<Props, null> {
                 />
             </RX.View>
             {!this.props.currentUser && <RX.View style={Theme.Styles.scrollContainer}>
-              {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>No Web3 provider detected.</RX.Text>}
-              {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>Unlock your Metamask or login with uPort</RX.Text>}
+              {/* {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>No Web3 provider detected.</RX.Text>} */}
+              {/* {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>
+              Unlock your Metamask or login with uPort</RX.Text>} */}
               <CallToAction
                 title='Login with uPort'
                 onPress={this.props.startLogin}
