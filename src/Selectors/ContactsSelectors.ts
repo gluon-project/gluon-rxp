@@ -106,14 +106,14 @@ export const getList = (state: CombinedState): User[] => {
     //     uniqueIssuers: [],
     //   }
     // }
-    if (key === 'name') {
+    if (key.toLowerCase() === 'name') {
       contactsByDid[claim.sub].name = value
       contactsByDid[claim.sub].claims.name = claim
     }
-    if (key === 'matrixId') {
+    if (key.toLowerCase() === 'matrixid') {
       contactsByDid[claim.sub].claims.matrixId = claim
     }
-    if (key === 'avatar') {
+    if (key.toLowerCase() === 'avatar') {
       contactsByDid[claim.sub].avatar = value
       contactsByDid[claim.sub].claims.avatar = claim
     }

@@ -27,7 +27,7 @@ export default class ClaimBox extends RX.Component<Props, null> {
         </RX.View>
         <RX.View style={Theme.Styles.row}>
           <RX.Text style={Theme.Styles.claimBox.issuer}>Issued by: </RX.Text>
-          <AccountIcon account={this.props.claim.issuer} type={AccountIcon.type.Micro}/>
+          <AccountIcon account={this.props.claim.issuer} type={AccountIcon.type.Custom} size={16}/>
           <RX.Text style={Theme.Styles.claimBox.issuer}> {this.props.claim.issuer.name} </RX.Text>
           <RX.Text style={Theme.Styles.claimBox.issuer}> {moment.unix(this.props.claim.iat).calendar()}</RX.Text>
         </RX.View>
