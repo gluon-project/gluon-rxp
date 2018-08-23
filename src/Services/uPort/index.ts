@@ -51,7 +51,7 @@ const attestCredentials = (credentials: any) => {
   const claim = {
     ...credentials,
   }
-  return uportConnect.attest(claim)
+  return uportConnect.attest(claim, 'attest')
 }
 
 export default {

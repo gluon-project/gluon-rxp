@@ -68,3 +68,4 @@ reducer.on(addBalance, (state: UserState, payload?: Balance) => {
 export const refreshBalances = createAction('Start refreshing token balances')
 
 export const startLogin = createAction('Start Login')
+export const logout = createAction('Logout')

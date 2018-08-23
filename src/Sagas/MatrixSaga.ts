@@ -194,20 +194,10 @@ export function* watchStartRegister(): SagaIterator {
 
 export function* watchLogout(): SagaIterator {
   while (true) {
-    const action = yield take(Actions.Matrix.logout)
+    const action = yield take(Actions.User.logout)
 
     try {
       yield call(Services.Matrix.logout)
-      const uportDid = yield select(Selectors.User.getUportDid)
-      if (uportDid !== null) {
-        const credentials = {
-          sub: uportDid,
-          claim: {
-            matrixUser: false,
-          },
-        }
-        yield call(Services.uPort.attestCredentials, credentials)
-      }
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }

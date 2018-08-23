@@ -21,6 +21,7 @@ import Config from '../Config'
 import utils from '../Utils'
 
 import { startClient } from './MatrixSaga'
+import { restoreState } from './UportSaga'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
@@ -150,25 +151,26 @@ function* handleRequest(uri: string): SagaIterator {
 function* loadInitialState(): SagaIterator {
   yield put(Actions.App.initialDataStartedLoading())
 
-  yield fork(startClient)
+  // yield fork(startClient)
+  // yield fork(restoreState)
 
   yield call(handleInitialUrl)
 
-  try {
-    const accounts = yield call(Web3.getAccounts)
-    if (accounts && accounts.length > 0) {
-      yield put(Actions.User.setAccounts(accounts))
-      yield put(Actions.User.setCurrent({
-        name: utils.address.short(accounts[0]),
-        address: accounts[0],
-        avatar: null,
-      }))
-      // yield call(delay, 500)
-      // yield put(Actions.User.refreshBalances())
-    }
-  } catch (e) {
-    yield put(Actions.App.handleError(e))
-  }
+  // try {
+  //   // const accounts = yield call(Web3.getAccounts)
+  //   // if (accounts && accounts.length > 0) {
+  //   //   yield put(Actions.User.setAccounts(accounts))
+  //   //   yield put(Actions.User.setCurrent({
+  //   //     name: utils.address.short(accounts[0]),
+  //   //     address: accounts[0],
+  //   //     avatar: null,
+  //   //   }))
+  //     // yield call(delay, 500)
+  //     // yield put(Actions.User.refreshBalances())
+  //   }
+  // } catch (e) {
+  //   yield put(Actions.App.handleError(e))
+  // }
   yield put(Actions.App.initialDataFinishedLoading())
 }
 

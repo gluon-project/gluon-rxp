@@ -6,16 +6,19 @@ export let fileFilter: any = null
 
 export const logout = () => {
   return new Promise<MatrixUser>((resolve, reject) => {
-    client.logout((err: any, resp: any) => {
-      console.log(err)
-      if (err) {
-        reject(err)
-      } else {
-        console.log(resp)
-        client.stopClient()
-        resolve(resp)
-      }
-    })
+    // client.logout((err: any, resp: any) => {
+    //   console.log(err)
+    //   if (err) {
+    //     reject(err)
+    //   } else {
+    //     console.log(resp)
+    //     client.stopClient()
+    //     resolve(resp)
+    //   }
+    // })
+    client.stopClient()
+    resolve(null)
+
   })
 }
 

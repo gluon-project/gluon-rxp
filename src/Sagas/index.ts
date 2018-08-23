@@ -34,6 +34,7 @@ export default function* root() {
   yield fork(NavigationSaga.watchNavigate)
   yield fork(UportSaga.watchStartLogin)
   yield fork(UportSaga.subscribeEvents)
+  yield fork(UportSaga.watchLogout)
   yield fork(Web3Saga.watchAddToken)
   yield fork(Web3Saga.watchCreateNewToken)
   yield fork(Web3Saga.watchGetTokenInfo)

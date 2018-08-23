@@ -37,7 +37,7 @@ class SettingsScreen extends RX.Component<Props, null> {
 
           {this.props.currentMatrixUser && <CallToAction
               type={CallToAction.type.Default}
-              title={'Logout from Matrix'}
+              title={'Logout'}
               onPress={() => this.props.logout()}
             />}
 
@@ -81,7 +81,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     syncCodePushDeployment: (codePushDeployment: CodePushDeployment) =>
       dispatch(AppReducer.syncCodePushDeployment(codePushDeployment)),
     resetToInitialState: () => dispatch(Actions.App.resetToInitialState()),
-    logout: () => dispatch(Actions.Matrix.logout()),
+    logout: () => dispatch(Actions.User.logout()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)

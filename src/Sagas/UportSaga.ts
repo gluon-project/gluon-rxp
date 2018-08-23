@@ -87,3 +87,49 @@ export function* handleLoginResponse(action: any): SagaIterator {
   }
   return true
 }
+
+export function* restoreState(): SagaIterator {
+  try {
+    const result = Services.uPort.uportConnect.state
+    console.log('Restoring uPort state: ', result)
+    if (result && result.name) {
+      const user: User = {
+        name: result.name,
+        address: result.address,
+        mnid: result.mnid,
+        did: `did:uport:${result.mnid}`,
+        avatar: result.avatar ? result.avatar.uri : null,
+      }
+      yield put(Actions.User.setUportDid(result.did))
+      if (result.matrixUser) {
+        yield put(Actions.Matrix.setCurrentUser(result.matrixUser))
+        yield fork(startClient)
+      }
+      yield put(Actions.User.setAccounts([result.address]))
+      yield put(Actions.User.setCurrent(user))
+      yield call(Services.Web3.ethSingleton.setProvider, Services.uPort.getProvider())
+      yield call(delay, 500)
+      yield put(Actions.User.refreshBalances())
+    } else {
+      console.log('no uport state')
+    }
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  return true
+}
+
+export function* logout(): SagaIterator {
+  try {
+    yield put(Actions.User.setUportDid(null))
+    yield put(Actions.User.setAccounts([]))
+    yield put(Actions.User.setCurrent(null))
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  return true
+}
+
+export function* watchLogout(): SagaIterator {
+  // yield takeEvery(Actions.User.logout, logout)
+}
