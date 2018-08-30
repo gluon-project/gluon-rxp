@@ -18,6 +18,7 @@ interface Props extends RX.CommonProps {
   height?: number
   claims: VerifiableClaim[]
   handleSelectContact?: (did: string) => void
+  selectedContact?: string,
 }
 
 interface State {
@@ -127,7 +128,6 @@ class WebOfTrust extends RX.Component <Props, State> {
     .x(function(d: any) { return d.x })
     .y(function(d: any) { return d.y })
     .curve(curveCatmullRom.alpha(0.5))
-
     return(
       <RX.View
         style={Theme.Styles.scrollContainer}>
@@ -153,8 +153,11 @@ class WebOfTrust extends RX.Component <Props, State> {
           </RXImageSvg>
         {nodes.map((node: any) => node !== undefined && <RX.Button key={node.account.did}
           onPress={() => this.props.handleSelectContact(node.account.did)}
-          style={{position: 'absolute', top: node.y - node.size / 2, left: node.x - node.size / 2}}>
-          <AccountIcon account={node.account} type={AccountIcon.type.Custom} size={node.size}/>
+          style={{position: 'absolute',
+          top: node.y - node.size * (node.account.did === this.props.selectedContact ? 2 : 1) / 2,
+          left: node.x - node.size * (node.account.did === this.props.selectedContact ? 2 : 1) / 2}}>
+          <AccountIcon account={node.account} type={AccountIcon.type.Custom}
+          size={node.size * (node.account.did === this.props.selectedContact ? 2 : 1)}/>
         </RX.Button>)}
       </RX.View>
     </RX.View>

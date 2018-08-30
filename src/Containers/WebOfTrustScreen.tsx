@@ -17,17 +17,19 @@ interface Props extends RX.CommonProps {
   claims?: VerifiableClaim[]
   navigateBack?: () => void
   selectContact?: (did: string) => void
+  selectedContact?: string,
 }
 
 class WebOfTrustScreen extends RX.Component<Props, null> {
   private handleSelectContact = (did: string) => {
     this.props.selectContact(did)
-    this.props.navigateBack()
   }
   render() {
     return (
       <ScrollView>
-          <WebOfTrust handleSelectContact={this.handleSelectContact}
+          <WebOfTrust
+          selectedContact={this.props.selectedContact}
+          handleSelectContact={this.handleSelectContact}
           claims={this.props.claims}/>
       </ScrollView>
     )
@@ -37,6 +39,7 @@ class WebOfTrustScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     claims: Selectors.Contacts.getAllClaimsExtended(state),
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
