@@ -42,7 +42,7 @@ const ethTransactionToGluonTransactionGeneric = (ethTx: any, timestamp: number):
       const amount = _.find(event, {'name': 'value'}).value
       const data = _.find(event, {'name': 'data'}) ? _.find(event, {'name': 'data'}).value : null
       const attachment = data ? toIPFSHash(data) : null
-  
+
       return {
         hash,
         sender,
@@ -97,7 +97,7 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
 
   const event: EthereumLogEvent[] = decodedLogs.events
   const date = moment(parseInt(ethTx.timeStamp.slice(2, ethTx.timeStamp.length), 16) * 1000).toISOString()
-  const hash = `${ethTx.transactionHash}${token.address}`
+  const hash = `${ethTx.transactionHash}`
   if (decodedLogs.name === 'Transfer') {
     const sender = _.find(event, {'name': 'from'}).value
     const receiver = _.find(event, {'name': 'to'}).value
