@@ -26,6 +26,7 @@ export enum ProcessType {
   SignClaim,
   LoadMatrixClaims,
   RequestInMatrix,
+  MatrixCreateRoom,
 }
 
 export enum VisualType {

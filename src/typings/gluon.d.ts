@@ -236,3 +236,11 @@ declare interface MatrixRoom {
   state: MatrixRoomState,
   receipts: any[],
 }
+
+declare interface MatrixNewRoomOptions {
+  room_alias_name?: string,
+  visibility?: 'public' | 'private',
+  invite?: string[], //A list of user IDs to invite to this room
+  name?: string,
+  topic?: string,
+}

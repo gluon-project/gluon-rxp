@@ -98,6 +98,10 @@ export const sendMessage = (roomId: string, content: any) => {
   return client.sendMessage(roomId, content)
 }
 
+export const createRoom = (options: MatrixNewRoomOptions) => {
+  return client.createRoom(options)
+}
+
 export const uploadFile = (roomId: string, file: any) => {
   const { fileContent, fileName } = file
   return client.uploadContent(fileContent, {name: fileName, type: 'application/json'})

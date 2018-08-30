@@ -329,3 +329,19 @@ ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></
     yield put(Actions.Process.end({type: Enums.ProcessType.RequestInMatrix}))
   }
 }
+
+export function* watchCreateRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.createRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixCreateRoom}))
+
+    try {
+      const result = yield call(Services.Matrix.createRoom, action.payload)
+      yield put(Actions.Matrix.selectRoom(result.room_id))
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixCreateRoom}))
+  }
+}

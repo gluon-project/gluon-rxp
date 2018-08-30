@@ -5,17 +5,20 @@ import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
+import * as Enums from '../Enums'
 import * as S from 'string'
 import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateBack?: () => void
+  createRoom?: (options: MatrixNewRoomOptions) => void
+  isCreatingNewRoom?: boolean
 }
 
 interface State {
   isNew?: boolean,
-  roomAlias?: string,
+  roomName?: string,
   roomAddress?: string,
 }
 
@@ -24,17 +27,20 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     super(props)
     this.state = {
       isNew: true,
-      roomAlias: '',
+      roomName: '',
       roomAddress: '',
     }
   }
 
   private handleCreate = () => {
-    //
+    this.props.createRoom({
+      name: this.state.roomName,
+      visibility: 'private',
+    })
   }
 
   private isValidNewRoom = () => {
-    return this.state.roomAlias !== ''
+    return this.state.roomName !== ''
   }
 
   render() {
@@ -48,15 +54,16 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
               />
           {this.state.isNew && <RX.View>
             <TextInput
-            label='Room alias'
-            value={this.state.roomAlias}
-            onChangeText={(value) => this.setState({ roomAlias: value })}
+            label='Room name'
+            value={this.state.roomName}
+            onChangeText={(value) => this.setState({ roomName: value })}
             />
             <CallToAction
               type={CallToAction.type.Main}
               title={'Create new room'}
               onPress={this.handleCreate}
               disabled={!this.isValidNewRoom()}
+              inProgress={this.props.isCreatingNewRoom}
             />
           </RX.View>}
 
@@ -68,12 +75,14 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
+    isCreatingNewRoom: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixCreateRoom),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
+    createRoom: (options: MatrixNewRoomOptions) => dispatch(Actions.Matrix.createRoom(options)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RoomNewFormScreen)
