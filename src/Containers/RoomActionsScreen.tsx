@@ -123,7 +123,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             <RX.Image
               resizeMode={'cover'}
               style={Theme.Styles.chat.messageSenderAvatarInput}
-              source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
+              source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl ||  null} />
             <RX.TextInput
               style={Theme.Styles.chat.textInput}
               placeholder={'Send message...'}
