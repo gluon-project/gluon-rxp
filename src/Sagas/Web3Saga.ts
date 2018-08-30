@@ -153,9 +153,10 @@ export function* watchCreateNewToken(): SagaIterator {
     const currentUser = yield select(Selectors.User.getCurrent)
     try {
       const newToken = yield call(Web3.createNewToken, token, currentUser)
-      yield put(Actions.Tokens.addToken(newToken))
-      yield put(Actions.User.refreshBalances())
-      yield put(Actions.Feed.fetchTransactions())
+      console.log({newToken})
+      // yield put(Actions.Tokens.addToken(newToken))
+      // yield put(Actions.User.refreshBalances())
+      // yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
       yield put(Actions.App.handleError(e))
     }
