@@ -69,7 +69,7 @@ export const getExtendedClaims = (state: CombinedState, claims: VerifiableClaim[
 export const getMatricContacts = (state: CombinedState): VerifiableClaim[] => {
   const allClaims = getAllClaimsExtended(state)
   const matrixClaims = _.filter(allClaims, (claim: VerifiableClaim) => claim.claimType === 'Matrix')
-  return matrixClaims
+  return _.uniqBy(matrixClaims, (claim: VerifiableClaim) => claim.claimValue)
 }
 
 export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] => {

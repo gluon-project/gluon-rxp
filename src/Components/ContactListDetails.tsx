@@ -43,7 +43,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
 
         {contacts.map(contact => (
           <ListItem
-            key={contact.address}
+            key={contact.did}
             type={ListItem.type.Default}
             title={contact.name}
             subTitle={`${contact.uniqueIssuers.length} signers`}

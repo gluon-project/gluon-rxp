@@ -62,18 +62,21 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          <SegmentedControl
+          {/* <SegmentedControl
               titles={['Create room', 'Join existing']}
               selectedIndex={this.state.isNew ? 0 : 1}
               handleSelection={(index) => this.setState({isNew: index === 0 ? true : false})}
-              />
+              /> */}
           {this.state.isNew && <RX.View>
             <TextInput
             label='Room name'
             value={this.state.roomName}
+            placeholder={'Enter room name'}
             onChangeText={(value) => this.setState({ roomName: value })}
             />
-
+            <RX.View style={Theme.Styles.sectionTitleWrapper}>
+              <RX.Text style={Theme.Styles.sectionTitleLabel}>Invite</RX.Text>
+            </RX.View>
             {this.props.matrixContacts.map((claim: VerifiableClaim, key) => {
               return <ListItem
                 key={key}

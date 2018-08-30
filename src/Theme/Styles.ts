@@ -766,6 +766,18 @@ const Styles = {
     alignItems: 'center',
     borderRadius: Metrics.borderRadiusMax,
   }),
+  sectionTitleWrapper: RX.Styles.createViewStyle({
+    marginTop: Metrics.baseMargin * 2,
+    paddingBottom: Metrics.smallMargin,
+    borderBottomWidth: Metrics.borderWidth,
+    borderColor: Colors.borderColor,
+    paddingLeft: Metrics.baseMargin,
+  }),
+  sectionTitleLabel: RX.Styles.createTextStyle({
+    color: Colors.info,
+    fontSize: Fonts.size.small,
+    marginLeft: Metrics.baseMargin,
+  }),
 }
 
 export default Styles

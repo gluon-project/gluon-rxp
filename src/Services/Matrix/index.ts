@@ -50,6 +50,7 @@ export const login = (username: string, password: string, baseUrl: string) => {
             timelineSupport: true,
         })
         createFileFilter()
+        enableAutoJoin()
         // client.startClient()
         resolve(resp)
       }
@@ -75,6 +76,15 @@ export const getProfileInfo = () => {
   })
 }
 
+const enableAutoJoin = () => {
+  client.on('RoomMember.membership', function(event: any, member: any) {
+    if (member.membership === 'invite' && member.userId === client.credentials.userId) {
+        client.joinRoom(member.roomId).done(function() {
+            console.log('Auto-joined', member.roomId)
+        })
+    }
+  })
+}
 
 export const startClient = (options: MatrixUser) => {
   client = Matrix.createClient({
@@ -86,6 +96,7 @@ export const startClient = (options: MatrixUser) => {
     timelineSupport: true,
   })
   createFileFilter()
+  enableAutoJoin()
   // client.startClient()
   return true
 }
