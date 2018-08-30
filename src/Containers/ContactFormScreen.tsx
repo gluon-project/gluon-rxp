@@ -51,7 +51,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
     if (this.props.room) {
       this.props.signClaimAndShareInRoom({unsigned, roomId: this.props.room.id})
     } else {
-      // this.props.signAnonymousClaim(unsigned)
+      this.props.signClaimAndShareInRoom({unsigned, roomId: null})
     }
 
     this.props.navigateBack()

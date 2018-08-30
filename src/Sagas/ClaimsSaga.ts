@@ -73,6 +73,7 @@ export function* watchSignClaimAndShareInRoom(): SagaIterator {
     yield put(Actions.Process.start({type: Enums.ProcessType.SignClaim}))
 
     try {
+      yield put(Actions.Contacts.setRoomForSharing(action.payload.roomId))
       yield call(Services.uPort.signClaim, action.payload.unsigned)
     } catch (e) {
       yield put(Actions.App.handleError(e))
@@ -93,14 +94,17 @@ export function* handleSignedClaim(jwt: string): SagaIterator {
     }
 
     yield put(Actions.Contacts.addClaim(signedClaim))
-    const claims: any[] = []
-    claims.push(jwt)
 
-    const file = {
-      fileName: 'claims.json',
-      fileContent: JSON.stringify({claims}),
+    const roomId = yield select(Selectors.Contacts.getRoomForSharing)
+    if (roomId) {
+      const claims: any[] = []
+      claims.push(jwt)
+      const file = {
+        fileName: 'claims.json',
+        fileContent: JSON.stringify({claims}),
+      }
+      yield put(Actions.Matrix.sendFile(file))
     }
-    yield put(Actions.Matrix.sendFile(file))
 
   } catch (e) {
     yield put(Actions.App.handleError(e))

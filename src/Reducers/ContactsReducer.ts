@@ -8,6 +8,7 @@ import { logout } from './UserReducer'
 import Config from '../Config'
 
 export interface ContactsState {
+  roomForSharing: string,
   newClaimType: string,
   newClaimValue: string,
   editing: User,
@@ -18,6 +19,7 @@ export interface ContactsState {
 }
 
 const initialState: ContactsState = {
+  roomForSharing: null,
   editing: null,
   newClaimType: null,
   newClaimValue: null,
@@ -30,6 +32,14 @@ const initialState: ContactsState = {
 export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: ContactsState) => {
   return initialState
+})
+
+export const setRoomForSharing = createAction('Set Room For Sharing clam')
+reducer.on(setRoomForSharing, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    roomForSharing: payload,
+  }
 })
 
 export const addContact = createAction('Add contact')
