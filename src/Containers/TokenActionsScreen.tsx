@@ -32,6 +32,7 @@ interface Props extends RX.CommonProps {
   isProcessingBurn?: boolean
   mintTransaction?: MintTransaction
   burnTransaction?: BurnTransaction
+  transactions?: Transaction[]
 }
 
 interface State {
@@ -77,6 +78,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
   }
 
   render() {
+    console.log(this.props)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -87,7 +89,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             subTitle={this.props.balance.token.type !== Enums.TokenType.ETH &&  utils.address.short(this.props.balance.token.address)}
             type={ListItem.type.Secondary}
           />}
-          {this.props.reserveTokenBalance !== undefined && <RX.View style={{
+          {this.props.balance && this.props.balance.token.type === Enums.TokenType.Erc223 && <RX.View style={{
             marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
           }}>
 
@@ -149,6 +151,9 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               inProgress={this.props.isProcessingMint || this.props.isProcessingBurn}
             />
           </RX.View>}
+          {this.props.transactions.map((transaction: Transaction, key: any) => <RX.View key={transaction.hash}>
+            <RX.Text>{transaction.hash}</RX.Text>
+          </RX.View>)}
         </ScrollView>
 
       </RX.View>
@@ -168,6 +173,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     isProcessingBurnReward: Selectors.Process.isRunningProcess(state, Enums.ProcessType.GetRewardForBurn),
     isProcessingMint: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MintTokens),
     isProcessingBurn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.BurnTokens),
+    transactions: Selectors.Feed.getSelectedList(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
