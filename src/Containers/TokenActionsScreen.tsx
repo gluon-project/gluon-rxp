@@ -151,9 +151,9 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               inProgress={this.props.isProcessingMint || this.props.isProcessingBurn}
             />
           </RX.View>}
-          {this.props.transactions.map((transaction: Transaction, key: any) => <RX.View key={transaction.hash}>
+          {/* {this.props.transactions.map((transaction: Transaction, key: any) => <RX.View key={transaction.hash}>
             <RX.Text>{transaction.hash}</RX.Text>
-          </RX.View>)}
+          </RX.View>)} */}
         </ScrollView>
 
       </RX.View>
@@ -173,7 +173,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     isProcessingBurnReward: Selectors.Process.isRunningProcess(state, Enums.ProcessType.GetRewardForBurn),
     isProcessingMint: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MintTokens),
     isProcessingBurn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.BurnTokens),
-    transactions: Selectors.Feed.getSelectedList(state),
+    // transactions: Selectors.Feed.getSelectedList(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
