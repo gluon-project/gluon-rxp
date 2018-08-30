@@ -13,15 +13,15 @@ import * as _ from 'lodash'
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
   navigateBack?: () => void
-  createRoom?: (options: MatrixNewRoomOptions) => void
-  isCreatingNewRoom?: boolean
+  leaveRoom?: (roomId: string) => void
+  invite?: (roomId: string, userIds: string[]) => void
   matrixContacts?: VerifiableClaim[]
+  room?: MatrixRoom
+  isInviting?: boolean,
+  isLeaving?: boolean,
 }
 
 interface State {
-  isNew?: boolean,
-  roomName?: string,
-  roomAddress?: string,
   selectedMatrixIds?: string[]
 }
 
@@ -29,23 +29,16 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      isNew: true,
-      roomName: '',
-      roomAddress: '',
       selectedMatrixIds: [],
     }
   }
 
-  private handleCreate = () => {
-    this.props.createRoom({
-      name: this.state.roomName,
-      visibility: 'private',
-      invite: this.state.selectedMatrixIds,
-    })
+  private handleLeave = () => {
+    this.props.leaveRoom(this.props.room.id)
   }
 
-  private isValidNewRoom = () => {
-    return this.state.roomName !== ''
+  private handleInvite = () => {
+    this.props.invite(this.props.room.id, this.state.selectedMatrixIds)
   }
 
   private toggleSelectedMatrixId = (matrixId: string) => {
@@ -62,18 +55,22 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          {/* <SegmentedControl
-              titles={['Create room', 'Join existing']}
-              selectedIndex={this.state.isNew ? 0 : 1}
-              handleSelection={(index) => this.setState({isNew: index === 0 ? true : false})}
-              /> */}
-          {this.state.isNew && <RX.View>
-            <TextInput
-            label='Room name'
-            value={this.state.roomName}
-            placeholder={'Enter room name'}
-            onChangeText={(value) => this.setState({ roomName: value })}
-            />
+
+            <RX.Text style={Theme.Styles.about.h1}>{this.props.room.name}</RX.Text>
+
+            <RX.View style={Theme.Styles.sectionTitleWrapper}>
+              <RX.Text style={Theme.Styles.sectionTitleLabel}>Members</RX.Text>
+            </RX.View>
+            {this.props.room.members.map((member: MatrixMember, key) => {
+              return <ListItem
+                key={key}
+                account={{avatar: member.avatarUrl}}
+                title={member.displayname}
+                subTitle={member.userId}
+                type={ListItem.type.Secondary}
+              />
+            })}
+
             <RX.View style={Theme.Styles.sectionTitleWrapper}>
               <RX.Text style={Theme.Styles.sectionTitleLabel}>Invite</RX.Text>
             </RX.View>
@@ -91,12 +88,18 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
 
             <CallToAction
               type={CallToAction.type.Main}
-              title={'Create new room'}
-              onPress={this.handleCreate}
-              disabled={!this.isValidNewRoom()}
-              inProgress={this.props.isCreatingNewRoom}
+              title={'Invite contacts'}
+              onPress={this.handleInvite}
+              disabled={this.state.selectedMatrixIds.length === 0}
+              inProgress={this.props.isInviting}
             />
-          </RX.View>}
+
+            <CallToAction
+              type={CallToAction.type.Secondary}
+              title={'Leave room'}
+              onPress={this.handleLeave}
+              inProgress={this.props.isLeaving}
+            />
 
         </ScrollView>
       </RX.View>
@@ -105,16 +108,24 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
 }
 
 const mapStateToProps = (state: CombinedState): Props => {
+  const room = Selectors.Matrix.getSelectedRoom(state)
+  const members = room.members.map((member: MatrixMember) => member.userId)
+
+  const matrixContacts = Selectors.Contacts.getMatrixContacts(state)
+  const filteredContacts = _.filter(matrixContacts, (contact: VerifiableClaim) => !_.includes(members, contact.claimValue))
   return {
-    isCreatingNewRoom: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixCreateRoom),
-    matrixContacts: Selectors.Contacts.getMatrixContacts(state),
+    room: room,
+    matrixContacts: filteredContacts,
+    isInviting: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixInviteContacts),
+    isLeaving: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLeaveRoom),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
-    createRoom: (options: MatrixNewRoomOptions) => dispatch(Actions.Matrix.createRoom(options)),
+    leaveRoom: (roomId: string) => dispatch(Actions.Matrix.leaveRoom(roomId)),
+    invite: (roomId: string, userIds: string[]) => dispatch(Actions.Matrix.inviteToRoom({roomId, userIds})),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RoomNewFormScreen)

@@ -31,6 +31,8 @@ export default function* root() {
   yield fork(MatrixSaga.watchSendTextMessage)
   yield fork(MatrixSaga.watchSendMessage)
   yield fork(MatrixSaga.watchSendFile)
+  yield fork(MatrixSaga.watchLeaveRoom)
+  yield fork(MatrixSaga.watchInviteToRoom)
   yield fork(ModalMessageSaga.watchCloseModalMessage)
   yield fork(NavigationSaga.watchNavigate)
   yield fork(UportSaga.watchStartLogin)

@@ -49,6 +49,19 @@ const RightButton = ({navigation}: { navigation: any }) => {
         </RX.Text>
       </RX.Button>
     )
+  } else if (state.routeName === 'RoomActions' ) {
+    return (
+      <RX.Button
+      style={Theme.Styles.navBarItem}
+      onPress={() => {
+          navigate('RoomInfo')
+        }}
+      >
+        <RX.Text style={Theme.Styles.navBarItemLabel}>
+          More
+        </RX.Text>
+      </RX.Button>
+    )
   } else {
     return <RX.View/>
   }
@@ -93,6 +106,7 @@ const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {titl
 const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 const RoomSelection = {screen: Screens.RoomSelectionScreen, navigationOptions: {title: 'Select Room'}}
 const RoomNewForm = {screen: Screens.RoomNewFormScreen, navigationOptions: {title: 'New room'}}
+const RoomInfo = {screen: Screens.RoomInfoScreen, navigationOptions: {title: 'Room'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
@@ -106,7 +120,7 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.RoomsMasterScreen,
     screen: TabNavigator(
       {
-        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions)},
+        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection, RoomInfo }, navigationOptions)},
         RoomNewForm: {screen: StackNavigator({ RoomNewForm }, navigationOptions)},
       },
       navigationOptions,
@@ -172,7 +186,7 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   RoomsTab: {
     screen: StackNavigator(
-      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection, RoomNewForm },
+      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection, RoomNewForm, RoomInfo },
       navigationOptions,
     ),
   },

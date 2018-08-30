@@ -113,6 +113,15 @@ export const createRoom = (options: MatrixNewRoomOptions) => {
   return client.createRoom(options)
 }
 
+export const leaveRoom = (roomId: string) => {
+  return client.leave(roomId)
+}
+
+export const invite = (roomId: string, userIds: string[]) => {
+  const promises = userIds.map(userId => client.invite(roomId, userId))
+  return Promise.all(promises)
+}
+
 export const uploadFile = (roomId: string, file: any) => {
   const { fileContent, fileName } = file
   return client.uploadContent(fileContent, {name: fileName, type: 'application/json'})

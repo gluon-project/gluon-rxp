@@ -30,6 +30,7 @@ import RoomNewFormScreen from './RoomNewFormScreen'
 import RoomActionsScreen from './RoomActionsScreen'
 import RoomsScreen from './RoomsScreen'
 import RoomSelectionScreen from './RoomSelectionScreen'
+import RoomInfoScreen from './RoomInfoScreen'
 import SenderScreen from './SenderScreen'
 import SendMasterScreen from './SendMasterScreen'
 import SettingsScreen from './SettingsScreen'
@@ -73,6 +74,7 @@ export {
   RoomNewFormScreen,
   RoomsScreen,
   RoomSelectionScreen,
+  RoomInfoScreen,
   SenderScreen,
   SendMasterScreen,
   SettingsScreen,

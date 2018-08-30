@@ -345,3 +345,34 @@ export function* watchCreateRoom(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.MatrixCreateRoom}))
   }
 }
+
+export function* watchLeaveRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.leaveRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixLeaveRoom}))
+
+    try {
+      const result = yield call(Services.Matrix.leaveRoom, action.payload)
+      yield put(Actions.Matrix.selectRoom(null))
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixLeaveRoom}))
+  }
+}
+
+export function* watchInviteToRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.inviteToRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixInviteContacts}))
+
+    try {
+      const result = yield call(Services.Matrix.invite, action.payload.roomId, action.payload.userIds)
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixInviteContacts}))
+  }
+}

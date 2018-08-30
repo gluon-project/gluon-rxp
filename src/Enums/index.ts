@@ -27,6 +27,8 @@ export enum ProcessType {
   LoadMatrixClaims,
   RequestInMatrix,
   MatrixCreateRoom,
+  MatrixInviteContacts,
+  MatrixLeaveRoom,
 }
 
 export enum VisualType {
