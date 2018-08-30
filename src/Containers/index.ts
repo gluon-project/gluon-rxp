@@ -26,6 +26,7 @@ import ReceiverScreen from './ReceiverScreen'
 import RequestBox from './RequestBox'
 import RequestMasterScreen from './RequestMasterScreen'
 import RoomsMasterScreen from './RoomsMasterScreen'
+import RoomNewFormScreen from './RoomNewFormScreen'
 import RoomActionsScreen from './RoomActionsScreen'
 import RoomsScreen from './RoomsScreen'
 import RoomSelectionScreen from './RoomSelectionScreen'
@@ -69,6 +70,7 @@ export {
   RequestMasterScreen,
   RoomActionsScreen,
   RoomsMasterScreen,
+  RoomNewFormScreen,
   RoomsScreen,
   RoomSelectionScreen,
   SenderScreen,

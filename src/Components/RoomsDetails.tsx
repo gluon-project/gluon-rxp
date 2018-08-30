@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, AccountIcon, MatrixLogin } from '../Components'
+import { ListItem, AccountIcon, MatrixLogin, CallToAction } from '../Components'
 
 interface Props extends RX.CommonProps {
   startLogin?: () => void
@@ -58,12 +58,19 @@ export default class RoomsDetails extends RX.Component<Props, null> {
                 title={`${room.name}`}
                 subTitle={`${room.members.length} Members`}
                 type={ListItem.type.Default}
-                selected={!this.props.uiTraits.horizontalIsCompact && this.props.routeName !== 'NewRoomForm' && this.props.selectedRoomId
+                selected={!this.props.uiTraits.horizontalIsCompact && this.props.routeName !== 'RoomNewForm' && this.props.selectedRoomId
                   && room.id === this.props.selectedRoomId}
                 onPress={() => this.props.handleSelectRoom(room.id)}
               />
             })}
           </RX.View>}
+
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'New Room'}
+            onPress={() => this.props.navigate('RoomNewForm')}
+            disabled={this.props.routeName === 'RoomNewForm'}
+          />
 
     </RX.View>
     )

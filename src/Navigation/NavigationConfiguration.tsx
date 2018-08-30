@@ -92,6 +92,7 @@ const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
 const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 const RoomSelection = {screen: Screens.RoomSelectionScreen, navigationOptions: {title: 'Select Room'}}
+const RoomNewForm = {screen: Screens.RoomNewFormScreen, navigationOptions: {title: 'New room'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
@@ -106,6 +107,7 @@ export const WideNavigationConfiguration = {
     screen: TabNavigator(
       {
         RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions)},
+        RoomNewForm: {screen: StackNavigator({ RoomNewForm }, navigationOptions)},
       },
       navigationOptions,
     ),
@@ -170,7 +172,7 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   RoomsTab: {
     screen: StackNavigator(
-      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection },
+      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection, RoomNewForm },
       navigationOptions,
     ),
   },
