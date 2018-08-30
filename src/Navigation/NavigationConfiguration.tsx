@@ -128,7 +128,7 @@ export const WideNavigationConfiguration = {
   },
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
-    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection }, navigationOptions),
+    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -191,7 +191,8 @@ export const CompactNavigationConfiguration = {
     ),
   },
   ContactsTab: {
-    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions),
+    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection,
+      ContactSelection, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(
@@ -217,7 +218,7 @@ export const CompactNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  Settings: { screen: StackNavigator({ Settings, WebOfTrust }, navigationOptions) },
+  Settings: { screen: StackNavigator({ Settings }, navigationOptions) },
   // More: {
   //   screen: StackNavigator(moreStack, navigationOptions),
   // },

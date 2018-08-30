@@ -15,13 +15,20 @@ import WebOfTrust from '../Components/Graphs/WebOfTrust'
 
 interface Props extends RX.CommonProps {
   claims?: VerifiableClaim[]
+  navigateBack?: () => void
+  selectContact?: (did: string) => void
 }
 
 class WebOfTrustScreen extends RX.Component<Props, null> {
+  private handleSelectContact = (did: string) => {
+    this.props.selectContact(did)
+    this.props.navigateBack()
+  }
   render() {
     return (
       <ScrollView>
-          <WebOfTrust claims={this.props.claims}/>
+          <WebOfTrust handleSelectContact={this.handleSelectContact}
+          claims={this.props.claims}/>
       </ScrollView>
     )
   }
@@ -34,6 +41,8 @@ const mapStateToProps = (state: CombinedState): Props => {
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
+    navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WebOfTrustScreen)

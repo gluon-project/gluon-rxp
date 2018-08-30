@@ -29,11 +29,6 @@ class SettingsScreen extends RX.Component<Props, null> {
     return (
       <ScrollView>
         <RX.View style={Theme.Styles.about.wrapper}>
-          <CallToAction
-            type={CallToAction.type.Default}
-            title={'Web Of Trust'}
-            onPress={() => this.props.navigate('WebOfTrust')}
-            />
 
           {this.props.currentMatrixUser && <CallToAction
               type={CallToAction.type.Default}

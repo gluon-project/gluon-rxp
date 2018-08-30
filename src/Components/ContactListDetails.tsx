@@ -52,12 +52,17 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             onPress={() => this.handleSelectContact(contact.did)}
           />
         ))}
-        {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
         <CallToAction
-          type={CallToAction.type.Main}
+          type={CallToAction.type.Secondary}
           title={'New Contact'}
           onPress={() => this.props.navigate('NewContactForm')}
-        />
+          />
+        <CallToAction
+          type={CallToAction.type.Main}
+          title={'Web Of Trust'}
+          onPress={() => this.props.navigate('WebOfTrust')}
+          />
+        {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
       </RX.View>
     )
   }

@@ -17,6 +17,7 @@ interface Props extends RX.CommonProps {
   width?: number
   height?: number
   claims: VerifiableClaim[]
+  handleSelectContact?: (did: string) => void
 }
 
 interface State {
@@ -114,7 +115,6 @@ class WebOfTrust extends RX.Component <Props, State> {
       })
     })
 
-
     forEach(interactionCounts, (item: any, id: string) => {
       graph.setEdge(item.start, item.end, {weight: calcEdgeWeight(item.count), id: id})
     })
@@ -151,10 +151,11 @@ class WebOfTrust extends RX.Component <Props, State> {
             })}
 
           </RXImageSvg>
-        {nodes.map((node: any) => node !== undefined && <RX.View key={node.account.did}
+        {nodes.map((node: any) => node !== undefined && <RX.Button key={node.account.did}
+          onPress={() => this.props.handleSelectContact(node.account.did)}
           style={{position: 'absolute', top: node.y - node.size / 2, left: node.x - node.size / 2}}>
           <AccountIcon account={node.account} type={AccountIcon.type.Custom} size={node.size}/>
-        </RX.View>)}
+        </RX.Button>)}
       </RX.View>
     </RX.View>
     )
