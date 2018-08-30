@@ -22,6 +22,36 @@ export function* watchStartLogin(): SagaIterator {
 
 export function * subscribeEvents () {
 
+  const createCommunityTokenTxChannel = yield eventChannel(emitter => {
+    Services.uPort.uportConnect.onResponse('createCommunityTokenTx', (err: any, data: any) => {
+      console.log('createCommunityTokenTx response', data)
+      emitter(data.res)
+    })
+    return () => {
+      console.log('SAGA unsubscribe')
+    }
+  })
+
+  const burnTxChannel = yield eventChannel(emitter => {
+    Services.uPort.uportConnect.onResponse('burnTx', (err: any, data: any) => {
+      console.log('burn response', data)
+      emitter(data.res)
+    })
+    return () => {
+      console.log('SAGA unsubscribe')
+    }
+  })
+
+  const mintTxChannel = yield eventChannel(emitter => {
+    Services.uPort.uportConnect.onResponse('mintTx', (err: any, data: any) => {
+      console.log('mint response', data)
+      emitter(data.res)
+    })
+    return () => {
+      console.log('SAGA unsubscribe')
+    }
+  })
+
   const signClaimChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('signClaimReq', (err: any, data: any) => {
       emitter(data.res)
@@ -42,6 +72,9 @@ export function * subscribeEvents () {
 
   yield takeEvery(loginChannel, handleLoginResponse)
   yield takeEvery(signClaimChannel, handleSignedClaim)
+  yield takeEvery(mintTxChannel, (data: any) => console.log(data))
+  yield takeEvery(burnTxChannel, (data: any) => console.log(data))
+  yield takeEvery(createCommunityTokenTxChannel, (data: any) => console.log(data))
 }
 
 export function* handleLoginResponse(action: any): SagaIterator {
