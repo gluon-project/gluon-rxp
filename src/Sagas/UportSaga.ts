@@ -154,9 +154,9 @@ export function* restoreState(): SagaIterator {
 
 export function* logout(): SagaIterator {
   try {
-    yield put(Actions.User.setUportDid(null))
-    yield put(Actions.User.setAccounts([]))
-    yield put(Actions.User.setCurrent(null))
+    yield put(Actions.App.resetToInitialState())
+    yield call(Services.uPort.logout)
+    yield call(Services.Matrix.logout)
   } catch (e) {
     yield put(Actions.App.handleError(e))
   }
@@ -164,5 +164,5 @@ export function* logout(): SagaIterator {
 }
 
 export function* watchLogout(): SagaIterator {
-  // yield takeEvery(Actions.User.logout, logout)
+  yield takeEvery(Actions.User.logout, logout)
 }

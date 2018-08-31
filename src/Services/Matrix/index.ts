@@ -16,7 +16,10 @@ export const logout = () => {
     //     resolve(resp)
     //   }
     // })
-    client.stopClient()
+    if (client) {
+      client.stopClient()
+    }
+
     resolve(null)
 
   })

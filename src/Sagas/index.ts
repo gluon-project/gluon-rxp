@@ -26,7 +26,6 @@ export default function* root() {
   yield fork(MatrixSaga.watchCreateRoom)
   yield fork(MatrixSaga.watchRequest)
   yield fork(MatrixSaga.watchStartRegister)
-  yield fork(MatrixSaga.watchLogout)
   yield fork(MatrixSaga.watchStartLogin)
   yield fork(MatrixSaga.watchSendTextMessage)
   yield fork(MatrixSaga.watchSendMessage)

@@ -2,7 +2,7 @@ import RX = require('reactxp')
 import { connect } from 'react-redux'
 import {
   CallToAction,
-  ToggleSwitch,
+  AccountIcon,
   ScrollView,
 } from '../Components'
 import { CombinedState } from '../Reducers'
@@ -11,6 +11,7 @@ import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
 import * as Enums from '../Enums'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -22,13 +23,30 @@ interface Props extends RX.CommonProps {
   showEnvironmentPicker?: () => void
   logout?: () => void
   currentMatrixUser?: MatrixUser
+  currentUser?: User,
 }
 
 class SettingsScreen extends RX.Component<Props, null> {
   render() {
     return (
       <ScrollView>
-        <RX.View style={Theme.Styles.about.wrapper}>
+        <RX.View style={Theme.Styles.containerFull}>
+          {this.props.currentUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
+            <AccountIcon
+              account={this.props.currentUser}
+              type={AccountIcon.type.Large}
+              />
+            <RX.Text style={Theme.Styles.accountInfo.title}>
+              {this.props.currentUser.name}
+            </RX.Text>
+            {this.props.currentUser.address !== this.props.currentUser.name && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
+              {Utils.address.short(this.props.currentUser.address)}
+            </RX.Text>}
+            {this.props.currentMatrixUser && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
+              {this.props.currentMatrixUser.user_id}
+            </RX.Text>}
+
+          </RX.View>}
 
           {this.props.currentMatrixUser && <CallToAction
               type={CallToAction.type.Default}
@@ -36,14 +54,8 @@ class SettingsScreen extends RX.Component<Props, null> {
               onPress={() => this.props.logout()}
             />}
 
-          <CallToAction
-            type={CallToAction.type.Default}
-            title={'Clear local cache'}
-            onPress={() => this.props.resetToInitialState()}
-          />
-
           <RX.Text style={Theme.Styles.about.warning}>
-            All your contact and token lists are stored locally.
+            All your contacts and token lists are stored locally.
           </RX.Text>
           {/* {RX.Platform.getType() !== 'web' && <RX.View><RX.Text style={Theme.Styles.sectionTitle}>
             APP DEPLOYMENTS
@@ -65,6 +77,7 @@ class SettingsScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
+    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
     codePushDeployments: Selectors.App.getCodePushDeployments(state),
     appVersion: state.app.version,

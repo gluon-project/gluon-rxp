@@ -28,7 +28,8 @@ export default class ContactListDetails extends RX.Component<Props, null> {
   }
 
   render() {
-    const contacts = filter(this.props.contacts, (contact: User) => { return contact.did !== this.props.currentUser.did})
+    const contacts = filter(this.props.contacts, (contact: User) => { return this.props.currentUser &&
+      contact.did !== this.props.currentUser.did})
     return (
       <RX.View style={Theme.Styles.container}>
         {this.props.currentUser &&

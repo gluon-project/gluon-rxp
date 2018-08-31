@@ -192,18 +192,6 @@ export function* watchStartRegister(): SagaIterator {
   }
 }
 
-export function* watchLogout(): SagaIterator {
-  while (true) {
-    const action = yield take(Actions.User.logout)
-
-    try {
-      yield call(Services.Matrix.logout)
-    } catch (e) {
-      yield put(Actions.App.handleError(e))
-    }
-  }
-}
-
 export function* startClient(): SagaIterator {
   try {
     const currentUser = yield select(Selectors.Matrix.getCurrentUser)

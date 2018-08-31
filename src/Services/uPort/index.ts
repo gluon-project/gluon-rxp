@@ -13,8 +13,8 @@ const credentials = new Credentials({
 })
 
 const uportConnect = new Connect(Config.uport.app.name, {
-  isMobile: false,
-  useStore: false,
+  // isMobile: false,
+  // useStore: false,
 })
 
 uportConnect.credentials = credentials
@@ -54,8 +54,13 @@ const attestCredentials = (credentials: any) => {
   return uportConnect.attest(claim, 'attest')
 }
 
+const logout = () => {
+  return uportConnect.logout()
+}
+
 export default {
   uportConnect,
+  logout,
   signClaim,
   MNID,
   attestCredentials,

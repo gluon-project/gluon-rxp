@@ -25,14 +25,14 @@ import { restoreState } from './UportSaga'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
-  const web3Provider = uPort.getProvider()
+  // yield  call(delay, 5000)
+  // const web3Provider = uPort.getProvider()
   // TODO Re-enable metamask
   // if ((<any>window).web3 && (<any>window).web3.currentProvider) {
   //   web3Provider.setProvider((<any>window).web3.currentProvider)
   // }
-  yield call(Web3.ethSingleton.setProvider, web3Provider)
+  // yield call(Web3.ethSingleton.setProvider, web3Provider)
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
-  yield  call(delay, 500)
   yield put(Actions.App.setVersion(deploymentMetaData.version))
 
   let deploymentKey
@@ -149,7 +149,6 @@ function* handleRequest(uri: string): SagaIterator {
 }
 
 function* loadInitialState(): SagaIterator {
-  yield put(Actions.App.initialDataStartedLoading())
 
   // yield fork(startClient)
   // yield fork(restoreState)

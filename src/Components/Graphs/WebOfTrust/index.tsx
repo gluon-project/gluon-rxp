@@ -23,6 +23,8 @@ interface Props extends RX.CommonProps {
 
 interface State {
   width: number
+  nodes?: any[]
+  edges?: any[]
 }
 
 class WebOfTrust extends RX.Component <Props, State> {
@@ -30,16 +32,19 @@ class WebOfTrust extends RX.Component <Props, State> {
 
   constructor(props: Props) {
     super(props)
+    const {nodes, edges} = this.buildGraph(props)
     this.state = {
       width: props.width,
+      nodes,
+      edges,
     }
   }
 
-  render() {
+  buildGraph(props: Props) {
     let graph = new dagre.graphlib.Graph()
     graph.setGraph({rankdir: 'LR', align: 'UL', ranker: 'longest-path', marginx: 15, marginy: 15})
 
-    const users = reduce(this.props.claims, function(result: any, claim: VerifiableClaim) {
+    const users = reduce(props.claims, function(result: any, claim: VerifiableClaim) {
       if (!result[claim.iss]) {
         const interactions: any = {}
         interactions[claim.sub] = 1
@@ -66,18 +71,7 @@ class WebOfTrust extends RX.Component <Props, State> {
       return result
     }, {})
 
-    // graph.setNode('simonas', {width: 48 * sizeRatio, height: 48 * sizeRatio, size: 48, account: this.props.claims[0].subject})
-    // graph.setNode('andrejus', {width: 100 * sizeRatio, height: 100 * sizeRatio, size: 100, account: this.props.claims[0].issuer})
-    // graph.setNode('ziggy', {width: 24 * sizeRatio, height: 24 * sizeRatio, size: 24, account: this.props.claims[0].subject})
-
-    // graph.setEdge('andrejus', 'simonas', {weight: 1})
-    // graph.setEdge('andrejus', 'simonas', {weight: 1})
-    // graph.setEdge('simonas', 'andrejus', {weight: 5})
-    // graph.setEdge('simonas', 'ziggy', {weight: 4})
-    // graph.setEdge('andrejus', 'ziggy', {weight: 2})
-    // graph.setEdge('ziggy', 'andrejus', {weight: 2})
-
-    const allClaimCount = this.props.claims.length
+    const allClaimCount = props.claims.length
     const minSize = 1
     const maxSize = 10
     const calcEdgeWeight = (interactionCount: number) => {
@@ -124,6 +118,13 @@ class WebOfTrust extends RX.Component <Props, State> {
 
     const nodes = graph.nodes().map((node: any) => graph.node(node))
     const edges = graph.edges().map((node: any) => graph.edge(node))
+    return {nodes, edges}
+  }
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return this.props.selectedContact !== nextProps.selectedContact || this.props.width !== nextProps.width
+  }
+  render() {
+    console.log('render')
     const l: (any) = line()
     .x(function(d: any) { return d.x })
     .y(function(d: any) { return d.y })
@@ -140,7 +141,7 @@ class WebOfTrust extends RX.Component <Props, State> {
               height={this.props.height}
               viewBox={`0 0 ${this.state.width} ${this.props.height}`}
             >
-            {edges.map((edge: any) => {
+            {this.state.edges.map((edge: any) => {
               return (<RXSvgPath
                 key={edge.id}
                 fillColor={'transparent'}
@@ -151,7 +152,7 @@ class WebOfTrust extends RX.Component <Props, State> {
             })}
 
           </RXImageSvg>
-        {nodes.map((node: any) => node !== undefined && <RX.Button key={node.account.did}
+        {this.state.nodes.map((node: any) => node !== undefined && <RX.Button key={node.account.did}
           onPress={() => this.props.handleSelectContact(node.account.did)}
           style={{position: 'absolute',
           top: node.y - node.size * (node.account.did === this.props.selectedContact ? 2 : 1) / 2,

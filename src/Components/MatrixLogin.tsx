@@ -30,11 +30,16 @@ export default class MatrixLogin extends RX.Component<Props, State> {
   }
 
   handleSubmit() {
-    console.log(this.state)
     if (this.state.register) {
       this.props.register(this.state.username, this.state.password, this.state.baseUrl)
     } else {
       this.props.login(this.state.username, this.state.password, this.state.baseUrl)
+    }
+  }
+
+  handleKeyPress(e: any) {
+    if (e.key === 'Enter') {
+      this.handleSubmit.bind(this)()
     }
   }
 
@@ -62,6 +67,7 @@ export default class MatrixLogin extends RX.Component<Props, State> {
             label='Password'
             value={this.state.password}
             onChangeText={(password) => this.setState({password})}
+            onKeyPress={(e) => this.handleKeyPress(e)}
             />
           {this.state.register && <TextInput
             secureTextEntry={true}
