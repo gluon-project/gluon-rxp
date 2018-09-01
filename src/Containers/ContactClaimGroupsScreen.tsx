@@ -7,7 +7,7 @@ import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
 import * as moment from 'moment'
 import { FileSaver } from '../Services'
-import { map, forEach, groupBy, isNumber, keys, countBy, orderBy, uniqBy } from 'lodash'
+import { map, forEach, groupBy, isNumber, keys, countBy, orderBy, uniqBy, filter } from 'lodash'
 import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
@@ -20,10 +20,13 @@ interface Props extends RX.CommonProps {
   setNewClaimValue?: (value: string) => void
   currentUser?: User,
   saveClaimsLocally?: (jwts: string[]) => void
-  setGroupClaimsBy?: (options: any) => void
+  groupClaimsBy?: {
+    claimType: string,
+    claimValue: string,
+  }
 }
 
-class ClaimActionsScreen extends RX.Component<Props, null> {
+class ContactClaimGroupsScreen extends RX.Component<Props, null> {
 
   constructor(props: Props) {
     super(props)
@@ -34,7 +37,9 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
 
   getGroupedClaims() {
     let result: any = []
-    const grouped = groupBy(orderBy(this.props.claims, 'claimType'), 'claimType')
+    const claims = filter(this.props.claims, (claim: VerifiableClaim) => claim.claimType === this.props.groupClaimsBy.claimType
+      && claim.claimValue === this.props.groupClaimsBy.claimValue)
+    const grouped = groupBy(orderBy(claims, 'claimType'), 'claimType')
     result = map(grouped, (group, title) => {
       const groupedValues = groupBy(group, 'claimValue')
       return {
@@ -68,33 +73,11 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
                   currentUser={this.props.currentUser}
                   signClaim={() => this.handleSignClaim(claims[0])}
                   saveClaimsLocally={this.props.saveClaimsLocally}
-                  navigate={this.props.navigate}
-                  setGroupClaimsBy={this.props.setGroupClaimsBy}
                   />)}
               </RX.View>
             </RX.View>)}
 
           </RX.View>
-
-          <CallToAction
-            type={CallToAction.type.Main}
-            title='New Claim'
-            onPress={() => this.props.navigate('ContactForm')}
-          />
-
-          {this.props.claims && this.props.claims.length > 0 && <CallToAction
-            type={CallToAction.type.Main}
-            title='Export to file'
-            onPress={() => FileSaver.save(this.props.claims[0].subject.name + '-claims.json',
-              JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}),
-            )}
-          />}
-
-          {this.props.claims && this.props.claims.length > 0 && <CallToAction
-            type={CallToAction.type.Main}
-            title='Save locally'
-            onPress={() => this.props.saveClaimsLocally(this.props.claims.map(claim => claim.jwt))}
-          />}
 
         </ScrollView>
       </RX.View>
@@ -108,8 +91,6 @@ interface GroupItemProps extends RX.CommonProps {
   signClaim: () => void
   currentUser?: User,
   saveClaimsLocally?: (jwts: string[]) => void
-  navigate?: (routeName: string) => void
-  setGroupClaimsBy?: (options: any) => void
 }
 interface GroupItemState {
   showActions: boolean
@@ -132,21 +113,18 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
   }
 
   render() {
-    // this.getGroupedClaims()
-    const numberOfUniqSigners = keys(countBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)).length
-    const claimsBySigner = groupBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)
-    const signers: User[] = []
-    forEach(claimsBySigner, (claims: VerifiableClaim[]) => {
-      signers.push(claims[0].issuer)
-    })
+
     const claimsBySource = groupBy(this.props.claims, (claim: VerifiableClaim) => claim.source.account.name)
     const sources: any[] = []
     forEach(claimsBySource, (claims: VerifiableClaim[]) => {
-      sources.push(claims[0].source)
+      sources.push({
+        source: claims[0].source,
+        claims: uniqBy(claims, (claim: VerifiableClaim) => claim.iss),
+      })
     })
+
     const numberOfSignings = keys(countBy(this.props.claims, (claim: VerifiableClaim) => claim.jwt)).length
     const claimType = this.props.claims[0].claimType
-    const claimValue = this.props.claims[0].claimValue
     return (
       <RX.View style={Theme.Styles.contact.groupListItem}>
         {claimType === 'Avatar' && <RX.View style={Theme.Styles.contact.groupListItemAvatar}>
@@ -154,41 +132,84 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
         </RX.View>}
         {claimType !== 'Avatar' && <RX.Text style={Theme.Styles.contact.groupListItemTitle}>{this.props.title}</RX.Text>}
 
-        <RX.Button
-          onPress={() => {
-            this.props.setGroupClaimsBy({
-              claimType,
-              claimValue,
-            })
-            this.props.navigate('ContactClaimGroups')
-          }}
-          style={Theme.Styles.contact.detailsInfoRow}>
+          {map(sources, (source: any, key: any) => <RX.View
+            key={key}>
+            <RX.View style={Theme.Styles.contact.groupedClaimSourceTitleRow}>
 
-          <RX.View>
-            <RX.View style={[Theme.Styles.row, {alignItems: 'center'}]}>
-              {map(sources, (source: any, key: any) => <AccountIcon
-                  key={key}
-                  account={source.account}
-                  type={AccountIcon.type.Custom} size={20}/>)}
-              <RX.Text style={Theme.Styles.contact.info}>Sources</RX.Text>
+              <AccountIcon
+                key={key}
+                account={source.source.account}
+                type={AccountIcon.type.Custom}
+                size={46}
+                />
+              <RX.View style={{marginLeft: Theme.Metrics.smallMargin}}>
+                <RX.Text style={Theme.Styles.contact.groupedClaimSourceTitle}>{source.source.account.name}</RX.Text>
+                <RX.Text style={Theme.Styles.contact.info}>{source.claims.length} signers</RX.Text>
+
+              </RX.View>
             </RX.View>
-            <RX.View style={[Theme.Styles.row, {marginTop: 10, alignItems: 'center'}]}>
-              {map(signers, (issuer: User) => <AccountIcon
-                  key={issuer.did}
-                  account={issuer}
-                  type={AccountIcon.type.Custom} size={20}/>)}
-                <RX.Text style={Theme.Styles.contact.info}>Signers</RX.Text>
+
+            <RX.View style={{flex: 1, flexDirection: 'row', marginBottom: 30}}>
+            <RX.View style={{flex: 1}} />
+            <RX.View style={{flex: 3}} >
+              {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.View
+                key={claim.issuer.did}
+                style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
+
+                <AccountIcon
+                  account={claim.issuer}
+                  type={AccountIcon.type.Custom} size={46}/>
+
+                <RX.View style={{
+                  flex: 1, height: 46, alignItems: 'center', justifyContent: 'center'}}>
+                  <RX.View style={{
+                    position: 'absolute', left: 0, right: 0, top: 24, height: 1, backgroundColor: Theme.Colors.borderColor,
+                  }} />
+                  <Icons.ChevronRightIcon />
+                </RX.View>
+
+                {index === 0 && <AccountIcon
+                  account={claim.subject}
+                  type={AccountIcon.type.Custom} size={46}/>}
+
+                {index !== 0 && <RX.View style={{height: 66, width: 46}}>
+                  <RX.View style={{
+                    height: 45,
+                    width: 23,
+                    borderBottomRightRadius: 23,
+                    borderColor: Theme.Colors.borderColor,
+                    borderBottomWidth: Theme.Metrics.borderWidth,
+                    borderRightWidth: Theme.Metrics.borderWidth,
+                    borderLeftWidth: 0,
+                    borderTopWidth: 0,
+                    }}/>
+                    {index !== source.claims.length - 1 && <RX.View style={{
+                      position: 'absolute',
+                      height: 66,
+                      width: Theme.Metrics.borderWidth,
+                      top: 0,
+                      bottom: 0,
+                      left: 22,
+                      backgroundColor: Theme.Colors.borderColor,
+                      }}/>}
+                </RX.View>}
+
+              </RX.View>)}
+              </RX.View>
+              <RX.View style={{flex: 1}} />
+
             </RX.View>
-          </RX.View>
 
-          <RX.View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}
-          >
-            <Icons.ChevronRightIcon />
-          </RX.View>
+          </RX.View>)}
 
-        </RX.Button>
-
-        {!this.state.showActions && <RX.View style={[Theme.Styles.row, {alignItems: 'center', justifyContent: 'space-between'}]}>
+        {!this.state.showActions && <RX.View style={[Theme.Styles.row, {
+          alignItems: 'center', justifyContent: 'space-between', borderColor: Theme.Colors.borderColor,
+          borderTopWidth: Theme.Metrics.borderWidth,
+          borderBottomWidth: 0,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          paddingTop: 15,
+        }]}>
 
           <RX.Button
             style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}
@@ -239,6 +260,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     claims: Selectors.Contacts.getSelectedContactClaims(state),
     selectedContact: Selectors.Contacts.getSelectedContact(state),
+    groupClaimsBy: Selectors.Contacts.getGroupClaimsBy(state),
     uiTraits: state.app.uiTraits,
   }
 }
@@ -249,7 +271,6 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setNewClaimType: (type: string) => dispatch(Actions.Contacts.setNewClaimType(type)),
     setNewClaimValue: (value: string) => dispatch(Actions.Contacts.setNewClaimValue(value)),
     saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
-    setGroupClaimsBy: (options: any) => dispatch(Actions.Contacts.setGroupClaimsBy(options)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ClaimActionsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactClaimGroupsScreen)

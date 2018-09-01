@@ -121,10 +121,9 @@ class WebOfTrust extends RX.Component <Props, State> {
     return {nodes, edges}
   }
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return this.props.selectedContact !== nextProps.selectedContact || this.props.width !== nextProps.width
+    return this.props.selectedContact !== nextProps.selectedContact || this.state.width !== nextState.width
   }
   render() {
-    console.log('render')
     const l: (any) = line()
     .x(function(d: any) { return d.x })
     .y(function(d: any) { return d.y })

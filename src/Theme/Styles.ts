@@ -724,6 +724,21 @@ const Styles = {
       fontSize: Fonts.size.micro,
       marginLeft: Metrics.smallMargin,
     }),
+    groupedClaimSourceTitle: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      marginBottom: Metrics.smallMargin,
+      marginLeft: Metrics.smallMargin,
+    }),
+    groupedClaimSourceTitleRow: RX.Styles.createViewStyle({
+      flexDirection: 'row',
+      borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
     detailsInfoRow: RX.Styles.createViewStyle({
       flexDirection: 'row',
       justifyContent: 'space-between',

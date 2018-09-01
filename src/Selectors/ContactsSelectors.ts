@@ -11,6 +11,7 @@ interface DidToUserMap {
   [did: string]: User
 }
 
+export const getGroupClaimsBy = (state: CombinedState) => state.contacts.groupClaimsBy
 export const getRoomForSharing = (state: CombinedState) => state.contacts.roomForSharing
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
 export const getAllClaims = (state: CombinedState) => state.contacts.claims.concat(state.contacts.matrixClaims)

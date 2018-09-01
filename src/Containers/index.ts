@@ -16,6 +16,7 @@ import ContactActionsScreen from './ContactActionsScreen'
 import ContactFormScreen from './ContactFormScreen'
 import ContactNewFormScreen from './ContactNewFormScreen'
 import ContactSelectionScreen from './ContactSelectionScreen'
+import ContactClaimGroupsScreen from './ContactClaimGroupsScreen'
 import ClaimListBox from './ClaimListBox'
 import FeedItem from './FeedItem'
 import FeedScreen from './FeedScreen'
@@ -55,6 +56,7 @@ export {
   ContactFormScreen,
   ContactNewFormScreen,
   ContactSelectionScreen,
+  ContactClaimGroupsScreen,
   CompactRequestMainScreen,
   CompactRoomsMainScreen,
   CompactSendMainScreen,
