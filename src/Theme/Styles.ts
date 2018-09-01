@@ -116,14 +116,16 @@ const Styles = {
   listItemTitle: RX.Styles.createTextStyle({
     color: Colors.light,
     fontSize: Fonts.size.medium,
-    fontWeight: '100',
+    fontWeight: '300',
     marginBottom: Metrics.smallMargin,
   }),
   listItemAmount: RX.Styles.createTextStyle({
+    fontWeight: '300',
     color: Colors.light,
     fontSize: Fonts.size.large,
   }),
   listItemSubTitle: RX.Styles.createTextStyle({
+    fontWeight: '100',
     color: Colors.info,
     fontSize: Fonts.size.small,
   }),
@@ -145,6 +147,7 @@ const Styles = {
     margin: Metrics.smallMargin,
   }),
   buttonLabel: RX.Styles.createTextStyle({
+    fontWeight: '300',
     color: Colors.buttonLabel,
     fontSize: Fonts.size.medium,
     flexDirection: 'column',
@@ -160,6 +163,8 @@ const Styles = {
   }),
   buttonSecondary: RX.Styles.createButtonStyle({
     backgroundColor: Colors.transparent,
+    borderWidth: Metrics.borderWidth,
+    borderColor: Colors.brand,
   }),
   buttonLabelSecondary: RX.Styles.createTextStyle({
     color: Colors.brand,
@@ -414,7 +419,7 @@ const Styles = {
       borderColor: Colors.light,
       borderWidth: Metrics.borderWidth,
       overflow: 'hidden',
-      height: Metrics.buttonHeight - 10,
+      height: Metrics.buttonHeight - 12,
       margin: Metrics.baseMargin,
     }),
     button: RX.Styles.createButtonStyle({
@@ -423,7 +428,8 @@ const Styles = {
     }),
     label: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.medium - 4,
+      fontWeight: '300',
+      fontSize: Fonts.size.medium,
       alignSelf: 'center',
     }),
     selectedButton: RX.Styles.createButtonStyle({
@@ -431,8 +437,9 @@ const Styles = {
       flex: 1,
     }),
     selectedLabel: RX.Styles.createTextStyle({
+      fontWeight: '300',
       color: Colors.background,
-      fontSize: Fonts.size.medium - 4,
+      fontSize: Fonts.size.medium,
       alignSelf: 'center',
     }),
   },
@@ -562,7 +569,7 @@ const Styles = {
     }),
     warning: RX.Styles.createTextStyle({
       color: Colors.info,
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.small,
       marginBottom: Metrics.baseMargin,
       textAlign: 'center',
     }),
@@ -698,7 +705,7 @@ const Styles = {
     groupTitle: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
-      fontWeight: '100',
+      fontWeight: '300',
       textAlign: 'center',
       marginTop: Metrics.baseMargin,
       marginBottom: Metrics.smallMargin,
@@ -721,7 +728,7 @@ const Styles = {
     }),
     info: RX.Styles.createTextStyle({
       color: Colors.info,
-      fontSize: Fonts.size.micro,
+      fontSize: Fonts.size.small,
       marginLeft: Metrics.smallMargin,
     }),
     addressInfo: RX.Styles.createTextStyle({
@@ -761,7 +768,7 @@ const Styles = {
     }),
     detailsLabel: RX.Styles.createTextStyle({
       color: Colors.brand,
-      fontSize: Fonts.size.micro,
+      fontSize: Fonts.size.small,
       marginLeft: Metrics.smallMargin,
     }),
     detailsSeparator: RX.Styles.createTextStyle({

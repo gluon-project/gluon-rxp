@@ -8,7 +8,7 @@ const colors = {
   brand: '#BD10E0',
   brandBackGround: 'rgba(189, 16, 224, 0.3)',
   cta: '#BD10E0',
-  info: 'rgba(255,255,255,0.4)',
+  info: 'rgba(255,255,255,0.5)',
   tint: '#BD10E0',
   light: 'white',
   buttonLabel: 'white',

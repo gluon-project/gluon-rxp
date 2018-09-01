@@ -28,7 +28,7 @@ const styles = {
   }),
   buttonLabel: RX.Styles.createTextStyle({
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: 37,
     color: 'white',
     fontWeight: '100',
   }),

@@ -13,9 +13,9 @@ const size = {
   h4: 26,
   h5: 22,
   h6: 19,
-  large: 30,
-  medium: 18,
-  small: 14,
+  large: 28,
+  medium: 16,
+  small: 12,
   micro: 11,
   sectionTitle: 13,
 
