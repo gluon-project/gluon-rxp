@@ -98,7 +98,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               selectedIndex={this.state.isMint ? 0 : 1}
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
-            <Graphs.BondingCurveGraph
+            {/* <Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveTokenBalance.token.decimals}
               xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
@@ -109,7 +109,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               exponent={this.props.balance.token.exponent}
               totalSupply={this.props.balance.token.totalSupply}
               numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
-              />
+              /> */}
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput
                 label={`Reserve pool`}

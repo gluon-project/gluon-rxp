@@ -74,7 +74,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         type: this.state.type,
-        reserveToken: this.props.reserveToken.address,
+        // reserveToken: this.props.reserveToken.address,
         exponent: parseFloat(this.state.exponent),
       })
     } else {
@@ -85,7 +85,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
         networkId: this.state.network,
         decimals: this.state.decimals,
         exponent: parseFloat(this.state.exponent),
-        reserveToken: Config.tokens.gluonAddress,
+        // reserveToken: Config.tokens.gluonAddress,
       })
     }
   }
@@ -137,8 +137,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
             selectedIndex={this.state.isNew ? 0 : 1}
             handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
             />
-          {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>}
-          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
+          {/* {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>} */}
+          {/* {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
             {this.props.availableTokens.map((token, index) => <ListItem
               key={index}
               account={token}
@@ -148,7 +148,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               type={ListItem.type.Secondary}
               onPress={() => this.addExisting(token)}
             />)}
-          </RX.View>}
+          </RX.View>} */}
 
           {!this.state.isNew && <TextInput
             label='Address'
