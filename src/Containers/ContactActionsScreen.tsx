@@ -72,20 +72,6 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <RX.View style={Theme.Styles.scrollContainer}>
-          {this.props.selectedContactAcount && <RX.View style={{flex: 1, justifyContent: 'center',
-          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
-            <RX.Button onPress={this.handleRequest} style={{flex: 1, justifyContent: 'center',
-          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
-              <AccountIcon account={{...this.props.selectedContactAcount, avatar: null}}
-              type={AccountIconType.Large}/>
-              <RX.Text style={[Theme.Styles.contact.addressInfo, {marginTop: Theme.Metrics.smallMargin}]}>
-                {Utils.address.short(this.props.selectedContactAcount.address)}
-              </RX.Text>
-              <RX.Text style={[Theme.Styles.contact.detailsLabel, {marginTop: Theme.Metrics.smallMargin}]}>
-                Copy address
-              </RX.Text>
-            </RX.Button>
-          </RX.View>}
 
             {map(this.getGroupedClaims(), (group: any, key: any) => <RX.View key={key} style={Theme.Styles.contact.group}>
               <RX.Text style={Theme.Styles.contact.groupTitle}>{group.title}</RX.Text>
@@ -103,6 +89,21 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
                   />)}
               </RX.View>
             </RX.View>)}
+
+          {this.props.selectedContactAcount && <RX.View style={{flex: 1, justifyContent: 'center',
+          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
+            <RX.Button onPress={this.handleRequest} style={{flex: 1, justifyContent: 'center',
+          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
+              <AccountIcon account={{...this.props.selectedContactAcount, avatar: null}}
+              type={AccountIconType.Large}/>
+              <RX.Text style={[Theme.Styles.contact.addressInfo, {marginTop: Theme.Metrics.smallMargin}]}>
+                {Utils.address.short(this.props.selectedContactAcount.address)}
+              </RX.Text>
+              <RX.Text style={[Theme.Styles.contact.detailsLabel, {marginTop: Theme.Metrics.smallMargin}]}>
+                Copy address
+              </RX.Text>
+            </RX.Button>
+          </RX.View>}
 
           </RX.View>
 
