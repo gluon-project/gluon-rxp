@@ -7,7 +7,7 @@ import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
 import * as moment from 'moment'
 import { FileSaver } from '../Services'
-import { map, forEach, groupBy, isNumber, keys, countBy, orderBy } from 'lodash'
+import { map, forEach, groupBy, isNumber, keys, countBy, orderBy, uniqBy } from 'lodash'
 import utils from '../Utils'
 
 interface Props extends RX.CommonProps {
@@ -77,6 +77,13 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
             title={this.state.showDetails ? 'Hide details' : 'Show details'}
             onPress={() => this.setState({showDetails: !this.state.showDetails})}
           /> */}
+          {this.props.claims && this.props.claims.length > 0 && <CallToAction
+            type={CallToAction.type.Main}
+            title='Export to file'
+            onPress={() => FileSaver.save(this.props.claims[0].subject.name + '-claims.json',
+              JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}),
+            )}
+          />}
           <CallToAction
             type={CallToAction.type.Main}
             title='New Claim'
@@ -189,8 +196,8 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
           <CallToAction
             type={CallToAction.type.Main}
             title='Export to file'
-            onPress={() => FileSaver.save('claims.json',
-              JSON.stringify({claims: this.props.claims.map(claim => claim.jwt)}),
+            onPress={() => FileSaver.save(this.props.claims[0].subject.name + '-' + this.props.claims[0].claimType + '-claims.json',
+              JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}),
             )}
           />
           <CallToAction
