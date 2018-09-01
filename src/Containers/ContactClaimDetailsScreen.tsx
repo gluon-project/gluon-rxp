@@ -133,6 +133,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
 
     const numberOfSignings = keys(countBy(this.props.claims, (claim: VerifiableClaim) => claim.jwt)).length
     const claimType = this.props.claims[0].claimType
+
     return (
       <RX.View style={Theme.Styles.contact.groupListItem}>
         {claimType === 'Avatar' && <RX.View style={Theme.Styles.contact.groupListItemAvatar}>
@@ -141,27 +142,37 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
         {claimType !== 'Avatar' && <RX.Text style={Theme.Styles.contact.groupListItemTitle}>{this.props.title}</RX.Text>}
 
           {map(sources, (source: any, key: any) => <RX.View
+            style={{marginBottom: Theme.Metrics.baseMargin}}
             key={key}>
-            <RX.View style={Theme.Styles.contact.groupedClaimSourceTitleRow}>
+            {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.View key={index}
+            style={Theme.Styles.contact.groupedClaimDerailsRow}>
 
-              <AccountIcon
-                key={key}
-                account={source.source.account}
-                type={AccountIcon.type.Custom}
-                size={46}
-                />
-              <RX.View style={{marginLeft: Theme.Metrics.smallMargin}}>
-                <RX.Text style={Theme.Styles.contact.groupedClaimSourceTitle}>{source.source.account.name}</RX.Text>
-                <RX.Text style={Theme.Styles.contact.info}>{source.claims.length} signers</RX.Text>
-
+              <RX.Text style={Theme.Styles.contact.info}>Issued: {moment.unix(claim.iat).calendar()}</RX.Text>
+              {claim.iat && <RX.Text style={Theme.Styles.contact.info}>Expires: {moment.unix(claim.exp).calendar()}</RX.Text>}
+              <RX.View style={Theme.Styles.row}>
+              <RX.Text style={Theme.Styles.contact.info}>Source: </RX.Text>
+                <AccountIcon
+                  key={key}
+                  account={claim.source.account}
+                  type={AccountIcon.type.Custom}
+                  size={12}
+                  />
+                <RX.Text style={Theme.Styles.contact.info}>{claim.source.account.name}</RX.Text>
               </RX.View>
-            </RX.View>
+            </RX.View>)}
 
-            <RX.View style={{flex: 1, flexDirection: 'row', marginBottom: 30}}>
+            <RX.View style={{flex: 1, flexDirection: 'row', marginBottom: 15,
+              borderColor: Theme.Colors.borderColor,
+              borderTopWidth: Theme.Metrics.borderWidth,
+              borderBottomWidth: 0,
+              borderLeftWidth: 0,
+              borderRightWidth: 0,
+            }}>
             <RX.View style={{flex: 1}} />
             <RX.View style={{flex: 3}} >
-              {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.View
+              {map([source.claims[0]], (claim: VerifiableClaim, index: number) => <RX.View
                 key={`${claim.issuer.did}${index}`}
+              ><RX.View
                 style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
 
                 <AccountIcon
@@ -180,33 +191,24 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
                   account={claim.subject}
                   type={AccountIcon.type.Custom} size={46}/>}
 
-                {index !== 0 && <RX.View style={{height: 66, width: 46}}>
-                  <RX.View style={{
-                    height: 45,
-                    width: 23,
-                    borderBottomRightRadius: 23,
-                    borderColor: Theme.Colors.borderColor,
-                    borderBottomWidth: Theme.Metrics.borderWidth,
-                    borderRightWidth: Theme.Metrics.borderWidth,
-                    borderLeftWidth: 0,
-                    borderTopWidth: 0,
-                    }}/>
-                    {index !== source.claims.length - 1 && <RX.View style={{
-                      position: 'absolute',
-                      height: 66,
-                      width: Theme.Metrics.borderWidth,
-                      top: 0,
-                      bottom: 0,
-                      left: 22,
-                      backgroundColor: Theme.Colors.borderColor,
-                      }}/>}
-                </RX.View>}
+              </RX.View>
 
               </RX.View>)}
               </RX.View>
               <RX.View style={{flex: 1}} />
 
             </RX.View>
+            <RX.View style={Theme.Styles.row}>
+                <RX.View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <RX.Text style={{color: Theme.Colors.light}}>{source.claims[0].issuer.name}</RX.Text>
+                  <RX.Text style={{color: Theme.Colors.info}}>{source.claims[0].issuer.uniqueIssuers.length} signers</RX.Text>
+                </RX.View>
+                <RX.View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <RX.Text style={{color: Theme.Colors.light}}>{source.claims[0].subject.name}</RX.Text>
+                  <RX.Text style={{color: Theme.Colors.info}}>{source.claims[0].subject.uniqueIssuers.length} signers</RX.Text>
+                </RX.View>
+
+              </RX.View>
 
           </RX.View>)}
 

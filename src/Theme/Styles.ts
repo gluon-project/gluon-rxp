@@ -739,6 +739,12 @@ const Styles = {
       paddingBottom: Metrics.baseMargin,
       marginBottom: Metrics.baseMargin,
     }),
+    groupedClaimDerailsRow: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
+    }),
     detailsInfoRow: RX.Styles.createViewStyle({
       flexDirection: 'row',
       justifyContent: 'space-between',
