@@ -2,7 +2,7 @@ import {
   createAction,
   createReducer,
 } from 'redux-act'
-import { remove } from 'lodash'
+import { remove, uniqBy } from 'lodash'
 import { resetToInitialState } from './AppReducer'
 import { logout } from './UserReducer'
 import Config from '../Config'
@@ -66,7 +66,15 @@ export const addClaim = createAction('Add claim')
 reducer.on(addClaim, (state: ContactsState, payload?: VerifiableClaim) => {
   return {
     ...state,
-    claims: [ ...state.claims, payload ],
+    claims: uniqBy([ ...state.claims, payload ], (claim: VerifiableClaim) => claim.jwt),
+  }
+})
+
+export const addClaims = createAction('Add claims')
+reducer.on(addClaims, (state: ContactsState, payload?: VerifiableClaim[]) => {
+  return {
+    ...state,
+    claims: uniqBy([ ...state.claims, ...payload ], (claim: VerifiableClaim) => claim.jwt),
   }
 })
 
@@ -131,3 +139,4 @@ export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous cla
 export const signClaimAndShareInRoom = createAction('Sign claim and share in room')
 export const loadMatrixClaims = createAction('Load matrix claims')
 export const loadAndAppendMatrixClaims = createAction('Load matrix and append claims')
+export const saveClaimsLocally = createAction('Save claims localy')

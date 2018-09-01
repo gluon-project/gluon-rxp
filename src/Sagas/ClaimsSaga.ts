@@ -113,6 +113,38 @@ export function* handleSignedClaim(jwt: string): SagaIterator {
 
 }
 
+const decodeMultipleJWT = (jwts: string[]) => {
+  return jwts.map(jwt => {
+    return {
+      jwt,
+      decoded: decodeJWT(jwt),
+    }
+  })
+    .map(claim => {
+      return {
+        ...claim.decoded.payload,
+        source: {
+          type: 'local',
+        },
+        jwt: claim.jwt,
+      }
+    })
+}
+
+export function* watchSaveClaimsLocally(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Contacts.saveClaimsLocally)
+    try {
+      const decodedClaims = yield call(decodeMultipleJWT, action.payload)
+      yield put(Actions.Contacts.addClaims(decodedClaims))
+
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+  }
+
+}
+
 export function* loadAndAppendMatrixClaims(action: any): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.LoadMatrixClaims}))
 

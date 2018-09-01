@@ -4,6 +4,7 @@ import Ipfs from './Ipfs'
 import * as Matrix from './Matrix'
 import uPort from './uPort'
 import Web3 from './Web3'
+import * as FileSaver from './FileSaver'
 
 export {
   CodePush,
@@ -12,4 +13,5 @@ export {
   Ipfs,
   uPort,
   Web3,
+  FileSaver,
 }

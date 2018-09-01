@@ -728,13 +728,22 @@ const Styles = {
       flexDirection: 'row',
       justifyContent: 'space-between',
       borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
       borderColor: Colors.borderColor,
       paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
     }),
     detailsLabel: RX.Styles.createTextStyle({
       color: Colors.brand,
       fontSize: Fonts.size.micro,
       marginLeft: Metrics.smallMargin,
+    }),
+    detailsSeparator: RX.Styles.createTextStyle({
+      color: Colors.borderColor,
+      fontSize: Fonts.size.small,
+      marginLeft: Metrics.smallMargin,
+      marginRight: Metrics.smallMargin,
     }),
     detailsWrapper: RX.Styles.createViewStyle({
       borderTopWidth: Metrics.borderWidth,

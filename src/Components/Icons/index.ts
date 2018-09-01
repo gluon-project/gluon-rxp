@@ -16,6 +16,7 @@ import BackSpaceIcon from './BackSpaceIcon'
 import WalletIcon from './WalletIcon'
 import TransfersIcon from './TransfersIcon'
 import LogoIcon from './LogoIcon'
+import MoreIcon from './MoreIcon'
 
 export default {
   RequestIcon,
@@ -36,4 +37,5 @@ export default {
   WalletIcon,
   TransfersIcon,
   LogoIcon,
+  MoreIcon,
 }

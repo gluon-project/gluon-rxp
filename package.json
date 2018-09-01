@@ -75,6 +75,7 @@
     "ethjs": "^0.3.1",
     "ethjs-query": "^0.3.2",
     "express": "^4.15.2",
+    "file-saver": "^1.3.8",
     "jsontokens": "^0.7.8",
     "localforage": "^1.5.0",
     "matrix-js-sdk": "^0.10.7",

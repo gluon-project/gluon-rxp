@@ -23,6 +23,7 @@ export default function* root() {
   yield fork(ClaimsSaga.watchSignClaimAndShareInRoom)
   yield fork(ClaimsSaga.watchLoadMatrixClaims)
   yield fork(ClaimsSaga.watchLoadAndAppendMatrixClaims)
+  yield fork(ClaimsSaga.watchSaveClaimsLocally)
   yield fork(MatrixSaga.watchCreateRoom)
   yield fork(MatrixSaga.watchRequest)
   yield fork(MatrixSaga.watchStartRegister)
