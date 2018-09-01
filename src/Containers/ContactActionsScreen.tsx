@@ -72,11 +72,13 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
             </RX.View>)}
 
           </RX.View>
-          {/* <CallToAction
-            type={CallToAction.type.Secondary}
-            title={this.state.showDetails ? 'Hide details' : 'Show details'}
-            onPress={() => this.setState({showDetails: !this.state.showDetails})}
-          /> */}
+
+          <CallToAction
+            type={CallToAction.type.Main}
+            title='New Claim'
+            onPress={() => this.props.navigate('ContactForm')}
+          />
+
           {this.props.claims && this.props.claims.length > 0 && <CallToAction
             type={CallToAction.type.Main}
             title='Export to file'
@@ -84,11 +86,13 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
               JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}),
             )}
           />}
-          <CallToAction
+
+          {this.props.claims && this.props.claims.length > 0 && <CallToAction
             type={CallToAction.type.Main}
-            title='New Claim'
-            onPress={() => this.props.navigate('ContactForm')}
-          />
+            title='Save locally'
+            onPress={() => this.props.saveClaimsLocally(this.props.claims.map(claim => claim.jwt))}
+          />}
+
         </ScrollView>
       </RX.View>
     )
