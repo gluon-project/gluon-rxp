@@ -5,10 +5,13 @@ import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
+import * as Enums from '../Enums'
+import Utils from '../Utils'
 import * as moment from 'moment'
 import { FileSaver } from '../Services'
-import { map, forEach, groupBy, isNumber, keys, countBy, orderBy, uniqBy } from 'lodash'
+import { map, forEach, groupBy, isNumber, keys, countBy, orderBy, uniqBy, without } from 'lodash'
 import utils from '../Utils'
+import { AccountIconType } from '../Components/AccountIcon'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -21,6 +24,8 @@ interface Props extends RX.CommonProps {
   currentUser?: User,
   saveClaimsLocally?: (jwts: string[]) => void
   setGroupClaimsBy?: (options: any) => void
+  selectedContactAcount?: User,
+  setModalMessage?: (config: ModalMessageConfig) => void
 }
 
 class ClaimActionsScreen extends RX.Component<Props, null> {
@@ -30,6 +35,7 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
 
     this.getGroupedClaims = this.getGroupedClaims.bind(this)
     this.handleSignClaim = this.handleSignClaim.bind(this)
+    this.handleRequest = this.handleRequest.bind(this)
   }
 
   getGroupedClaims() {
@@ -44,6 +50,16 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
     })
     return result
   }
+  handleRequest() {
+
+    this.props.setModalMessage({
+      type: Enums.MessageType.Success,
+      title: 'Request',
+      message: 'Copy address',
+      inputText: this.props.selectedContactAcount.address,
+      ctaTitle: 'Close',
+    } as ModalMessageConfig)
+  }
 
   handleSignClaim(claim: VerifiableClaim) {
     this.props.setNewClaimType(claim.claimType)
@@ -56,6 +72,20 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
           <RX.View style={Theme.Styles.scrollContainer}>
+          {this.props.selectedContactAcount && <RX.View style={{flex: 1, justifyContent: 'center',
+          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
+            <RX.Button onPress={this.handleRequest} style={{flex: 1, justifyContent: 'center',
+          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
+              <AccountIcon account={{...this.props.selectedContactAcount, avatar: null}}
+              type={AccountIconType.Large}/>
+              <RX.Text style={[Theme.Styles.contact.addressInfo, {marginTop: Theme.Metrics.smallMargin}]}>
+                {Utils.address.short(this.props.selectedContactAcount.address)}
+              </RX.Text>
+              <RX.Text style={[Theme.Styles.contact.detailsLabel, {marginTop: Theme.Metrics.smallMargin}]}>
+                Copy address
+              </RX.Text>
+            </RX.Button>
+          </RX.View>}
 
             {map(this.getGroupedClaims(), (group: any, key: any) => <RX.View key={key} style={Theme.Styles.contact.group}>
               <RX.Text style={Theme.Styles.contact.groupTitle}>{group.title}</RX.Text>
@@ -235,10 +265,12 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
 }
 
 const mapStateToProps = (state: CombinedState): Props => {
+  const selectedContact = Selectors.Contacts.getSelectedContact(state)
   return {
     currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
     claims: Selectors.Contacts.getSelectedContactClaims(state),
-    selectedContact: Selectors.Contacts.getSelectedContact(state),
+    selectedContact,
+    selectedContactAcount: Selectors.Contacts.getAccountByDid(state, selectedContact),
     uiTraits: state.app.uiTraits,
   }
 }
@@ -250,6 +282,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setNewClaimValue: (value: string) => dispatch(Actions.Contacts.setNewClaimValue(value)),
     saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
     setGroupClaimsBy: (options: any) => dispatch(Actions.Contacts.setGroupClaimsBy(options)),
+    setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ClaimActionsScreen)

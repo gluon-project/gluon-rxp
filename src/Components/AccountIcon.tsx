@@ -38,7 +38,7 @@ class AccountIcon extends RX.Component<Props, null> {
         break
       case AccountIconType.Large:
         style = Theme.Styles.accountIconLarge
-        size = 100
+        size = 84
         break
       case AccountIconType.Custom:
         style = [{

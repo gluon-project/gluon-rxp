@@ -273,9 +273,9 @@ const Styles = {
     overflow: 'hidden',
   }),
   accountIconLarge: RX.Styles.createImageStyle({
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 84,
+    height: 84,
+    borderRadius: 42,
     marginBottom: Metrics.baseMargin,
     overflow: 'hidden',
   }),
@@ -723,6 +723,10 @@ const Styles = {
       color: Colors.info,
       fontSize: Fonts.size.micro,
       marginLeft: Metrics.smallMargin,
+    }),
+    addressInfo: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
     }),
     groupedClaimSourceTitle: RX.Styles.createTextStyle({
       color: Colors.light,
