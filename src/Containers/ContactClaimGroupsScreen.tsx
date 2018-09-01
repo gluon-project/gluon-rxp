@@ -203,7 +203,8 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
           </RX.View>)}
 
         {!this.state.showActions && <RX.View style={[Theme.Styles.row, {
-          alignItems: 'center', justifyContent: 'space-between', borderColor: Theme.Colors.borderColor,
+          alignItems: 'center', justifyContent: 'space-between',
+          borderColor: Theme.Colors.borderColor,
           borderTopWidth: Theme.Metrics.borderWidth,
           borderBottomWidth: 0,
           borderLeftWidth: 0,
@@ -225,7 +226,14 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
           </RX.Button>
 
         </RX.View>}
-        {this.state.showActions && <RX.View>
+        {this.state.showActions && <RX.View style={{
+          borderColor: Theme.Colors.borderColor,
+          borderTopWidth: Theme.Metrics.borderWidth,
+          borderBottomWidth: 0,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          paddingTop: 15,
+        }}>
           <CallToAction
             account={this.props.currentUser}
             type={CallToAction.type.Main}
