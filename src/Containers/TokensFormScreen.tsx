@@ -168,7 +168,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               />
           </RX.View>
 
-          {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
+          {/* {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveToken.decimals}
               xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
@@ -179,7 +179,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               exponent={parseFloat(this.state.exponent)}
               totalSupply={0}
               numTokens={0}
-              /></RX.View>}
+              /></RX.View>} */}
 
           {this.state.isNew && <TextInput
             label='Exponent'

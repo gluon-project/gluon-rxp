@@ -11,6 +11,13 @@ export interface ContactsState {
   groupClaimsBy: {
     claimType: string,
     claimValue: string,
+    source: {
+      type: string,
+      id: string,
+    },
+    issuer: {
+      did: string,
+    },
   }
   roomForSharing: string,
   newClaimType: string,

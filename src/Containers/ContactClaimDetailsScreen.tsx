@@ -23,6 +23,13 @@ interface Props extends RX.CommonProps {
   groupClaimsBy?: {
     claimType: string,
     claimValue: string,
+    source: {
+      type: string,
+      id: string,
+    },
+    issuer: {
+      did: string,
+    },
   }
 }
 
@@ -38,7 +45,8 @@ class ContactClaimDetailsScreen extends RX.Component<Props, null> {
   getGroupedClaims() {
     let result: any = []
     const claims = filter(this.props.claims, (claim: VerifiableClaim) => claim.claimType === this.props.groupClaimsBy.claimType
-      && claim.claimValue === this.props.groupClaimsBy.claimValue)
+      && claim.claimValue === this.props.groupClaimsBy.claimValue && claim.source.type === this.props.groupClaimsBy.source.type
+      && claim.source.id === this.props.groupClaimsBy.source.id && claim.issuer.did === this.props.groupClaimsBy.issuer.did )
     const grouped = groupBy(orderBy(claims, 'claimType'), 'claimType')
     result = map(grouped, (group, title) => {
       const groupedValues = groupBy(group, 'claimValue')
@@ -119,7 +127,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
     forEach(claimsBySource, (claims: VerifiableClaim[]) => {
       sources.push({
         source: claims[0].source,
-        claims: uniqBy(claims, (claim: VerifiableClaim) => claim.iss),
+        claims, //: uniqBy(claims, (claim: VerifiableClaim) => claim.iss),
       })
     })
 
@@ -153,7 +161,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
             <RX.View style={{flex: 1}} />
             <RX.View style={{flex: 3}} >
               {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.View
-                key={claim.issuer.did}
+                key={`${claim.issuer.did}${index}`}
                 style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
 
                 <AccountIcon

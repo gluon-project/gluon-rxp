@@ -32,6 +32,12 @@ export function* watchStoreReady(): SagaIterator {
   //   web3Provider.setProvider((<any>window).web3.currentProvider)
   // }
   // yield call(Web3.ethSingleton.setProvider, web3Provider)
+
+  const matrixUser = yield select(Selectors.Matrix.getCurrentUser)
+  if (matrixUser) {
+    yield fork(startClient)
+  }
+
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
   yield put(Actions.App.setVersion(deploymentMetaData.version))
 
