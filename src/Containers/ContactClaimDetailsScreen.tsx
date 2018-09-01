@@ -24,10 +24,9 @@ interface Props extends RX.CommonProps {
     claimType: string,
     claimValue: string,
   }
-  setGroupClaimsBy?: (options: any) => void
 }
 
-class ContactClaimGroupsScreen extends RX.Component<Props, null> {
+class ContactClaimDetailsScreen extends RX.Component<Props, null> {
 
   constructor(props: Props) {
     super(props)
@@ -74,8 +73,6 @@ class ContactClaimGroupsScreen extends RX.Component<Props, null> {
                   currentUser={this.props.currentUser}
                   signClaim={() => this.handleSignClaim(claims[0])}
                   saveClaimsLocally={this.props.saveClaimsLocally}
-                  setGroupClaimsBy={this.props.setGroupClaimsBy}
-                  navigate={this.props.navigate}
                   />)}
               </RX.View>
             </RX.View>)}
@@ -94,8 +91,6 @@ interface GroupItemProps extends RX.CommonProps {
   signClaim: () => void
   currentUser?: User,
   saveClaimsLocally?: (jwts: string[]) => void
-  navigate?: (routeName: string) => void
-  setGroupClaimsBy?: (options: any) => void
 }
 interface GroupItemState {
   showActions: boolean
@@ -157,19 +152,9 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
             <RX.View style={{flex: 1, flexDirection: 'row', marginBottom: 30}}>
             <RX.View style={{flex: 1}} />
             <RX.View style={{flex: 3}} >
-              {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.Button
-                style={{padding: 0}}
-                onPress={() => {
-                  this.props.setGroupClaimsBy({
-                    claimType: claim.claimType,
-                    claimValue: claim.claimValue,
-                    source: claim.source,
-                    issuer: claim.issuer,
-                  })
-                  this.props.navigate('ContactClaimDetails')
-                }}
-                key={claim.issuer.did}>
-                <RX.View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
+              {map(source.claims, (claim: VerifiableClaim, index: number) => <RX.View
+                key={claim.issuer.did}
+                style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
 
                 <AccountIcon
                   account={claim.issuer}
@@ -208,8 +193,8 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
                       backgroundColor: Theme.Colors.borderColor,
                       }}/>}
                 </RX.View>}
-                </RX.View>
-              </RX.Button>)}
+
+              </RX.View>)}
               </RX.View>
               <RX.View style={{flex: 1}} />
 
@@ -294,7 +279,6 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setNewClaimType: (type: string) => dispatch(Actions.Contacts.setNewClaimType(type)),
     setNewClaimValue: (value: string) => dispatch(Actions.Contacts.setNewClaimValue(value)),
     saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
-    setGroupClaimsBy: (options: any) => dispatch(Actions.Contacts.setGroupClaimsBy(options)),
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ContactClaimGroupsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactClaimDetailsScreen)

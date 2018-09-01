@@ -87,6 +87,7 @@ const ContactForm = {screen: Screens.ContactFormScreen, navigationOptions: {titl
 const ContactActions = {screen: Screens.ContactActionsScreen, navigationOptions: {title: 'Contact'}}
 const ContactSelection = {screen: Screens.ContactSelectionScreen, navigationOptions: {title: 'Select Contact'}}
 const ContactClaimGroups = {screen: Screens.ContactClaimGroupsScreen, navigationOptions: {title: 'Claims'}}
+const ContactClaimDetails = {screen: Screens.ContactClaimDetailsScreen, navigationOptions: {title: 'Details'}}
 const LoginStack = {screen: Screens.LoginScreen, navigationOptions: {title: 'Login'}}
 const Settings = { screen: Screens.SettingsScreen, navigationOptions: { title: 'Settings' } }
 const More = { screen: Screens.MoreMasterScreen, navigationOptions: { title: 'Settings' } }
@@ -130,7 +131,7 @@ export const WideNavigationConfiguration = {
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
     screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection,
-      ContactClaimGroups, WebOfTrust }, navigationOptions),
+      ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -194,7 +195,7 @@ export const CompactNavigationConfiguration = {
   },
   ContactsTab: {
     screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection,
-      ContactSelection, ContactClaimGroups, WebOfTrust }, navigationOptions),
+      ContactSelection, ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(
