@@ -638,7 +638,8 @@ const Styles = {
     }),
     messageBody: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.small,
+      fontSize: Fonts.size.medium,
+      fontWeight: '300',
       marginBottom: Metrics.baseMargin,
     }),
     inputRow: RX.Styles.createViewStyle({
