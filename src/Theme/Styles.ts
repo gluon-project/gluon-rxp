@@ -887,6 +887,52 @@ const Styles = {
       paddingLeft: Metrics.baseMargin,
     }),
   },
+  box: {
+    requestWrapper: RX.Styles.createViewStyle({
+      justifyContent: 'center',
+      alignItems: 'center',
+    }),
+    button: RX.Styles.createButtonStyle({
+      height: Metrics.buttonHeight,
+      backgroundColor: Colors.brand,
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: Metrics.baseMargin,
+      flexDirection: 'row',
+    }),
+    buttonLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+    }),
+    titleLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      fontWeight: '100',
+      marginBottom: Metrics.smallMargin,
+    }),
+    accountLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      fontWeight: '300',
+      marginBottom: Metrics.smallMargin,
+      textAlign: 'center',
+    }),
+    amountWrapper: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: Metrics.baseMargin,
+      paddingTop: Metrics.baseMargin,
+    }),
+
+    amountLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.large,
+      fontWeight: '300',
+    }),
+  },
 }
 
 export default Styles

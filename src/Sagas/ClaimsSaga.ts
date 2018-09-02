@@ -151,7 +151,6 @@ export function* loadAndAppendMatrixClaims(action: any): SagaIterator {
   try {
     const roomId = action.payload.roomId
     const url = action.payload.url
-    console.log({roomId, url})
     const claims = yield call(loadClaim, url, roomId)
 
     yield put(Actions.Contacts.appendMatrixClaims(claims))

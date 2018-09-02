@@ -87,7 +87,6 @@ class ContactFormScreen extends RX.Component<Props, State> {
   }
 
   render() {
-    console.log(this.props.currentUser)
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
@@ -130,6 +129,13 @@ class ContactFormScreen extends RX.Component<Props, State> {
               title='Phone'
               selected={this.state.selectedType === 'phone'}
               onPress={() => this.selectType('phone')}
+              />
+
+            <ClaimTypeButton
+              icon={Icons.MatrixIcon}
+              title='Matrix'
+              selected={this.state.selectedType === 'matrixId'}
+              onPress={() => this.selectType('matrixId')}
               />
 
             <ClaimTypeButton

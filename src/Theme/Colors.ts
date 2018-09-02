@@ -5,7 +5,7 @@ const colors = {
   tabBarBackground: 'rgb(0,0,0)',
   backgroundSelected: 'rgba(0,0,0,0.5)',
   lightBackground: 'rgba(255,255,255,0.08)',
-  brand: '#BD10E0',
+  brand: 'rgb(189,16,224)',
   brandBackGround: 'rgba(189, 16, 224, 0.3)',
   cta: '#BD10E0',
   info: 'rgba(255,255,255,0.5)',

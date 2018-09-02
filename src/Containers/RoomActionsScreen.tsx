@@ -103,10 +103,14 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                 <RX.View style={[{flex: 1}, !showAuthor && {marginLeft: 50}]}>
                   {showAuthor &&
                   <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>}
+
                   {!isObject(event.content.request) && !isTransaction && !isJsonFile &&
                     <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+
                   {isTransaction && <TransactionBox transactionPreview={event.content.transaction} />}
+
                   {isObject(event.content.request) && <RequestBox roomId={this.props.room.id} transaction={event.content.request} />}
+
                   {isObject(event.content.fileContent) && isObject(event.content.fileContent.claims)
                     && <ClaimListBox encodedClaims={event.content.fileContent.claims} />}
 

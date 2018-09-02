@@ -37,6 +37,7 @@ import PlusIcon from './PlusIcon'
 import SaveIcon from './SaveIcon'
 import SkillIcon from './SkillIcon'
 import TwitterIcon from './TwitterIcon'
+import MatrixIcon from './MatrixIcon'
 
 const iconByName = (name: string) => {
   return TwitterIcon
@@ -88,6 +89,9 @@ class MultiIcon extends RX.Component <Props, null> {
       case 'hashtag':
         Icon = HashTagIcon
         break
+      case 'matrixid':
+        Icon = MatrixIcon
+        break
     }
     return(
       <Icon {...this.props} />
@@ -134,6 +138,7 @@ export default {
   SaveIcon,
   SkillIcon,
   TwitterIcon,
+  MatrixIcon,
 
   MultiIcon,
 }
