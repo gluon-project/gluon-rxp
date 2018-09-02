@@ -105,7 +105,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
                   <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>}
 
                   {!isObject(event.content.request) && !isTransaction && !isJsonFile &&
-                    <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+                    <RX.Text selectable style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
 
                   {isTransaction && <TransactionBox transactionPreview={event.content.transaction} />}
 

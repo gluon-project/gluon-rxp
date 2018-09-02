@@ -898,7 +898,7 @@ const Styles = {
       alignSelf: 'stretch',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: Metrics.baseMargin,
+      // marginTop: Metrics.baseMargin,
       flexDirection: 'row',
     }),
     buttonLabel: RX.Styles.createTextStyle({
@@ -908,7 +908,7 @@ const Styles = {
     titleLabel: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
-      fontWeight: '100',
+      fontWeight: '200',
       marginBottom: Metrics.smallMargin,
     }),
     accountLabel: RX.Styles.createTextStyle({
