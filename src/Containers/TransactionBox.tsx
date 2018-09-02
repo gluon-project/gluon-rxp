@@ -2,7 +2,7 @@ import RX = require('reactxp')
 import { connect } from 'react-redux'
 import * as Theme from '../Theme'
 import { CombinedState } from '../Reducers'
-import { AccountIcon } from '../Components'
+import { AccountIcon, Icons } from '../Components'
 import Actions from '../Reducers/Actions'
 import * as moment from 'moment'
 import * as Selectors from '../Selectors'
@@ -45,46 +45,55 @@ class TransactionBox extends RX.Component<Props, null> {
     //{moment(this.props.transaction.date).fromNow()}
     const transaction = this.props.transaction ? this.props.transaction
       : ( this.props.transactionPreview ? this.props.transactionPreview : null)
+    if (!isObject(transaction) || !isObject(this.props.sender)) {
+      return null
+    }
     return (
       <RX.View style={[{
         backgroundColor: Theme.Colors.lightBackground,
         borderRadius: Theme.Metrics.borderRadius,
-        height: 150,
+        paddingTop: Theme.Metrics.baseMargin,
         }]}>
-        {isObject(transaction) &&  isObject(this.props.sender) && <RX.View style={[Theme.Styles.row, {
+            <RX.View style={Theme.Styles.box.requestWrapper}>
+            <RX.Text style={Theme.Styles.box.titleLabel}>
+                Token Transfer
+            </RX.Text>
+          </RX.View>
+
+        <RX.View style={[Theme.Styles.row, {
           padding: Theme.Metrics.baseMargin,
-          height: 120,
         }]}>
           <RX.View style={{flex: 1}}>
             <RX.Button style={{alignItems: 'center', flex: 1}} onPress={() => this.handleContactPress(this.props.sender)}>
-              <AccountIcon type={AccountIcon.type.Medium} account={this.props.sender} />
-              <RX.Text numberOfLines={2} style={[Theme.Styles.feed.title, {textAlign: 'center'}]}>{this.props.sender.name}</RX.Text>
+              <AccountIcon type={AccountIcon.type.Large} account={this.props.sender} />
+              <RX.Text numberOfLines={2} style={Theme.Styles.box.accountLabel}>{this.props.sender.name}</RX.Text>
             </RX.Button>
           </RX.View>
 
-          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start', flex: 1}}>
-            <RX.Text style={Theme.Styles.feed.subTitle}>
-                Sent
-            </RX.Text>
-
-            {isObject(this.props.token) && isString(transaction.amount) && <RX.Text style={Theme.Styles.feed.amount}>
-                {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
-            </RX.Text>}
-
-            <RX.Text
-              style={Theme.Styles.feed.subTitle}>to</RX.Text>
-
+          <RX.View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Icons.ChevronRightIcon />
           </RX.View>
 
           <RX.View style={{alignItems: 'center', flex: 1}}>
             <RX.Button style={{alignItems: 'center'}} onPress={() => this.handleContactPress(this.props.receiver)}>
-              <AccountIcon type={AccountIcon.type.Medium} account={this.props.receiver} />
-              <RX.Text numberOfLines={2} style={[Theme.Styles.feed.title, {textAlign: 'center'}]}>{this.props.receiver.name}</RX.Text>
+              <AccountIcon type={AccountIcon.type.Large} account={this.props.receiver} />
+              <RX.Text numberOfLines={2} style={Theme.Styles.box.accountLabel}>{this.props.receiver.name}</RX.Text>
             </RX.Button>
           </RX.View>
 
-        </RX.View>}
-        <RX.View style={{backgroundColor: Theme.Colors.backgroundSelected}}>
+        </RX.View>
+
+        <RX.View style={Theme.Styles.box.amountWrapper}>
+
+          {isObject(this.props.token) && isString(transaction.amount) && <RX.Text style={Theme.Styles.box.amountLabel}>
+                {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
+            </RX.Text>}
+
+        </RX.View>
+
+        <RX.View style={[Theme.Styles.box.button, {
+          backgroundColor: this.props.isProcessing ? Theme.Colors.pending : Theme.Colors.success,
+        }]}>
           {this.props.isProcessing === true && <RX.View style={[{
             padding: Theme.Metrics.smallMargin,
             flexDirection: 'row',
@@ -103,7 +112,7 @@ class TransactionBox extends RX.Component<Props, null> {
             }]}>
             <RX.Link
               url={`https://rinkeby.etherscan.io/tx/${transaction.hash}`}
-              style={Theme.Styles.feed.title}>Confirmed</RX.Link>
+              style={Theme.Styles.box.buttonLabel}>Confirmed</RX.Link>
           </RX.View>}
 
         </RX.View>
@@ -115,6 +124,8 @@ class TransactionBox extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState, ownProps: Props): Props => {
   const transaction = Selectors.Transactions.getTransactionByHash(state, ownProps.transactionPreview.hash)
   const lookupData = transaction ? transaction : (ownProps.transactionPreview ? ownProps.transactionPreview : null)
+  // TODO - fix this hack!
+  transaction.amount = transaction.amount ? transaction.amount : ownProps.transactionPreview.amount
   return {
     transaction,
     token: Selectors.Tokens.getTokenByAddress(state, lookupData && lookupData.token),

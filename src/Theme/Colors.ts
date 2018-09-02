@@ -32,6 +32,9 @@ const colors = {
   },
   tabBarIcon: '#C9CACC',
   tabBarButtonSelected: 'transparent',
+  pending: 'rgb(62,14,72)',
+  success: 'rgb(0,37,26)',
+  failed: 'rgb(73,0,0)',
 }
 
 export default colors
