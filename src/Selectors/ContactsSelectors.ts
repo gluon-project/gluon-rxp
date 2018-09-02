@@ -14,7 +14,11 @@ interface DidToUserMap {
 export const getGroupClaimsBy = (state: CombinedState) => state.contacts.groupClaimsBy
 export const getRoomForSharing = (state: CombinedState) => state.contacts.roomForSharing
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
-export const getAllClaims = (state: CombinedState) => state.contacts.claims.concat(state.contacts.matrixClaims)
+export const getMatrixClaims = (state: CombinedState) => state.contacts.matrixClaims
+export const getLocalClaims = (state: CombinedState) => state.contacts.claims
+
+export const getAllClaims = createSelector(getLocalClaims, getMatrixClaims,
+  (localClaims, matrixClaims) => localClaims.concat(matrixClaims))
 
 export const decodeAndExtendClaims = (state: CombinedState, encodedClaims: string[]) => {
   const claims = _.map(encodedClaims, (jwt: string) => {
@@ -81,11 +85,10 @@ export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] =>
   })
   return uniqClaims
 }
-export const getList = (state: CombinedState): User[] => {
+export const getList = createSelector(getAllClaims, (allClaims) => {
+
   const contactsByDid: DidToUserMap = {}
   const contacts: User[] = []
-
-  const allClaims = getAllClaims(state)
 
   _.forEach(allClaims, claim => {
     const keys = _.keys(claim.claim)
@@ -133,7 +136,8 @@ export const getList = (state: CombinedState): User[] => {
   })
 
   return contacts
-}
+})
+
 export const getAccountByAddress = (state: CombinedState, address: string): User => {
   if (!address) {
     return null
