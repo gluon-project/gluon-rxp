@@ -39,7 +39,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
     this.state = {
       claimType: props.newClaimType ? props.newClaimType : 'name',
       claimValue: props.newClaimValue ? props.newClaimValue : '',
-      selectedType: props.newClaimType ? props.newClaimType : 'name',
+      selectedType: props.newClaimType ? props.newClaimType.toLowerCase() : 'name',
       signAnonymously: false,
     }
   }

@@ -642,6 +642,11 @@ const Styles = {
       fontWeight: '300',
       marginBottom: Metrics.baseMargin,
     }),
+    showClaimsLabel: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+      fontWeight: '300',
+    }),
     inputRow: RX.Styles.createViewStyle({
       // height: 60,
       flex: 1,
@@ -720,7 +725,8 @@ const Styles = {
     groupListItemTitle: RX.Styles.createTextStyle({
       color: Colors.light,
       textAlign: 'center',
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.special,
+      fontWeight: '500',
       marginBottom: Metrics.baseMargin,
     }),
     groupListItemAvatar: RX.Styles.createTextStyle({
@@ -888,6 +894,12 @@ const Styles = {
     }),
   },
   box: {
+    wrapper: RX.Styles.createViewStyle({
+      backgroundColor: Colors.lightBackground,
+      borderRadius: Metrics.borderRadius,
+      padding: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
     requestWrapper: RX.Styles.createViewStyle({
       justifyContent: 'center',
       alignItems: 'center',
@@ -911,6 +923,12 @@ const Styles = {
       fontWeight: '200',
       marginBottom: Metrics.smallMargin,
     }),
+    titleLabelInfo: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.medium,
+      fontWeight: '200',
+      marginBottom: Metrics.smallMargin,
+    }),
     accountLabel: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
@@ -929,8 +947,17 @@ const Styles = {
 
     amountLabel: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.large,
-      fontWeight: '300',
+      fontSize: Fonts.size.special,
+      fontWeight: '500',
+    }),
+    footerRow: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.smallMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
     }),
   },
 }

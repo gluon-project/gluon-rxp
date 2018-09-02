@@ -90,8 +90,11 @@ class MultiIcon extends RX.Component <Props, null> {
         Icon = HashTagIcon
         break
       case 'matrixid':
+      case 'matrix':
         Icon = MatrixIcon
         break
+      default:
+        return null
     }
     return(
       <Icon {...this.props} />
