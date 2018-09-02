@@ -138,7 +138,8 @@ const Styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: Metrics.baseMargin,
-    marginTop: Metrics.baseMargin,
+    marginRight: Metrics.baseMargin,
+    marginLeft: Metrics.baseMargin,
     flexDirection: 'row',
   }),
   buttonIcon: RX.Styles.createTextStyle({
@@ -171,13 +172,10 @@ const Styles = {
   }),
   buttonMain: RX.Styles.createButtonStyle({
     backgroundColor: Colors.cta,
-    marginBottom: Metrics.baseMargin,
-    marginRight: Metrics.baseMargin,
-    marginLeft: Metrics.baseMargin,
   }),
   sectionTitle: RX.Styles.createTextStyle({
     color: Colors.info,
-    fontSize: Fonts.size.sectionTitle,
+    fontSize: Fonts.size.small,
     marginTop: Metrics.baseMargin,
     marginBottom: Metrics.mediumMargin,
   }),
@@ -585,10 +583,12 @@ const Styles = {
   }),
   accountInfo: {
     wrapper: RX.Styles.createViewStyle({
-      margin: Metrics.baseMargin,
+      padding: Metrics.baseMargin,
       alignItems: 'center',
       justifyContent: 'center',
       flex: 1,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
     }),
     title: RX.Styles.createTextStyle({
       color: Colors.light,
@@ -820,6 +820,73 @@ const Styles = {
     fontSize: Fonts.size.small,
     marginLeft: Metrics.baseMargin,
   }),
+  claimButton: {
+    button: RX.Styles.createViewStyle({
+      flex: 0,
+      minHeight: 60,
+      minWidth: 65,
+      borderRadius: Metrics.borderRadius,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.lightBackground,
+      marginRight: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    label: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+      marginTop: Metrics.smallMargin,
+      fontWeight: '100',
+    }),
+    selectedButton: RX.Styles.createViewStyle({
+      backgroundColor: Colors.transparent,
+    }),
+    selectedLabel: RX.Styles.createTextStyle({
+      color: Colors.brand,
+    }),
+  },
+  claimInputBox: {
+    wrapper: RX.Styles.createViewStyle({
+      backgroundColor: Colors.lightBackground,
+      borderRadius: Metrics.borderRadius,
+      marginLeft: Metrics.baseMargin,
+      marginRight: Metrics.baseMargin,
+      marginTop: Metrics.smallMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    titleRow: RX.Styles.createViewStyle({
+      marginTop: Metrics.baseMargin,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      marginLeft: Metrics.smallMargin,
+    }),
+    signerLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+    }),
+  },
+  section: {
+    row: RX.Styles.createViewStyle({
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin * 2,
+      flexDirection: 'row',
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+      marginBottom: Metrics.smallMargin,
+    }),
+    padded: RX.Styles.createViewStyle({
+      paddingLeft: Metrics.baseMargin,
+    }),
+  },
 }
 
 export default Styles

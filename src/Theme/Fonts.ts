@@ -17,8 +17,6 @@ const size = {
   medium: 16,
   small: 12,
   micro: 11,
-  sectionTitle: 13,
-
 }
 
 export default {

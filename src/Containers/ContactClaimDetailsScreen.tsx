@@ -201,11 +201,15 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
             <RX.View style={Theme.Styles.row}>
                 <RX.View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                   <RX.Text style={{color: Theme.Colors.light}}>{source.claims[0].issuer.name}</RX.Text>
-                  <RX.Text style={{color: Theme.Colors.info}}>{source.claims[0].issuer.uniqueIssuers.length} signers</RX.Text>
+                  <RX.Text style={{color: Theme.Colors.info}}>
+                  {source.claims[0].issuer.uniqueIssuers ? source.claims[0].issuer.uniqueIssuers.length : 0} signers
+                  </RX.Text>
                 </RX.View>
                 <RX.View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                   <RX.Text style={{color: Theme.Colors.light}}>{source.claims[0].subject.name}</RX.Text>
-                  <RX.Text style={{color: Theme.Colors.info}}>{source.claims[0].subject.uniqueIssuers.length} signers</RX.Text>
+                  <RX.Text style={{color: Theme.Colors.info}}>
+                  {source.claims[0].subject.uniqueIssuers ? source.claims[0].subject.uniqueIssuers.length : 0} signers
+                  </RX.Text>
                 </RX.View>
 
               </RX.View>

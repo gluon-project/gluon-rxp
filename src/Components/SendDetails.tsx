@@ -58,7 +58,7 @@ export default class SendDetails extends RX.Component<Props, null> {
   render() {
     return (
       <RX.View style={Theme.Styles.container}>
-        {this.props.sender && <RX.View style={Theme.Styles.accountInfo.wrapper}>
+        {this.props.sender && <RX.View style={[Theme.Styles.accountInfo.wrapper, {borderWidth: 0}]}>
           <AccountIcon
             account={this.props.currentUser}
             type={AccountIcon.type.Large}
