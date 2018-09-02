@@ -125,7 +125,9 @@ const mapStateToProps = (state: CombinedState, ownProps: Props): Props => {
   const transaction = Selectors.Transactions.getTransactionByHash(state, ownProps.transactionPreview.hash)
   const lookupData = transaction ? transaction : (ownProps.transactionPreview ? ownProps.transactionPreview : null)
   // TODO - fix this hack!
-  transaction.amount = transaction.amount ? transaction.amount : ownProps.transactionPreview.amount
+  if (transaction) {
+    transaction.amount = transaction.amount ? transaction.amount : ownProps.transactionPreview.amount
+  }
   return {
     transaction,
     token: Selectors.Tokens.getTokenByAddress(state, lookupData && lookupData.token),
