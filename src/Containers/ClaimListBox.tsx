@@ -42,6 +42,7 @@ class ClaimListBox extends RX.Component<Props, State> {
   }
 
   handleSignClaim(claim: VerifiableClaim) {
+    this.props.selectContact(claim.subject.did)
     this.props.setNewClaimType(claim.claimType)
     this.props.setNewClaimValue(claim.claimValue)
     this.props.navigate('ContactForm')
