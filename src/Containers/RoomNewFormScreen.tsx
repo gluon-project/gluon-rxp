@@ -86,8 +86,11 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
                 type={ListItem.type.Secondary}
                 selected={_.includes(this.state.selectedMatrixIds, claim.claimValue)}
                 onPress={() => this.toggleSelectedMatrixId(claim.claimValue)}
+                isRadioButton
               />
             })}
+
+            <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
 
             <CallToAction
               type={CallToAction.type.Main}

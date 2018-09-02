@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, CallToAction, AccountIcon } from '../Components'
+import { ListItem, CallToAction, AccountIcon, SectionHeader } from '../Components'
 import { filter } from 'lodash'
 
 interface Props extends RX.CommonProps {
@@ -11,6 +11,7 @@ interface Props extends RX.CommonProps {
   uiTraits?: UITraits
   isLoadingMatrixClaims?: boolean
   currentUser?: User,
+  routeName?: string
 }
 
 export default class ContactListDetails extends RX.Component<Props, null> {
@@ -53,15 +54,18 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             onPress={() => this.handleSelectContact(contact.did)}
           />
         ))}
+        <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
         <CallToAction
-          type={CallToAction.type.Secondary}
+          type={CallToAction.type.Main}
           title={'New Contact'}
           onPress={() => this.props.navigate('NewContactForm')}
+          disabled={this.props.routeName === 'NewContactForm'}
           />
         <CallToAction
           type={CallToAction.type.Main}
           title={'Web Of Trust'}
           onPress={() => this.props.navigate('WebOfTrust')}
+          disabled={this.props.routeName === 'WebOfTrust'}
           />
         {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
       </RX.View>

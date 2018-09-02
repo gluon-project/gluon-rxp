@@ -86,6 +86,8 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
               />
             })}
 
+            <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
+
             <CallToAction
               type={CallToAction.type.Main}
               title={'Invite contacts'}

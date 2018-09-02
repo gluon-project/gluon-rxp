@@ -22,6 +22,9 @@ interface Props extends RX.CommonProps {
 
 class ContactsMasterScreen extends RX.Component<Props, null> {
   render() {
+    const tabIndex = this.props.navigation.state.index
+    const index = this.props.navigation.state.routes[tabIndex].index
+    const routeName = this.props.navigation.state.routes[tabIndex].routes[index].routeName
     return (
       <RX.View style={Theme.Styles.containerFull}>
         <NavBar title='Contacts' />
@@ -35,6 +38,7 @@ class ContactsMasterScreen extends RX.Component<Props, null> {
               navigate={this.props.navigate}
               isLoadingMatrixClaims={this.props.isLoadingMatrixClaims}
               currentUser={this.props.currentUser}
+              routeName={routeName}
               />
           </RX.View>
         </RX.ScrollView>

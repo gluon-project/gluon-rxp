@@ -65,6 +65,8 @@ export default class RoomsDetails extends RX.Component<Props, null> {
             })}
           </RX.View>}
 
+          <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
+
           <CallToAction
             type={CallToAction.type.Main}
             title={'New Room'}

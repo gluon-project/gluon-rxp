@@ -23,6 +23,7 @@ interface Props extends RX.CommonProps {
 class WebOfTrustScreen extends RX.Component<Props, null> {
   private handleSelectContact = (did: string) => {
     this.props.selectContact(did)
+    this.props.navigateBack()
   }
   render() {
     return (

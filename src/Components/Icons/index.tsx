@@ -19,6 +19,7 @@ import TransfersIcon from './TransfersIcon'
 import LogoIcon from './LogoIcon'
 import MoreIcon from './MoreIcon'
 import RadioButton from './RadioButton'
+import CheckBox from './CheckBox'
 
 import AvatarIcon from './AvatarIcon'
 import AwardIcon from './AwardIcon'
@@ -123,6 +124,7 @@ export default {
   LogoIcon,
   MoreIcon,
   RadioButton,
+  CheckBox,
 
   AvatarIcon,
   AwardIcon,
