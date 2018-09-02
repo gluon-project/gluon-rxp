@@ -96,6 +96,9 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
           alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
               <AccountIcon account={{...this.props.selectedContactAcount, avatar: null}}
               type={AccountIconType.Large}/>
+              <RX.Text style={[Theme.Styles.contact.addressInfoDid, {marginTop: Theme.Metrics.smallMargin}]}>
+                {this.props.selectedContactAcount.did}
+              </RX.Text>
               <RX.Text style={[Theme.Styles.contact.addressInfo, {marginTop: Theme.Metrics.smallMargin}]}>
                 {Utils.address.short(this.props.selectedContactAcount.address)}
               </RX.Text>
@@ -107,11 +110,11 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
 
           </RX.View>
 
-          <CallToAction
+          {this.props.claims && this.props.claims.length > 0 && <CallToAction
             type={CallToAction.type.Main}
             title='New Claim'
             onPress={() => this.props.navigate('ContactForm')}
-          />
+          />}
 
           {this.props.claims && this.props.claims.length > 0 && <CallToAction
             type={CallToAction.type.Main}

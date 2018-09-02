@@ -9,6 +9,7 @@ import * as Theme from '../Theme'
 import * as S from 'string'
 import utils from '../Utils'
 import { AccountIconType } from '../Components/AccountIcon'
+import Utils from '../Utils'
 
 interface Props extends RX.CommonProps {
   selectedContact?: string
@@ -31,6 +32,7 @@ interface State {
   claimValue?: string,
   selectedType?: string,
   signAnonymously?: boolean,
+  address?: string,
 }
 
 class ContactFormScreen extends RX.Component<Props, State> {
@@ -41,6 +43,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
       claimValue: props.newClaimValue ? props.newClaimValue : '',
       selectedType: props.newClaimType ? props.newClaimType.toLowerCase() : 'name',
       signAnonymously: false,
+      address: '',
     }
   }
 
@@ -49,7 +52,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
       const claim: any = {}
       claim[S(this.state.claimType).camelize().s] = this.state.claimValue
       const unsigned = {
-        sub: this.props.selectedContact,
+        sub: this.props.selectedContact ? this.props.selectedContact : Utils.address.universalIdToDID(this.state.address),
         claim,
       }
 
@@ -64,7 +67,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
       const unsigned = {
         // riss: `did:ethr:${this.props.currentUser.address}`,
         riss: `${this.props.currentUser.mnid}`,
-        sub: this.props.selectedContact,
+        sub: this.props.selectedContact ? this.props.selectedContact : Utils.address.universalIdToDID(this.state.address),
         unsignedClaim: claim,
       }
 
@@ -91,7 +94,7 @@ class ContactFormScreen extends RX.Component<Props, State> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
 
-          <RX.View style={[Theme.Styles.accountInfo.wrapper, {marginBottom: Theme.Metrics.baseMargin * 2}]}>
+          {this.props.subject && <RX.View style={[Theme.Styles.accountInfo.wrapper, {marginBottom: Theme.Metrics.baseMargin * 2}]}>
             <AccountIcon
               account={this.props.subject}
               type={AccountIcon.type.Large}
@@ -99,7 +102,14 @@ class ContactFormScreen extends RX.Component<Props, State> {
             <RX.Text style={Theme.Styles.accountInfo.title}>
               {this.props.subject.name}
             </RX.Text>
-          </RX.View>
+          </RX.View>}
+
+          {!this.props.subject && <RX.View style={{marginBottom: Theme.Metrics.baseMargin}}><TextInput
+              label={'Address'}
+              placeholder='Enter address'
+              value={this.state.address}
+              onChangeText={(value) => this.setState({ address: value })}
+              /></RX.View>}
 
           <RX.View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center'}}>
 
@@ -291,8 +301,9 @@ class ContactFormScreen extends RX.Component<Props, State> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   const contact = Selectors.Contacts.getSelectedContact(state)
+  const subject = contact ?  Selectors.Contacts.getAccountByAddress(state, utils.address.universalIdToNetworkAddress(contact)) : null
   return {
-    subject: Selectors.Contacts.getAccountByAddress(state, utils.address.universalIdToNetworkAddress(contact)),
+    subject,
 
     selectedContact: contact,
     room: Selectors.Matrix.getRoomById(state, state.matrix.selectedRoomId),

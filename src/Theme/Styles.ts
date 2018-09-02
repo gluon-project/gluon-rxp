@@ -742,6 +742,10 @@ const Styles = {
       color: Colors.light,
       fontSize: Fonts.size.medium,
     }),
+    addressInfoDid: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+    }),
     groupedClaimSourceTitle: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,

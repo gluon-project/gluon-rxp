@@ -58,7 +58,10 @@ export default class ContactListDetails extends RX.Component<Props, null> {
         <CallToAction
           type={CallToAction.type.Main}
           title={'New Contact'}
-          onPress={() => this.props.navigate('NewContactForm')}
+          onPress={() => {
+            this.props.selectContact(null)
+            this.props.navigate('NewContactForm')
+          }}
           disabled={this.props.routeName === 'NewContactForm'}
           />
         <CallToAction
