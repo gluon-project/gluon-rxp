@@ -33,6 +33,9 @@ interface Props extends RX.CommonProps {
   mintTransaction?: MintTransaction
   burnTransaction?: BurnTransaction
   transactions?: Transaction[]
+  setIsSend?: (isSend: boolean) => void
+  setToken?: (token: string) => void
+
 }
 
 interface State {
@@ -77,6 +80,20 @@ class TokenActionsScreen extends RX.Component<Props, State> {
     }
   }
 
+  private handleSend = () => {
+    this.props.setIsSend(true)
+    this.props.setToken(this.props.balance.token.address)
+    this.props.navigate('SendTab')
+    //
+  }
+
+  private handleRequest = () => {
+    this.props.setIsSend(false)
+    this.props.setToken(this.props.balance.token.address)
+    this.props.navigate('SendTab')
+    //
+  }
+
   render() {
     console.log(this.props)
     return (
@@ -89,6 +106,19 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             subTitle={this.props.balance.token.type !== Enums.TokenType.ETH &&  utils.address.short(this.props.balance.token.address)}
             type={ListItem.type.Secondary}
           />}
+
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'Send'}
+            onPress={this.handleSend}
+            padded
+            />
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'Request'}
+            onPress={this.handleRequest}
+            padded
+            />
           {this.props.balance && this.props.balance.token.type === Enums.TokenType.Erc223 && <RX.View style={{
             marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
           }}>
@@ -184,6 +214,9 @@ const mapDispatchToProps = (dispatch: any): Props => {
     setBurnNumTokens: (amount: string) => dispatch(Actions.Tokens.setBurnNumTokens(amount)),
     mintTokens: () => dispatch(Actions.Tokens.mintTokens()),
     burnTokens: () => dispatch(Actions.Tokens.burnTokens()),
+    setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),
+    setToken: (token: string) => dispatch(Actions.Transactions.setToken(token)),
+
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TokenActionsScreen)
