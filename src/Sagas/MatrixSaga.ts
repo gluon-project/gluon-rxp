@@ -324,7 +324,13 @@ export function* watchCreateRoom(): SagaIterator {
     yield put(Actions.Process.start({type: Enums.ProcessType.MatrixCreateRoom}))
 
     try {
-      const result = yield call(Services.Matrix.createRoom, action.payload)
+      const file = action.payload.file
+      const options = action.payload
+      delete options['file']
+      const result = yield call(Services.Matrix.createRoom, options)
+      if (file) {
+        yield call(Services.Matrix.setRoomAvatar, result.room_id, file)
+      }
       yield put(Actions.Matrix.selectRoom(result.room_id))
       yield put(Actions.Navigation.navigateBack())
     } catch (e) {

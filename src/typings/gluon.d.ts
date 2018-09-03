@@ -244,4 +244,5 @@ declare interface MatrixNewRoomOptions {
   invite?: string[], //A list of user IDs to invite to this room
   name?: string,
   topic?: string,
+  file?: any,
 }

@@ -77,12 +77,14 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
         <ScrollView>
             <RX.View style={{flexDirection: 'row', justifyContent: 'center', marginTop: Theme.Metrics.baseMargin}}>
               <AccountIcon type={AccountIcon.type.Large}
-                account={{avatar: this.props.room.avatarUrl}} />
+                account={{avatar: this.props.room.avatarUrl}}>
+                <ImagePicker
+                  onChange={this.handleImageChange}
+                  inProgress={this.props.isSettingAvatar}
+                  />
+              </AccountIcon>
             </RX.View>
-            <ImagePicker
-              onChange={this.handleImageChange}
-              inProgress={this.props.isSettingAvatar}
-              />
+
             <TextInput
               label='Room name'
               value={this.state.roomName}

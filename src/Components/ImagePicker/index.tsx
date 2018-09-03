@@ -1,6 +1,7 @@
 import RX = require('reactxp')
 import { map } from 'lodash'
-import { CallToAction } from '../../Components'
+import { CallToAction, Icons } from '../../Components'
+import * as Theme from '../../Theme'
 
 interface Props extends RX.CommonProps {
   onChange?: (files: ImagePickerFile[]) => void
@@ -49,7 +50,8 @@ class ImagePicker extends RX.Component<Props, null> {
 
   render() {
     return (
-      <RX.View>
+      <RX.View style={{flex: 1, backgroundColor: Theme.Colors.backgroundSelected,
+        height: 84, justifyContent: 'center', alignItems: 'center'}}>
         <input
           type='file'
           ref={this._onInputRef}
@@ -57,12 +59,11 @@ class ImagePicker extends RX.Component<Props, null> {
           accept='image/*'
           onChange={this.handleFiles}
         />
-        <CallToAction
-          type={CallToAction.type.Secondary}
-          title='Set image'
+        <RX.Button
           onPress={this.showImagePicker}
-          inProgress={this.props.inProgress}
-          />
+          >
+            <Icons.PhotoIcon />
+          </RX.Button>
       </RX.View>
     )
   }

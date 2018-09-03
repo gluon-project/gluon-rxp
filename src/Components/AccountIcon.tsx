@@ -86,10 +86,10 @@ class AccountIcon extends RX.Component<Props, null> {
       return (
         <RX.View style={Theme.Styles.row}>
           <RX.Image
-            style={style}
+            style={[style, {justifyContent: 'center', alignItems: 'center'}]}
             source={this.props.account.avatar}
             resizeMode={'cover'}
-            />
+            >{this.props.children}</RX.Image>
           {this.props.account.address && <Blockies
             style={blockieStyle}
             width={size * blockieRatio}

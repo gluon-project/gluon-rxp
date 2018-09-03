@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl } from '../Components'
+import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl, AccountIcon, ImagePicker } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -24,6 +24,8 @@ interface State {
   roomAddress?: string,
   selectedMatrixIds?: string[],
   matrixId?: string,
+  avatarDataUrl?: any,
+  avatarFile?: any,
 }
 
 class RoomNewFormScreen extends RX.Component<Props, State> {
@@ -35,6 +37,8 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
       roomAddress: '',
       matrixId: '',
       selectedMatrixIds: [],
+      avatarDataUrl: '',
+      avatarFile: null,
     }
   }
 
@@ -47,6 +51,7 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
       name: this.state.roomName,
       visibility: 'private',
       invite: [...this.state.selectedMatrixIds, ...manualIds],
+      file: this.state.avatarFile,
     })
   }
 
@@ -64,6 +69,10 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     }
   }
 
+  private handleImageChange = (data: any) => {
+    this.setState({avatarDataUrl: data[0].dataUrl, avatarFile: data[0].file})
+  }
+
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
@@ -74,6 +83,16 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
               handleSelection={(index) => this.setState({isNew: index === 0 ? true : false})}
               /> */}
           {this.state.isNew && <RX.View>
+            <RX.View style={{flexDirection: 'row', justifyContent: 'center', marginTop: Theme.Metrics.baseMargin}}>
+              <RX.Image source={this.state.avatarDataUrl}
+                style={[Theme.Styles.accountIconLarge]}
+                resizeMode={'cover'}
+                >
+                <ImagePicker
+                  onChange={this.handleImageChange}
+                  />
+              </RX.Image>
+            </RX.View>
             <TextInput
             label='Room name'
             value={this.state.roomName}
