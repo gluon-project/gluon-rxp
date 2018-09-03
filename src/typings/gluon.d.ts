@@ -187,6 +187,7 @@ interface TokenTransactionsMap {
 
 declare interface ImagePickerFile {
   dataUrl: any
+  contents?: string
 }
 
 // Matrix

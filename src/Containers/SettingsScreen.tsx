@@ -4,14 +4,18 @@ import {
   CallToAction,
   AccountIcon,
   ScrollView,
+  FilePicker,
 } from '../Components'
 import { CombinedState } from '../Reducers'
 import * as AppReducer from '../Reducers/AppReducer'
 import Actions from '../Reducers/Actions'
+import { FileSaver } from '../Services'
 import * as Selectors from '../Selectors'
 import * as Theme from '../Theme'
 import * as Enums from '../Enums'
 import Utils from '../Utils'
+import { uniqBy, forEach, isArray } from 'lodash'
+import * as moment from 'moment'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -21,12 +25,41 @@ interface Props extends RX.CommonProps {
   resetToInitialState?: () => void
   environment?: string
   showEnvironmentPicker?: () => void
+  deleteLocalClaims?: () => void
   logout?: () => void
   currentMatrixUser?: MatrixUser
   currentUser?: User,
+  claims?: VerifiableClaim[]
+  saveClaimsLocally?: (jwts: string[]) => void
 }
 
 class SettingsScreen extends RX.Component<Props, null> {
+  private handleDeleteClaims = () => {
+    this.props.deleteLocalClaims()
+  }
+
+  private handleExportClaims = () => {
+    //
+    FileSaver.save( moment().format() + '-claims.json',
+    JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}))
+  }
+
+  private handleImportClaims = (data: any) => {
+    try {
+      let jwts: string[] = []
+      forEach(data, (item: any) => {
+        const json = JSON.parse(item.contents)
+        if (isArray(json.claims)) {
+          jwts = jwts.concat(json.claims)
+        }
+      })
+      this.props.saveClaimsLocally(jwts)
+    } catch (e) {
+      console.log(e)
+    }
+
+  }
+
   render() {
     return (
       <ScrollView>
@@ -48,8 +81,27 @@ class SettingsScreen extends RX.Component<Props, null> {
 
           </RX.View>}
 
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'Export all local claims'}
+            onPress={this.handleExportClaims}
+          />
+
+          <FilePicker
+            title={'Import claims'}
+            onChange={this.handleImportClaims}
+          />
+
+          <CallToAction
+            type={CallToAction.type.Secondary}
+            title={'Delete all local claims'}
+            onPress={this.handleDeleteClaims}
+          />
+
+          <RX.View style={{height: Theme.Metrics.baseMargin}} />
+
           {this.props.currentMatrixUser && <CallToAction
-              type={CallToAction.type.Default}
+              type={CallToAction.type.Secondary}
               title={'Logout'}
               onPress={() => this.props.logout()}
             />}
@@ -78,6 +130,7 @@ class SettingsScreen extends RX.Component<Props, null> {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
+    claims: Selectors.Contacts.getLocalClaims(state),
     currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
     codePushDeployments: Selectors.App.getCodePushDeployments(state),
     appVersion: state.app.version,
@@ -90,6 +143,8 @@ const mapDispatchToProps = (dispatch: any): Props => {
       dispatch(AppReducer.syncCodePushDeployment(codePushDeployment)),
     resetToInitialState: () => dispatch(Actions.App.resetToInitialState()),
     logout: () => dispatch(Actions.User.logout()),
+    saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
+    deleteLocalClaims: () => dispatch(Actions.Contacts.deleteLocalClaims()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)

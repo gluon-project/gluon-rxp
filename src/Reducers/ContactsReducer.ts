@@ -154,6 +154,15 @@ reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => 
   }
 })
 
+export const deleteLocalClaims = createAction('Delete local claims')
+reducer.on(deleteLocalClaims, (state: ContactsState, payload?: any) => {
+  return {
+    ...state,
+    claims: [],
+    selectedContact: null,
+  }
+})
+
 export const signAnonymousClaim = createAction('Sign anonymous claim')
 export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous claim and share in room')
 export const signClaimAndShareInRoom = createAction('Sign claim and share in room')

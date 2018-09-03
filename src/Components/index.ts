@@ -25,6 +25,7 @@ import TextInput from './TextInput'
 import ToggleSwitch from './ToggleSwitch'
 import VisualBox from './VisualBox'
 import WalletDetails from './WalletDetails'
+import FilePicker from './FilePicker'
 
 export {
   AboutDetails,
@@ -34,6 +35,7 @@ export {
   ClaimBox,
   ClaimTypeButton,
   ContactListDetails,
+  FilePicker,
   Graphs,
   Icons,
   ImagePicker,
