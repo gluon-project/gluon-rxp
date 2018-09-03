@@ -15,15 +15,18 @@ interface Props extends RX.CommonProps {
   navigateBack?: () => void
   leaveRoom?: (roomId: string) => void
   invite?: (roomId: string, userIds: string[]) => void
+  setRoomName?: (roomId: string, name: string) => void
   matrixContacts?: VerifiableClaim[]
   room?: MatrixRoom
   isInviting?: boolean,
   isLeaving?: boolean,
+  isSettingName?: boolean,
 }
 
 interface State {
   selectedMatrixIds?: string[]
   matrixId?: string,
+  roomName?: string,
 }
 
 class RoomNewFormScreen extends RX.Component<Props, State> {
@@ -32,7 +35,12 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     this.state = {
       selectedMatrixIds: [],
       matrixId: '',
+      roomName: props.room.name,
     }
+  }
+
+  private handleSetRoomName = () => {
+    this.props.setRoomName(this.props.room.id, this.state.roomName)
   }
 
   private handleLeave = () => {
@@ -62,7 +70,19 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
 
-            <RX.Text style={Theme.Styles.about.h1}>{this.props.room.name}</RX.Text>
+            <TextInput
+              label='Room name'
+              value={this.state.roomName}
+              placeholder={'Enter Room name'}
+              onChangeText={(value) => this.setState({ roomName: value })}
+              />
+            {this.state.roomName !== this.props.room.name && <CallToAction
+              padded
+              type={CallToAction.type.Main}
+              title={'Save'}
+              onPress={this.handleSetRoomName}
+              inProgress={this.props.isSettingName}
+            />}
 
             <RX.View style={Theme.Styles.sectionTitleWrapper}>
               <RX.Text style={Theme.Styles.sectionTitleLabel}>Members</RX.Text>
@@ -134,6 +154,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     matrixContacts: filteredContacts,
     isInviting: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixInviteContacts),
     isLeaving: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLeaveRoom),
+    isSettingName: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixSetRoomName),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
@@ -142,6 +163,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     leaveRoom: (roomId: string) => dispatch(Actions.Matrix.leaveRoom(roomId)),
     invite: (roomId: string, userIds: string[]) => dispatch(Actions.Matrix.inviteToRoom({roomId, userIds})),
+    setRoomName: (roomId: string, name: string) => dispatch(Actions.Matrix.setRoomName({roomId, name})),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RoomNewFormScreen)

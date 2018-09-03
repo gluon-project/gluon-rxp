@@ -11,6 +11,7 @@ interface Props extends RX.CommonProps {
   inProgress?: boolean
   disabled?: boolean
   account?: User
+  padded?: boolean
 }
 
 export enum ButtonType {
@@ -52,7 +53,10 @@ export default class CallToAction extends RX.Component<Props, null> {
         break
     }
     return (
-      <RX.Button style={[buttonStyle, this.props.disabled && {backgroundColor: Theme.Colors.borderColor}]}
+      <RX.Button style={[buttonStyle,
+        this.props.disabled && {backgroundColor: Theme.Colors.borderColor},
+        this.props.padded && {marginTop: Theme.Metrics.baseMargin},
+      ]}
         onPress={this.props.onPress} disabled={this.props.disabled}>
         {this.props.account && <AccountIcon account={this.props.account} type={AccountIcon.type.Custom} size={20}/>}
         {!this.props.inProgress && <RX.Text style={[

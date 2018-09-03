@@ -120,6 +120,10 @@ export const leaveRoom = (roomId: string) => {
   return client.leave(roomId)
 }
 
+export const setRoomName = (roomId: string, name: string) => {
+  return client.sendStateEvent(roomId, 'm.room.name', {name})
+}
+
 export const invite = (roomId: string, userIds: string[]) => {
   const promises = userIds.map(userId => client.invite(roomId, userId))
   return Promise.all(promises)

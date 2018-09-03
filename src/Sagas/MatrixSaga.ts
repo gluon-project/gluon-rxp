@@ -365,3 +365,17 @@ export function* watchInviteToRoom(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.MatrixInviteContacts}))
   }
 }
+
+export function* watchSetRoomName(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.setRoomName)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixSetRoomName}))
+
+    try {
+      const result = yield call(Services.Matrix.setRoomName, action.payload.roomId, action.payload.name)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSetRoomName}))
+  }
+}
