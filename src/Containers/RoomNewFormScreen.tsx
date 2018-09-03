@@ -22,7 +22,8 @@ interface State {
   isNew?: boolean,
   roomName?: string,
   roomAddress?: string,
-  selectedMatrixIds?: string[]
+  selectedMatrixIds?: string[],
+  matrixId?: string,
 }
 
 class RoomNewFormScreen extends RX.Component<Props, State> {
@@ -32,15 +33,20 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
       isNew: true,
       roomName: '',
       roomAddress: '',
+      matrixId: '',
       selectedMatrixIds: [],
     }
   }
 
   private handleCreate = () => {
+    let manualIds: string[] = []
+    if (this.state.matrixId) {
+      manualIds = this.state.matrixId.split(',')
+    }
     this.props.createRoom({
       name: this.state.roomName,
       visibility: 'private',
-      invite: this.state.selectedMatrixIds,
+      invite: [...this.state.selectedMatrixIds, ...manualIds],
     })
   }
 
@@ -89,8 +95,14 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
                 isRadioButton
               />
             })}
+            <TextInput
+              label='Invite with Matrix ID (optional)'
+              value={this.state.matrixId}
+              placeholder={'Enter Matrix ID'}
+              onChangeText={(value) => this.setState({ matrixId: value })}
+              />
 
-            <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
+            <RX.View style={{marginTop: Theme.Metrics.baseMargin * 2}}/>
 
             <CallToAction
               type={CallToAction.type.Main}

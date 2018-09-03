@@ -23,6 +23,7 @@ interface Props extends RX.CommonProps {
 
 interface State {
   selectedMatrixIds?: string[]
+  matrixId?: string,
 }
 
 class RoomNewFormScreen extends RX.Component<Props, State> {
@@ -30,6 +31,7 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     super(props)
     this.state = {
       selectedMatrixIds: [],
+      matrixId: '',
     }
   }
 
@@ -38,7 +40,11 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
   }
 
   private handleInvite = () => {
-    this.props.invite(this.props.room.id, this.state.selectedMatrixIds)
+    let manualIds: string[] = []
+    if (this.state.matrixId) {
+      manualIds = this.state.matrixId.split(',')
+    }
+    this.props.invite(this.props.room.id, [...this.state.selectedMatrixIds, ...manualIds])
   }
 
   private toggleSelectedMatrixId = (matrixId: string) => {
@@ -83,10 +89,18 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
                 type={ListItem.type.Secondary}
                 selected={_.includes(this.state.selectedMatrixIds, claim.claimValue)}
                 onPress={() => this.toggleSelectedMatrixId(claim.claimValue)}
+                isRadioButton
               />
             })}
 
-            <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
+            <TextInput
+              label='Invite with Matrix ID (optional)'
+              value={this.state.matrixId}
+              placeholder={'Enter Matrix ID'}
+              onChangeText={(value) => this.setState({ matrixId: value })}
+              />
+
+            <RX.View style={{marginTop: Theme.Metrics.baseMargin * 2}}/>
 
             <CallToAction
               type={CallToAction.type.Main}
