@@ -90,6 +90,9 @@ function* handleInitialUrl(): SagaIterator {
 function* handleRequest(uri: string): SagaIterator {
   const url = URL(uri, true)
   switch (url.pathname) {
+    case '/reset':
+      yield put(Actions.App.resetToInitialState())
+      break
     case '/token/':
       const tokenAddress = url.query.t
       const networkId = url.query.nid
