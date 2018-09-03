@@ -30,6 +30,7 @@ export enum ProcessType {
   MatrixInviteContacts,
   MatrixLeaveRoom,
   MatrixSetRoomName,
+  MatrixSetRoomAvatar,
 }
 
 export enum VisualType {

@@ -124,6 +124,13 @@ export const setRoomName = (roomId: string, name: string) => {
   return client.sendStateEvent(roomId, 'm.room.name', {name})
 }
 
+export const setRoomAvatar = (roomId: string, file: any) => {
+  return client.uploadContent(file)
+  .done(function(url: string) {
+    return client.sendStateEvent(roomId, 'm.room.avatar', {url})
+  })
+}
+
 export const invite = (roomId: string, userIds: string[]) => {
   const promises = userIds.map(userId => client.invite(roomId, userId))
   return Promise.all(promises)

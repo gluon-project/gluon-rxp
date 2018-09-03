@@ -379,3 +379,17 @@ export function* watchSetRoomName(): SagaIterator {
     yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSetRoomName}))
   }
 }
+
+export function* watchSetRoomAvatar(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.setRoomAvatar)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixSetRoomAvatar}))
+
+    try {
+      const result = yield call(Services.Matrix.setRoomAvatar, action.payload.roomId, action.payload.file)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSetRoomAvatar}))
+  }
+}

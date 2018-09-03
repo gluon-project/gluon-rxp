@@ -1,6 +1,6 @@
 import RX = require('reactxp')
 import { connect } from 'react-redux'
-import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl } from '../Components'
+import { CallToAction, ScrollView, ListItem, TextInput, SegmentedControl, ImagePicker, AccountIcon } from '../Components'
 import { CombinedState } from '../Reducers'
 import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
@@ -16,11 +16,13 @@ interface Props extends RX.CommonProps {
   leaveRoom?: (roomId: string) => void
   invite?: (roomId: string, userIds: string[]) => void
   setRoomName?: (roomId: string, name: string) => void
+  setRoomAvatar?: (roomId: string, file: any) => void
   matrixContacts?: VerifiableClaim[]
   room?: MatrixRoom
   isInviting?: boolean,
   isLeaving?: boolean,
   isSettingName?: boolean,
+  isSettingAvatar?: boolean,
 }
 
 interface State {
@@ -65,11 +67,22 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     }
   }
 
+  private handleImageChange = (data: any) => {
+    this.props.setRoomAvatar(this.props.room.id, data[0].file)
+  }
+
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-
+            <RX.View style={{flexDirection: 'row', justifyContent: 'center', marginTop: Theme.Metrics.baseMargin}}>
+              <AccountIcon type={AccountIcon.type.Large}
+                account={{avatar: this.props.room.avatarUrl}} />
+            </RX.View>
+            <ImagePicker
+              onChange={this.handleImageChange}
+              inProgress={this.props.isSettingAvatar}
+              />
             <TextInput
               label='Room name'
               value={this.state.roomName}
@@ -155,6 +168,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     isInviting: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixInviteContacts),
     isLeaving: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLeaveRoom),
     isSettingName: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixSetRoomName),
+    isSettingAvatar: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixSetRoomAvatar),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
@@ -164,6 +178,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     leaveRoom: (roomId: string) => dispatch(Actions.Matrix.leaveRoom(roomId)),
     invite: (roomId: string, userIds: string[]) => dispatch(Actions.Matrix.inviteToRoom({roomId, userIds})),
     setRoomName: (roomId: string, name: string) => dispatch(Actions.Matrix.setRoomName({roomId, name})),
+    setRoomAvatar: (roomId: string, file: string) => dispatch(Actions.Matrix.setRoomAvatar({roomId, file})),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RoomNewFormScreen)

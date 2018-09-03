@@ -4,6 +4,7 @@ import { CallToAction } from '../../Components'
 
 interface Props extends RX.CommonProps {
   onChange?: (files: ImagePickerFile[]) => void
+  inProgress?: boolean
 }
 
 class ImagePicker extends RX.Component<Props, null> {
@@ -38,9 +39,9 @@ class ImagePicker extends RX.Component<Props, null> {
 
   handleFiles(e: any) {
     const promises = map(e.target.files, (file: any) => this.readFile(file))
-
+    const file = e.target.files[0]
     Promise.all(promises).then((fileData: any) => {
-      const result = map(fileData, (item) => ({dataUrl: item}))
+      const result = map(fileData, (item, key) => ({dataUrl: item, file}))
       this.props.onChange(result)
     })
 
@@ -57,9 +58,10 @@ class ImagePicker extends RX.Component<Props, null> {
           onChange={this.handleFiles}
         />
         <CallToAction
-          type={CallToAction.type.Main}
-          title='Choose photo'
+          type={CallToAction.type.Secondary}
+          title='Set image'
           onPress={this.showImagePicker}
+          inProgress={this.props.inProgress}
           />
       </RX.View>
     )
