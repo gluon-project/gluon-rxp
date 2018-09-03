@@ -423,6 +423,7 @@ const Styles = {
     button: RX.Styles.createButtonStyle({
       backgroundColor: Colors.transparent,
       flex: 1,
+      margin: 0,
     }),
     label: RX.Styles.createTextStyle({
       color: Colors.light,
@@ -433,6 +434,7 @@ const Styles = {
     selectedButton: RX.Styles.createButtonStyle({
       backgroundColor: Colors.light,
       flex: 1,
+      margin: 0,
     }),
     selectedLabel: RX.Styles.createTextStyle({
       fontWeight: '300',
@@ -657,6 +659,7 @@ const Styles = {
       // paddingBottom: Metrics.smallMargin,
       borderTopWidth: 1,
       borderColor: Colors.borderColor,
+      paddingTop: 4,
     }),
     messageSenderAvatarInput: RX.Styles.createViewStyle({
       width: 32,

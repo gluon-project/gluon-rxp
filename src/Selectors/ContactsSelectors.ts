@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect'
 import { CombinedState } from '../Reducers'
-import { getRoomById } from './MatrixSelectors'
 import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
@@ -9,6 +8,11 @@ import { decodeJWT } from 'did-jwt'
 
 interface DidToUserMap {
   [did: string]: User
+}
+
+// Workaround. This should be in matrix selectors
+export const getRoomById = (state: CombinedState, roomId: string) => {
+  return _.find(state.matrix.rooms, {id: roomId})
 }
 
 export const getGroupClaimsBy = (state: CombinedState) => state.contacts.groupClaimsBy
@@ -121,7 +125,7 @@ export const getList = createSelector(getAllClaims, (allClaims) => {
       contactsByDid[claim.sub].name = value
       contactsByDid[claim.sub].claims.name = claim
     }
-    if (key.toLowerCase() === 'matrixid') {
+    if (key.toLowerCase() === 'matrixid' || key.toLowerCase() === 'matrix') {
       contactsByDid[claim.sub].claims.matrixId = claim
     }
     if (key.toLowerCase() === 'avatar') {

@@ -226,6 +226,7 @@ declare interface MatrixMember {
   displayname: string,
   membership: 'invite' | 'join',
   avatarUrl: string,
+  account?: User,
 }
 declare interface MatrixRoom {
   id: string,

@@ -341,7 +341,8 @@ export function* watchLeaveRoom(): SagaIterator {
 
     try {
       const result = yield call(Services.Matrix.leaveRoom, action.payload)
-      yield put(Actions.Matrix.selectRoom(null))
+      const rooms: MatrixRoom[] = yield select(Selectors.Matrix.getRoomsRaw)
+      yield put(Actions.Matrix.selectRoom(rooms.length > 0 ? rooms[0].id : null))
       yield put(Actions.Navigation.navigateBack())
     } catch (e) {
       yield put(Actions.App.handleError(e))

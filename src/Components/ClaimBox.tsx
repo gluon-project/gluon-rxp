@@ -44,7 +44,7 @@ export default class ClaimBox extends RX.Component<Props, null> {
           <RX.View style={{flex: 1}} />
           <RX.View style={{flex: 3}} >
             <RX.View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', height: 66}}>
-              <RX.Button onPress={() => this.props.handleContactPress(this.props.claim.issuer)}>
+              <RX.Button style={{margin: 0}} onPress={() => this.props.handleContactPress(this.props.claim.issuer)}>
                 <AccountIcon
                   account={this.props.claim.issuer}
                   type={AccountIcon.type.Custom} size={46}/>
@@ -57,7 +57,7 @@ export default class ClaimBox extends RX.Component<Props, null> {
                 <Icons.ChevronRightIcon />
               </RX.View>
 
-              <RX.Button onPress={() => this.props.handleContactPress(this.props.claim.subject)}>
+              <RX.Button style={{margin: 0}} onPress={() => this.props.handleContactPress(this.props.claim.subject)}>
                 <AccountIcon
                   account={this.props.claim.subject}
                   type={AccountIcon.type.Custom} size={46}/>

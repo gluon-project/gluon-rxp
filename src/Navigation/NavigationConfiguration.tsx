@@ -57,9 +57,7 @@ const RightButton = ({navigation}: { navigation: any }) => {
           navigate('RoomInfo')
         }}
       >
-        <RX.Text style={Theme.Styles.navBarItemLabel}>
-          More
-        </RX.Text>
+        <Icons.MoreIcon fill={Theme.Colors.brand} />
       </RX.Button>
     )
   } else {
