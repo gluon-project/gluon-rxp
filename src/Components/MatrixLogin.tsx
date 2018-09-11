@@ -77,6 +77,7 @@ export default class MatrixLogin extends RX.Component<Props, State> {
             />}
           <RX.View style={Theme.Styles.scrollContainer}>
             <CallToAction
+              padded
               disabled={this.state.password === ''
               || this.state.username === ''
               || this.state.baseUrl === ''

@@ -193,6 +193,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
             }}>
             <CallToAction
+              padded
               type={CallToAction.type.Main}
               title={this.state.isNew ? 'Create token' : 'Add'}
               onPress={this.handleSave}

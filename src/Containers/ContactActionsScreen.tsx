@@ -26,6 +26,8 @@ interface Props extends RX.CommonProps {
   setGroupClaimsBy?: (options: any) => void
   selectedContactAcount?: User,
   setModalMessage?: (config: ModalMessageConfig) => void
+  setIsSend?: (isSend: boolean) => void
+  setReceiver?: (receiver: string) => void
 }
 
 class ClaimActionsScreen extends RX.Component<Props, null> {
@@ -117,7 +119,7 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
           />}
 
           {this.props.claims && this.props.claims.length > 0 && <CallToAction
-            type={CallToAction.type.Main}
+            type={CallToAction.type.Secondary}
             title='Export to file'
             onPress={() => FileSaver.save(this.props.claims[0].subject.name + '-claims.json',
               JSON.stringify({claims: uniqBy(this.props.claims, claim => claim.jwt).map(claim => claim.jwt)}),
@@ -125,7 +127,7 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
           />}
 
           {this.props.claims && this.props.claims.length > 0 && <CallToAction
-            type={CallToAction.type.Main}
+            type={CallToAction.type.Secondary}
             title='Save locally'
             onPress={() => this.props.saveClaimsLocally(this.props.claims.map(claim => claim.jwt))}
           />}
@@ -287,6 +289,8 @@ const mapDispatchToProps = (dispatch: any): Props => {
     saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
     setGroupClaimsBy: (options: any) => dispatch(Actions.Contacts.setGroupClaimsBy(options)),
     setModalMessage: (config: ModalMessageConfig) => dispatch(Actions.ModalMessage.setModalMessage(config)),
+    setIsSend: (isSend: boolean) => dispatch(Actions.Transactions.setIsSend(isSend)),
+    setReceiver: (receiver: string) => dispatch(Actions.Transactions.setReceiver(receiver)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ClaimActionsScreen)
