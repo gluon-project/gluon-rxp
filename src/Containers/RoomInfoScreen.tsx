@@ -71,6 +71,10 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
     this.props.setRoomAvatar(this.props.room.id, data[0].file)
   }
 
+  private isValid = () => {
+    return this.state.selectedMatrixIds.length > 0 || this.state.matrixId !== ''
+  }
+
   render() {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
@@ -141,7 +145,7 @@ class RoomNewFormScreen extends RX.Component<Props, State> {
               type={CallToAction.type.Main}
               title={'Invite contacts'}
               onPress={this.handleInvite}
-              disabled={this.state.selectedMatrixIds.length === 0}
+              disabled={!this.isValid()}
               inProgress={this.props.isInviting}
             />
 
