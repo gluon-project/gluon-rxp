@@ -21,6 +21,7 @@ interface Props extends RX.CommonProps {
   matrixRegister?: (username: string, password: string, baseUrl: string) => void
   isLoggingIn?: boolean
   isRegistering?: boolean
+  isSyncing?: boolean
   currentMatrixUser?: MatrixUser
 }
 
@@ -39,6 +40,7 @@ class RoomsMasterScreen extends RX.Component<Props, null> {
             matrixRegister={this.props.matrixRegister}
             isLoggingIn={this.props.isLoggingIn}
             isRegistering={this.props.isRegistering}
+            isSyncing={this.props.isSyncing}
             navigate={this.props.navigate}
             routeName={routeName}
             currentUser={this.props.currentUser}
@@ -61,6 +63,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     selectedRoomId: Selectors.Matrix.getSelectedRoomId(state),
     isLoggingIn: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixLogin),
     isRegistering: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixRegister),
+    isSyncing: Selectors.Process.isRunningProcess(state, Enums.ProcessType.MatrixInitialSync),
     currentMatrixUser: Selectors.Matrix.getCurrentUser(state),
   }
 }

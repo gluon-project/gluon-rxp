@@ -31,6 +31,7 @@ export enum ProcessType {
   MatrixLeaveRoom,
   MatrixSetRoomName,
   MatrixSetRoomAvatar,
+  MatrixInitialSync,
 }
 
 export enum VisualType {

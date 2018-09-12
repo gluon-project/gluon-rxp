@@ -81,6 +81,8 @@ import Utils from '../Utils'
 
 export function * handleSyncEvent (event: any) {
   if (event === 'PREPARED') {
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixInitialSync}))
+
     const rooms = yield call(Services.Matrix.getRooms)
     yield put(Actions.Matrix.setRooms(rooms))
 
@@ -116,6 +118,7 @@ export function * watchMatrixUpdates () {
     Services.Matrix.client.on('sync', emitter)
     return () => Services.Matrix.client.off('sync', emitter)
   })
+  yield put(Actions.Process.start({type: Enums.ProcessType.MatrixInitialSync}))
 
   yield takeEvery(synchChannel, handleSyncEvent)
 

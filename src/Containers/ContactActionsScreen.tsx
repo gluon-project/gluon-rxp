@@ -56,7 +56,7 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
 
     this.props.setModalMessage({
       type: Enums.MessageType.Success,
-      title: 'Request',
+      title: 'Address',
       message: 'Copy address',
       inputText: this.props.selectedContactAcount.address,
       ctaTitle: 'Close',

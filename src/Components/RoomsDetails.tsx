@@ -16,6 +16,7 @@ interface Props extends RX.CommonProps {
   isLoggingIn?: boolean
   matrixRegister?: (username: string, password: string, baseUrl: string) => void
   isRegistering?: boolean
+  isSyncing?: boolean
 }
 
 const lastMessage = (room: MatrixRoom): string => {
@@ -74,6 +75,7 @@ export default class RoomsDetails extends RX.Component<Props, null> {
               />
             })}
           </RX.View>}
+          {this.props.isSyncing && <RX.ActivityIndicator size='medium' color='white'/> }
 
           <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
 
