@@ -119,7 +119,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             onPress={this.handleRequest}
             padded
             />
-          {this.props.balance && this.props.balance.token.type === Enums.TokenType.Erc223 && <RX.View style={{
+          {/* {this.props.balance && this.props.balance.token.type === Enums.TokenType.Erc223 && <RX.View style={{
             marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
           }}>
 
@@ -139,7 +139,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               exponent={this.props.balance.token.exponent}
               totalSupply={this.props.balance.token.totalSupply}
               numTokens={parseInt(this.state.isMint ? this.props.mintTransaction.numTokens : this.props.burnTransaction.numTokens, 10)}
-              /> */}
+              />}
             <RX.View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TextInput
                 label={`Reserve pool`}
@@ -180,7 +180,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               disabled={!this.isValid() || this.props.isProcessingMint || this.props.isProcessingBurn}
               inProgress={this.props.isProcessingMint || this.props.isProcessingBurn}
             />
-          </RX.View>}
+          </RX.View>} */}
           {/* {this.props.transactions.map((transaction: Transaction, key: any) => <RX.View key={transaction.hash}>
             <RX.Text>{transaction.hash}</RX.Text>
           </RX.View>)} */}

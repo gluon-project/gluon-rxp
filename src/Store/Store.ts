@@ -36,7 +36,6 @@ const updateReducers = (store: Store<any>) => {
         'matrix',
         'modalMessage',
         'osExtensions',
-        'process',
         'settings',
         'transactions',
         'tokens',

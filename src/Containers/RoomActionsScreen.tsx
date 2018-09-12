@@ -40,7 +40,7 @@ interface State {
 }
 
 const getMember = (userId: string, room: MatrixRoom): MatrixMember => {
-  const a: MatrixMember = (room && room.members) ?
+  const a: MatrixMember = (room && room.members) && find(room.members, {userId}) ?
     find(room.members, {userId}) : { userId: '', avatarUrl: '', displayname: '', membership: 'join'}
   return a
 }

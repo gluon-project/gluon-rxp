@@ -15,6 +15,7 @@ const credentials = new Credentials({
 const uportConnect = new Connect(Config.uport.app.name, {
   // isMobile: false,
   // useStore: false,
+  network: 'mainnet',
 })
 
 uportConnect.credentials = credentials
@@ -24,6 +25,7 @@ const requestCredentials = (network: string) => {
     requested: ['name', 'avatar', 'matrixUser'],
     notifications: true,
     accountType: 'keypair',
+    network_id: '0x1',
   })
 }
 const getProvider = () => new Web3(uportConnect.getProvider())
