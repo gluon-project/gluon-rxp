@@ -25,7 +25,7 @@ export function * subscribeEvents () {
   const createCommunityTokenTxChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('createCommunityTokenTx', (err: any, data: any) => {
       console.log('createCommunityTokenTx response', data)
-      emitter(data.res)
+      emitter(data.payload)
     })
     return () => {
       console.log('SAGA unsubscribe')
@@ -35,7 +35,7 @@ export function * subscribeEvents () {
   const burnTxChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('burnTx', (err: any, data: any) => {
       console.log('burn response', data)
-      emitter(data.res)
+      emitter(data.payload)
     })
     return () => {
       console.log('SAGA unsubscribe')
@@ -45,7 +45,7 @@ export function * subscribeEvents () {
   const mintTxChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('mintTx', (err: any, data: any) => {
       console.log('mint response', data)
-      emitter(data.res)
+      emitter(data.payload)
     })
     return () => {
       console.log('SAGA unsubscribe')
@@ -54,7 +54,7 @@ export function * subscribeEvents () {
 
   const signClaimChannel = yield eventChannel(emitter => {
     Services.uPort.uportConnect.onResponse('signClaimReq', (err: any, data: any) => {
-      emitter(data.res)
+      emitter(data.payload)
     })
     return () => {
       console.log('SAGA unsubscribe')
@@ -79,7 +79,7 @@ export function * subscribeEvents () {
 
 export function* handleLoginResponse(action: any): SagaIterator {
   console.log({action})
-  const result = action.res
+  const result = action.payload
   try {
     if (result && result.name) {
       console.log(result)

@@ -2,7 +2,7 @@ import Config from '../../Config'
 import RX = require('reactxp')
 const Web3 = require('web3')
 
-import Connect from 'uport-connect'
+import { Connect } from 'uport-connect'
 import { Credentials } from 'uport'
 import { createJWT, SimpleSigner } from 'did-jwt'
 import * as MNID from 'mnid'
@@ -25,7 +25,7 @@ const requestCredentials = (network: string) => {
     requested: ['name', 'avatar', 'matrixUser'],
     notifications: true,
     accountType: 'keypair',
-    network_id: '0x1',
+    networkId: '0x1',
   })
 }
 const getProvider = () => new Web3(uportConnect.getProvider())
@@ -38,7 +38,7 @@ const signAnonymousClaim = (claim: any): VerifiableClaim => {
 }
 
 const signClaim = (claim: any) => {
-  // return uportConnect.createVerificationRequest(claim)
+  // return uportConnect.requestVerificationSignature(claim)
   const id = 'signClaimReq'
   return uportConnect.credentials.signJWT({
     unsignedClaim: claim.unsignedClaim,
@@ -53,7 +53,7 @@ const attestCredentials = (credentials: any) => {
   const claim = {
     ...credentials,
   }
-  return uportConnect.attest(claim, 'attest')
+  return uportConnect.sendVerification(claim, 'attest')
 }
 
 const logout = () => {
