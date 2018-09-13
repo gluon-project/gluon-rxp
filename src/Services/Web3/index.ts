@@ -20,7 +20,7 @@ abiDecoder.addABI(communityTokenAbi)
 abiDecoder.addABI(communityTokenFactoryAbi)
 abiDecoder.addABI(erc223TokenFactoryAbi)
 
-const DEFAULT_GAS_PRICE = '5000000000'
+const DEFAULT_GAS_PRICE = '10000000000'
 
 let web3: any = null
 
