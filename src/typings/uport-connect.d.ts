@@ -1,6 +1,5 @@
 declare module 'uport-connect' {
-  const Connect: any
-  export default Connect
+  export const Connect: any
 }
 
 declare module 'web3' {
