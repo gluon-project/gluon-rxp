@@ -1,6 +1,7 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
-import { ListItem, CallToAction } from '../Components'
+import { ListItem, CallToAction, AccountIcon, SectionHeader } from '../Components'
+import { filter } from 'lodash'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -9,6 +10,8 @@ interface Props extends RX.CommonProps {
   contacts: User[]
   uiTraits?: UITraits
   isLoadingMatrixClaims?: boolean
+  currentUser?: User,
+  routeName?: string
 }
 
 export default class ContactListDetails extends RX.Component<Props, null> {
@@ -26,25 +29,48 @@ export default class ContactListDetails extends RX.Component<Props, null> {
   }
 
   render() {
+    const contacts = filter(this.props.contacts, (contact: User) => { return this.props.currentUser &&
+      contact.did !== this.props.currentUser.did})
     return (
       <RX.View style={Theme.Styles.container}>
-        {this.props.contacts.map(contact => (
+        {this.props.currentUser &&
           <ListItem
-            key={contact.address}
+            type={ListItem.type.Default}
+            title={this.props.currentUser.name}
+            account={this.props.currentUser}
+            subTitle={`${this.props.currentUser.uniqueIssuers.length} signers`}
+            selected={this.props.selectedContact === this.props.currentUser.did}
+            onPress={() => this.handleSelectContact(this.props.currentUser.did)}
+          />}
+
+        {contacts.map(contact => (
+          <ListItem
+            key={contact.did}
             type={ListItem.type.Default}
             title={contact.name}
-            subTitle={contact.shortId}
+            subTitle={`${contact.uniqueIssuers.length} signers`}
             account={contact}
             selected={this.props.selectedContact === contact.did}
             onPress={() => this.handleSelectContact(contact.did)}
           />
         ))}
-        {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
+        <RX.View style={{marginTop: Theme.Metrics.baseMargin}}/>
         <CallToAction
           type={CallToAction.type.Main}
           title={'New Contact'}
-          onPress={() => this.props.navigate('NewContactForm')}
-        />
+          onPress={() => {
+            this.props.selectContact(null)
+            this.props.navigate('NewContactForm')
+          }}
+          disabled={this.props.routeName === 'NewContactForm'}
+          />
+        <CallToAction
+          type={CallToAction.type.Main}
+          title={'Web Of Trust'}
+          onPress={() => this.props.navigate('WebOfTrust')}
+          disabled={this.props.routeName === 'WebOfTrust'}
+          />
+        {this.props.isLoadingMatrixClaims && <RX.ActivityIndicator size='medium' color='white'/> }
       </RX.View>
     )
   }

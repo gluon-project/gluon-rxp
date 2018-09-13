@@ -8,6 +8,7 @@ import {
   AttachmentCard,
   MatrixLogin,
   Icons,
+  AccountIcon,
   TextInput,
   Graphs } from '../Components'
 import { TransactionBox, ClaimListBox, RequestBox } from '../Containers'
@@ -39,7 +40,9 @@ interface State {
 }
 
 const getMember = (userId: string, room: MatrixRoom): MatrixMember => {
-  return (room && room.members) ? find(room.members, {userId}) : { userId: '', avatarUrl: '', displayname: '', membership: 'join'}
+  const a: MatrixMember = (room && room.members) && find(room.members, {userId}) ?
+    find(room.members, {userId}) : { userId: '', avatarUrl: '', displayname: '', membership: 'join'}
+  return a
 }
 
 class TokenActionsScreen extends RX.Component<Props, State> {
@@ -96,19 +99,31 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               return (
               (event.type === 'm.room.message' && event.content.body !== null) &&
               <RX.View key={event.eventId}  style={Theme.Styles.chat.messageBubble}>
-                { showAuthor && <RX.Image
-                  resizeMode={'cover'}
-                  style={Theme.Styles.chat.messageSenderAvatar}
-                  source={getMember(event.sender, this.props.room).avatarUrl} />}
-                <RX.View style={[{flex: 1}, !showAuthor && {marginLeft: 50}]}>
+                {showAuthor && <AccountIcon
+                  type={AccountIcon.type.Custom}
+                  size={46}
+                  account={getMember(event.sender, this.props.room).account ? getMember(event.sender, this.props.room).account : {
+                    avatar: getMember(event.sender, this.props.room).avatarUrl,
+                  }}
+                  />}
+                <RX.View style={[{flex: 1}, !showAuthor ? {marginLeft: 60} : {marginLeft: 10}]}>
                   {showAuthor &&
-                  <RX.Text style={Theme.Styles.chat.messageSender}>{getMember(event.sender, this.props.room).displayname}</RX.Text>}
+                  <RX.Text style={Theme.Styles.chat.messageSender}>
+                    {getMember(event.sender, this.props.room).account ?
+                    getMember(event.sender, this.props.room).account.name : getMember(event.sender, this.props.room).displayname}</RX.Text>}
+
                   {!isObject(event.content.request) && !isTransaction && !isJsonFile &&
-                    <RX.Text style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+                    <RX.Text selectable style={Theme.Styles.chat.messageBody}>{event.content.body}</RX.Text>}
+
                   {isTransaction && <TransactionBox transactionPreview={event.content.transaction} />}
+
                   {isObject(event.content.request) && <RequestBox roomId={this.props.room.id} transaction={event.content.request} />}
+
                   {isObject(event.content.fileContent) && isObject(event.content.fileContent.claims)
-                    && <ClaimListBox encodedClaims={event.content.fileContent.claims} />}
+                    && <ClaimListBox
+                      encodedClaims={event.content.fileContent.claims}
+                      showDetails={event.content.fileContent.claims.length === 1}
+                      />}
 
                 </RX.View>
               </RX.View>)
@@ -120,10 +135,10 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             position: 'absolute', bottom: 0, right: 0, left: 0, flex: 0, height: 80,
             alignItems: 'center', backgroundColor: Theme.Colors.background}]}>
           <RX.View style={[Theme.Styles.container, Theme.Styles.chat.inputRow]}>
-            <RX.Image
-              resizeMode={'cover'}
-              style={Theme.Styles.chat.messageSenderAvatarInput}
-              source={getMember(this.props.currentMatrixUser.user_id, this.props.room).avatarUrl} />
+            <AccountIcon
+              type={AccountIcon.type.Custom}
+              size={36}
+              account={this.props.currentUser}/>
             <RX.TextInput
               style={Theme.Styles.chat.textInput}
               placeholder={'Send message...'}
@@ -134,12 +149,12 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               placeholderTextColor={Theme.Colors.info}
               onChangeText={(message) => this.setState({message})}
               />
-            <RX.Button onPress={this.send} style={{height: 44, justifyContent: 'center'}}>
+            {this.state.message !== '' && <RX.Button onPress={this.send} style={{height: 44, marginRight: 15,  justifyContent: 'center'}}>
               <RX.Text style={Theme.Styles.chat.messageSendButton}>Send</RX.Text>
-            </RX.Button>
-            <RX.Button onPress={this.sendTx} style={{margin: 15}}>
+            </RX.Button>}
+            {this.state.message === '' && <RX.Button onPress={this.sendTx} style={{height: 44, marginRight: 15, justifyContent: 'center'}}>
               <Icons.TransfersIcon height={25} width={25} fill={Theme.Colors.brand} />
-            </RX.Button>
+            </RX.Button>}
           </RX.View>
         </RX.View>}
       </RX.View>

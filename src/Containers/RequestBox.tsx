@@ -56,45 +56,45 @@ class RequestBox extends RX.Component<Props, null> {
   render() {
     //{moment(this.props.transaction.date).fromNow()}
     const transaction = this.props.transaction
+    if (!isObject(this.props.sender)) {
+      return null
+    }
     return (
       <RX.View style={[{
         backgroundColor: Theme.Colors.lightBackground,
         borderRadius: Theme.Metrics.borderRadius,
-        padding: Theme.Metrics.baseMargin,
-        height: 280,
+        paddingTop: Theme.Metrics.baseMargin,
       }]}>
-          <RX.Text style={Theme.Styles.feed.subTitle}>
+
+        <RX.View style={Theme.Styles.box.requestWrapper}>
+
+          <RX.Text style={Theme.Styles.box.titleLabel}>
               Request
           </RX.Text>
-        {isObject(this.props.sender) && <RX.View style={[{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }]}>
 
-          <RX.View style={{height: 150}}>
+          <RX.View>
             <RX.Button style={{alignItems: 'center'}} onPress={() => this.handleContactPress(this.props.sender)}>
               <AccountIcon type={AccountIcon.type.Large} account={this.props.sender} />
-              <RX.Text numberOfLines={2} style={[Theme.Styles.feed.title, {textAlign: 'center'}]}>{this.props.sender.name}</RX.Text>
+              <RX.Text numberOfLines={2} style={Theme.Styles.box.accountLabel}>{this.props.sender.name}</RX.Text>
             </RX.Button>
           </RX.View>
 
-          <RX.View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
+        </RX.View>
 
-            {isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.feed.amount}>
+          <RX.View style={Theme.Styles.box.amountWrapper}>
+
+            {isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.box.amountLabel}>
                 {Utils.number.numberToString(transaction.amount, this.props.token.decimals)} {this.props.token.code}
             </RX.Text>}
-            {!isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.feed.amount}>
+            {!isString(transaction.amount) && isObject(this.props.token) && <RX.Text style={Theme.Styles.box.amountLabel}>
                 {this.props.token.code}
             </RX.Text>}
 
           </RX.View>
 
-        </RX.View>}
-        <CallToAction
-            type={CallToAction.type.Main}
-            onPress={this.handleSendPress}
-            title='Send'
-            />
+        <RX.Button style={Theme.Styles.box.button} onPress={this.handleSendPress}>
+          <RX.Text style={Theme.Styles.box.buttonLabel}>Send</RX.Text>
+        </RX.Button>
       </RX.View>
     )
   }

@@ -26,6 +26,12 @@ export enum ProcessType {
   SignClaim,
   LoadMatrixClaims,
   RequestInMatrix,
+  MatrixCreateRoom,
+  MatrixInviteContacts,
+  MatrixLeaveRoom,
+  MatrixSetRoomName,
+  MatrixSetRoomAvatar,
+  MatrixInitialSync,
 }
 
 export enum VisualType {

@@ -16,6 +16,8 @@ import ContactActionsScreen from './ContactActionsScreen'
 import ContactFormScreen from './ContactFormScreen'
 import ContactNewFormScreen from './ContactNewFormScreen'
 import ContactSelectionScreen from './ContactSelectionScreen'
+import ContactClaimGroupsScreen from './ContactClaimGroupsScreen'
+import ContactClaimDetailsScreen from './ContactClaimDetailsScreen'
 import ClaimListBox from './ClaimListBox'
 import FeedItem from './FeedItem'
 import FeedScreen from './FeedScreen'
@@ -26,9 +28,11 @@ import ReceiverScreen from './ReceiverScreen'
 import RequestBox from './RequestBox'
 import RequestMasterScreen from './RequestMasterScreen'
 import RoomsMasterScreen from './RoomsMasterScreen'
+import RoomNewFormScreen from './RoomNewFormScreen'
 import RoomActionsScreen from './RoomActionsScreen'
 import RoomsScreen from './RoomsScreen'
 import RoomSelectionScreen from './RoomSelectionScreen'
+import RoomInfoScreen from './RoomInfoScreen'
 import SenderScreen from './SenderScreen'
 import SendMasterScreen from './SendMasterScreen'
 import SettingsScreen from './SettingsScreen'
@@ -53,6 +57,8 @@ export {
   ContactFormScreen,
   ContactNewFormScreen,
   ContactSelectionScreen,
+  ContactClaimGroupsScreen,
+  ContactClaimDetailsScreen,
   CompactRequestMainScreen,
   CompactRoomsMainScreen,
   CompactSendMainScreen,
@@ -69,8 +75,10 @@ export {
   RequestMasterScreen,
   RoomActionsScreen,
   RoomsMasterScreen,
+  RoomNewFormScreen,
   RoomsScreen,
   RoomSelectionScreen,
+  RoomInfoScreen,
   SenderScreen,
   SendMasterScreen,
   SettingsScreen,

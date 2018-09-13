@@ -37,7 +37,8 @@ class LoginScreen extends RX.Component<Props, null> {
         source={require('../../src/Assets/bg_cloud.jpg')}
         resizeMode='cover'
         >
-        <ScrollView transparent>
+        {!this.props.currentUser && <RX.View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center', marginLeft: 50,
+        marginRight: 50}}>
             <RX.View style={[Theme.Styles.container, {
               alignItems: 'center',
               marginBottom: this.props.uiTraits.horizontalIsCompact ? 44 : 80,
@@ -50,36 +51,33 @@ class LoginScreen extends RX.Component<Props, null> {
                 type={this.props.uiTraits.horizontalIsCompact ? 'medium' : 'large'}
                 />
             </RX.View>
-            {!this.props.currentUser && <RX.View style={Theme.Styles.scrollContainer}>
-              {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>No Web3 provider detected.</RX.Text>}
-              {isWeb && <RX.Text style={[Theme.Styles.about.p, {textAlign: 'center'}]}>Unlock your Metamask or login with uPort</RX.Text>}
-              <CallToAction
+            <CallToAction
                 title='Login with uPort'
                 onPress={this.props.startLogin}
               />
-              <RX.View style={[Theme.Styles.row, {justifyContent: 'center', marginTop: 50}]}>
-                <RX.Button onPress={() => RX.Linking.openUrl('https://itunes.apple.com/us/app/uport-id/id1123434510?mt=8')}>
-                  <RX.Image
-                    source={require('../../src/Assets/appstore.png')}
-                    style={{width: 120, height: 40, marginRight: Theme.Metrics.smallMargin}}
-                    />
-                </RX.Button>
-                <RX.Button onPress={() => RX.Linking.openUrl('https://play.google.com/store/apps/details?id=com.uportMobile')}>
-                  <RX.Image
-                    source={require('../../src/Assets/googleplay.png')}
-                    style={{width: 135, height: 40}}
-                    />
-                </RX.Button>
-              </RX.View>
 
-            </RX.View>}
+          </RX.View>}
+
+          {this.props.currentUser && <ScrollView transparent>
+            <RX.View style={[Theme.Styles.container, {
+              alignItems: 'center',
+              marginBottom: this.props.uiTraits.horizontalIsCompact ? 44 : 80,
+              marginTop: this.props.uiTraits.horizontalIsCompact ? 44 : 80,
+              }]}>
+              <Icons.LogoIcon
+                width={this.props.uiTraits.horizontalIsCompact ? 64 : 120}
+                height={this.props.uiTraits.horizontalIsCompact ? 74 : 139}
+                fill='#fff'
+                type={this.props.uiTraits.horizontalIsCompact ? 'medium' : 'large'}
+                />
+            </RX.View>
             {this.props.currentUser && !this.props.currentMatrixUser && <MatrixLogin
                 login={this.props.matrixLogin}
                 register={this.props.matrixRegister}
                 isLoggingIn={this.props.isLoggingIn}
                 isRegistering={this.props.isRegistering}
             />}
-          </ScrollView>
+          </ScrollView>}
       </RX.Image>
     )
   }

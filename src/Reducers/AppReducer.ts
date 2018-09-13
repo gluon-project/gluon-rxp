@@ -37,7 +37,8 @@ export const resetToInitialState = createAction('Reset to initial state')
 export const syncCodePushDeployment = createAction('Sync CodePush Deployment')
 
 export const initialDataStartedLoading = createAction('Initial data started loading')
-reducer.on(initialDataStartedLoading, (state: AppState) => {
+
+reducer.on('@@INIT', (state: AppState) => {
   return {
     ...state,
     loadingInitialData: true,

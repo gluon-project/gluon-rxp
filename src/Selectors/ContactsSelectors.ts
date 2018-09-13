@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect'
 import { CombinedState } from '../Reducers'
-import { getRoomById } from './MatrixSelectors'
 import * as Enums from '../Enums'
 import * as _ from 'lodash'
 import Utils from '../Utils'
@@ -11,8 +10,19 @@ interface DidToUserMap {
   [did: string]: User
 }
 
+// Workaround. This should be in matrix selectors
+export const getRoomById = (state: CombinedState, roomId: string) => {
+  return _.find(state.matrix.rooms, {id: roomId})
+}
+
+export const getGroupClaimsBy = (state: CombinedState) => state.contacts.groupClaimsBy
+export const getRoomForSharing = (state: CombinedState) => state.contacts.roomForSharing
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
-export const getAllClaims = (state: CombinedState) => state.contacts.claims.concat(state.contacts.matrixClaims)
+export const getMatrixClaims = (state: CombinedState) => state.contacts.matrixClaims
+export const getLocalClaims = (state: CombinedState) => state.contacts.claims
+
+export const getAllClaims = createSelector(getLocalClaims, getMatrixClaims,
+  (localClaims, matrixClaims) => localClaims.concat(matrixClaims))
 
 export const decodeAndExtendClaims = (state: CombinedState, encodedClaims: string[]) => {
   const claims = _.map(encodedClaims, (jwt: string) => {
@@ -65,6 +75,12 @@ export const getExtendedClaims = (state: CombinedState, claims: VerifiableClaim[
   })
   return extendedClaims
 }
+export const getMatrixContacts = (state: CombinedState): VerifiableClaim[] => {
+  const allClaims = getAllClaimsExtended(state)
+  const matrixClaims = _.filter(allClaims, (claim: VerifiableClaim) => claim.claimType === 'Matrix')
+  return _.uniqBy(matrixClaims, (claim: VerifiableClaim) => claim.claimValue)
+}
+
 export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] => {
   const allClaims = getAllClaims(state)
   const extendedClaims = getExtendedClaims(state, allClaims)
@@ -73,11 +89,10 @@ export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] =>
   })
   return uniqClaims
 }
-export const getList = (state: CombinedState): User[] => {
+export const getList = createSelector(getAllClaims, (allClaims) => {
+
   const contactsByDid: DidToUserMap = {}
   const contacts: User[] = []
-
-  const allClaims = getAllClaims(state)
 
   _.forEach(allClaims, claim => {
     const keys = _.keys(claim.claim)
@@ -90,7 +105,11 @@ export const getList = (state: CombinedState): User[] => {
         did: Utils.address.universalIdToDID(claim.sub),
         shortId: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.sub)),
         claims: {},
+        uniqueIssuers: [Utils.address.universalIdToDID(claim.iss)],
       }
+    } else {
+      contactsByDid[claim.sub].uniqueIssuers = _.uniq(
+        [...contactsByDid[claim.sub].uniqueIssuers, Utils.address.universalIdToDID(claim.iss)])
     }
     // if (!contactsByDid[claim.iss]) {
     //   contactsByDid[claim.iss] = {
@@ -99,16 +118,17 @@ export const getList = (state: CombinedState): User[] => {
     //     did: Utils.address.universalIdToDID(claim.iss),
     //     shortId: Utils.address.short(Utils.address.universalIdToNetworkAddress(claim.iss)),
     //     claims: {},
+    //     uniqueIssuers: [],
     //   }
     // }
-    if (key === 'name') {
+    if (key.toLowerCase() === 'name') {
       contactsByDid[claim.sub].name = value
       contactsByDid[claim.sub].claims.name = claim
     }
-    if (key === 'matrixId') {
+    if (key.toLowerCase() === 'matrixid' || key.toLowerCase() === 'matrix') {
       contactsByDid[claim.sub].claims.matrixId = claim
     }
-    if (key === 'avatar') {
+    if (key.toLowerCase() === 'avatar') {
       contactsByDid[claim.sub].avatar = value
       contactsByDid[claim.sub].claims.avatar = claim
     }
@@ -120,7 +140,8 @@ export const getList = (state: CombinedState): User[] => {
   })
 
   return contacts
-}
+})
+
 export const getAccountByAddress = (state: CombinedState, address: string): User => {
   if (!address) {
     return null
@@ -129,6 +150,7 @@ export const getAccountByAddress = (state: CombinedState, address: string): User
   const account = _.find(getList(state), (a) => a.address.toLocaleLowerCase() === address.toLocaleLowerCase())
   if (!account) {
     return {
+      did: Utils.address.universalIdToDID(address),
       address,
       name: Utils.address.short(address),
     }
@@ -145,6 +167,7 @@ export const getAccountByDid = (state: CombinedState, did: string): User => {
   const account = _.find(getList(state), (a) => a.did.toLocaleLowerCase() === did.toLocaleLowerCase())
   if (!account) {
     return {
+      did: did,
       address: Utils.address.universalIdToNetworkAddress(did),
       name: Utils.address.short(did),
     }

@@ -5,6 +5,7 @@ import Blockies from './Blockies'
 interface Props extends RX.CommonProps {
   account?: User
   type: AccountIconType
+  size?: number
 }
 
 export enum AccountIconType {
@@ -12,6 +13,7 @@ export enum AccountIconType {
   Small,
   Medium,
   Large,
+  Custom,
 }
 
 class AccountIcon extends RX.Component<Props, null> {
@@ -20,6 +22,7 @@ class AccountIcon extends RX.Component<Props, null> {
   render() {
     let style
     let size
+    const blockieRatio = 0.3
     switch (this.props.type) {
       case AccountIconType.Micro:
         style = Theme.Styles.accountIconMicro
@@ -35,9 +38,27 @@ class AccountIcon extends RX.Component<Props, null> {
         break
       case AccountIconType.Large:
         style = Theme.Styles.accountIconLarge
-        size = 100
+        size = 84
+        break
+      case AccountIconType.Custom:
+        style = [{
+          width: this.props.size,
+          height: this.props.size,
+          borderRadius: this.props.size / 2,
+          overflow: 'hidden',
+        }]
+        size = this.props.size
         break
     }
+    const blockieStyle = [{
+      width: size * blockieRatio,
+      height: size * blockieRatio,
+      borderRadius: size * blockieRatio / 2,
+      overflow: 'hidden',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+    }]
     if (!this.props.account.avatar) {
       return (
         <Blockies
@@ -65,13 +86,13 @@ class AccountIcon extends RX.Component<Props, null> {
       return (
         <RX.View style={Theme.Styles.row}>
           <RX.Image
-            style={style}
+            style={[style, {justifyContent: 'center', alignItems: 'center'}]}
             source={this.props.account.avatar}
             resizeMode={'cover'}
-            />
+            >{this.props.children}</RX.Image>
           {this.props.account.address && <Blockies
-            style={Theme.Styles.accountIconSmallAbsolute}
-            width={20}
+            style={blockieStyle}
+            width={size * blockieRatio}
             seed={this.props.account.address}
             />}
         </RX.View>

@@ -49,6 +49,17 @@ const RightButton = ({navigation}: { navigation: any }) => {
         </RX.Text>
       </RX.Button>
     )
+  } else if (state.routeName === 'RoomActions' ) {
+    return (
+      <RX.Button
+      style={Theme.Styles.navBarItem}
+      onPress={() => {
+          navigate('RoomInfo')
+        }}
+      >
+        <Icons.MoreIcon fill={Theme.Colors.brand} />
+      </RX.Button>
+    )
   } else {
     return <RX.View/>
   }
@@ -69,10 +80,12 @@ const navigationOptions = {
 const Sender = {screen: Screens.SenderScreen, navigationOptions: {title: 'Sender'}}
 const RequestReceiver = {screen: Screens.SenderScreen, navigationOptions: {title: 'Receiver'}}
 const Receiver = {screen: Screens.ReceiverScreen, navigationOptions: {title: 'Receiver'}}
-const NewContactForm = {screen: Screens.ContactNewFormScreen, navigationOptions: {title: 'New Contact'}}
+const NewContactForm = {screen: Screens.ContactFormScreen, navigationOptions: {title: 'New Contact'}}
 const ContactForm = {screen: Screens.ContactFormScreen, navigationOptions: {title: 'New Claim'}}
 const ContactActions = {screen: Screens.ContactActionsScreen, navigationOptions: {title: 'Contact'}}
 const ContactSelection = {screen: Screens.ContactSelectionScreen, navigationOptions: {title: 'Select Contact'}}
+const ContactClaimGroups = {screen: Screens.ContactClaimGroupsScreen, navigationOptions: {title: 'Claims'}}
+const ContactClaimDetails = {screen: Screens.ContactClaimDetailsScreen, navigationOptions: {title: 'Details'}}
 const LoginStack = {screen: Screens.LoginScreen, navigationOptions: {title: 'Login'}}
 const Settings = { screen: Screens.SettingsScreen, navigationOptions: { title: 'Settings' } }
 const More = { screen: Screens.MoreMasterScreen, navigationOptions: { title: 'Settings' } }
@@ -92,6 +105,8 @@ const Feed = {screen: Screens.FeedScreen, navigationOptions: {title: 'Feed'}}
 const RoomActions = {screen: Screens.RoomActionsScreen, navigationOptions: {title: 'Room'}}
 const Rooms = {screen: Screens.RoomsScreen, navigationOptions: {title: 'Rooms'}}
 const RoomSelection = {screen: Screens.RoomSelectionScreen, navigationOptions: {title: 'Select Room'}}
+const RoomNewForm = {screen: Screens.RoomNewFormScreen, navigationOptions: {title: 'New room'}}
+const RoomInfo = {screen: Screens.RoomInfoScreen, navigationOptions: {title: 'Room'}}
 
 const CompactSendMainScreen = {screen: Screens.CompactSendMainScreen, navigationOptions: {title: 'Transfers'}}
 const CompactRequestMainScreen = {screen: Screens.CompactRequestMainScreen, navigationOptions: {title: 'Request'}}
@@ -105,14 +120,16 @@ export const WideNavigationConfiguration = {
     masterScreen: Screens.RoomsMasterScreen,
     screen: TabNavigator(
       {
-        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions)},
+        RoomActions: {screen: StackNavigator({ RoomActions, ContactForm, RoomSelection, ContactSelection, RoomInfo }, navigationOptions)},
+        RoomNewForm: {screen: StackNavigator({ RoomNewForm }, navigationOptions)},
       },
       navigationOptions,
     ),
   },
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
-    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection }, navigationOptions),
+    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection,
+      ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     masterScreen: Screens.WalletMasterScreen,
@@ -170,12 +187,13 @@ export const moreStack = {  }
 export const CompactNavigationConfiguration = {
   RoomsTab: {
     screen: StackNavigator(
-      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection },
+      { CompactRoomsMainScreen, RoomActions, ContactForm, RoomSelection, ContactSelection, RoomNewForm, RoomInfo },
       navigationOptions,
     ),
   },
   ContactsTab: {
-    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection, ContactSelection }, navigationOptions),
+    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection,
+      ContactSelection, ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
     screen: StackNavigator(
@@ -201,7 +219,7 @@ export const CompactNavigationConfiguration = {
       navigationOptions,
     ),
   },
-  Settings: { screen: StackNavigator({ Settings, WebOfTrust }, navigationOptions) },
+  Settings: { screen: StackNavigator({ Settings }, navigationOptions) },
   // More: {
   //   screen: StackNavigator(moreStack, navigationOptions),
   // },

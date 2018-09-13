@@ -18,6 +18,7 @@ interface Props extends RX.CommonProps {
   isOff?: boolean
   smallSeedIcon?: boolean
   iconType?: Enums.VisualType
+  isRadioButton?: boolean
 }
 
 export enum ListItemType {
@@ -30,7 +31,7 @@ export default class ListItem extends RX.Component<Props, null> {
 
   render() {
     return (
-      <RX.Button style={[Theme.Styles.listItem, this.props.selected && Theme.Styles.listItemSelected]}
+      <RX.Button style={[Theme.Styles.listItem, this.props.selected && !this.props.isRadioButton && Theme.Styles.listItemSelected]}
         onPress={this.props.onPress}
         disabled={this.props.disabled}>
         <RX.View style={Theme.Styles.listItemIconWrapper}>
@@ -65,6 +66,7 @@ export default class ListItem extends RX.Component<Props, null> {
         </RX.View>}
         <RX.View>
           {this.props.type === ListItemType.Default && <Icons.ChevronRightIcon />}
+          {this.props.isRadioButton && <Icons.CheckBox selected={this.props.selected} />}
         </RX.View>
       </RX.Button>
     )

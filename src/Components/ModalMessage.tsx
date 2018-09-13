@@ -49,6 +49,7 @@ export default class ModalMessage extends RX.Component<Props, null> {
                   value={this.props.config.inputText}
                 />
                 <CallToAction
+                  padded
                   onPress={() => RX.Clipboard.setText(this.props.config.inputText)}
                   type={CallToAction.type.Main}
                   title='Copy'

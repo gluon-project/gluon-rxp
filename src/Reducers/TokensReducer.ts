@@ -5,6 +5,7 @@ import {
 import { resetToInitialState } from './AppReducer'
 import Config from '../Config'
 import * as Enums from '../Enums'
+import { uniqBy } from 'lodash'
 
 export interface TokensState {
   current: string,
@@ -43,7 +44,7 @@ export const addToken = createAction('Add token')
 reducer.on(addToken, (state: TokensState, payload?: Token) => {
   return {
     ...state,
-    list: [ ...state.list, payload ],
+    list: uniqBy([ ...state.list, payload ], (token: Token) => token.address),
   }
 })
 

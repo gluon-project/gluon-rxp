@@ -18,7 +18,7 @@ import Actions from '../Reducers/Actions'
 import * as Selectors from '../Selectors'
 import * as Enums from '../Enums'
 import * as Services from '../Services'
-import utils from '../Utils'
+import Utils from '../Utils'
 
 // const client = Matrix.createClient({
 //   baseUrl: 'https://matrix.org',
@@ -81,6 +81,8 @@ import utils from '../Utils'
 
 export function * handleSyncEvent (event: any) {
   if (event === 'PREPARED') {
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixInitialSync}))
+
     const rooms = yield call(Services.Matrix.getRooms)
     yield put(Actions.Matrix.setRooms(rooms))
 
@@ -116,6 +118,7 @@ export function * watchMatrixUpdates () {
     Services.Matrix.client.on('sync', emitter)
     return () => Services.Matrix.client.off('sync', emitter)
   })
+  yield put(Actions.Process.start({type: Enums.ProcessType.MatrixInitialSync}))
 
   yield takeEvery(synchChannel, handleSyncEvent)
 
@@ -134,7 +137,7 @@ export function* watchStartLogin(): SagaIterator {
       console.log({profileInfo, currentWeb3User})
 
       yield put(Actions.Contacts.signAnonymousClaim({
-        sub: utils.address.universalIdToDID(currentWeb3User.address),
+        sub: currentWeb3User.did,
         claim: {
           matrixId: currentUser.user_id,
         },
@@ -142,7 +145,7 @@ export function* watchStartLogin(): SagaIterator {
 
       if (profileInfo.displayname) {
         yield put(Actions.Contacts.signAnonymousClaim({
-          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          sub: currentWeb3User.did,
           claim: {
             name: profileInfo.displayname,
           },
@@ -150,7 +153,7 @@ export function* watchStartLogin(): SagaIterator {
       }
       if (profileInfo.avatar_url) {
         yield put(Actions.Contacts.signAnonymousClaim({
-          sub: utils.address.universalIdToDID(currentWeb3User.address),
+          sub: currentWeb3User.did,
           claim: {
             avatar: profileInfo.avatar_url,
           },
@@ -189,28 +192,6 @@ export function* watchStartRegister(): SagaIterator {
       yield put(Actions.App.handleError(e))
     }
     yield put(Actions.Process.end({type: Enums.ProcessType.MatrixRegister}))
-  }
-}
-
-export function* watchLogout(): SagaIterator {
-  while (true) {
-    const action = yield take(Actions.Matrix.logout)
-
-    try {
-      yield call(Services.Matrix.logout)
-      const uportDid = yield select(Selectors.User.getUportDid)
-      if (uportDid !== null) {
-        const credentials = {
-          sub: uportDid,
-          claim: {
-            matrixUser: false,
-          },
-        }
-        yield call(Services.uPort.attestCredentials, credentials)
-      }
-    } catch (e) {
-      yield put(Actions.App.handleError(e))
-    }
   }
 }
 
@@ -302,7 +283,8 @@ export function* watchRequest(): SagaIterator {
         }
 
         const content = {
-          body: `${sender.name} requests ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}`,
+          body: `${sender.name} requests ${transaction.amount ?
+            Utils.number.numberToString(transaction.amount, token.decimals) : ''} ${token ? token.code : ''}`,
           formatted_body: `<strong><a href="${url}">${sender.name} is requesting \
 ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></strong>`,
           format: 'org.matrix.custom.html',
@@ -336,5 +318,87 @@ ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></
       yield put(Actions.App.handleError(e))
     }
     yield put(Actions.Process.end({type: Enums.ProcessType.RequestInMatrix}))
+  }
+}
+
+export function* watchCreateRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.createRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixCreateRoom}))
+
+    try {
+      const file = action.payload.file
+      const options = action.payload
+      delete options['file']
+      const result = yield call(Services.Matrix.createRoom, options)
+      if (file) {
+        yield call(Services.Matrix.setRoomAvatar, result.room_id, file)
+      }
+      yield put(Actions.Matrix.selectRoom(result.room_id))
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixCreateRoom}))
+  }
+}
+
+export function* watchLeaveRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.leaveRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixLeaveRoom}))
+
+    try {
+      const result = yield call(Services.Matrix.leaveRoom, action.payload)
+      const rooms: MatrixRoom[] = yield select(Selectors.Matrix.getRoomsRaw)
+      yield put(Actions.Matrix.selectRoom(rooms.length > 0 ? rooms[0].id : null))
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixLeaveRoom}))
+  }
+}
+
+export function* watchInviteToRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.inviteToRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixInviteContacts}))
+
+    try {
+      const result = yield call(Services.Matrix.invite, action.payload.roomId, action.payload.userIds)
+      yield put(Actions.Navigation.navigateBack())
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixInviteContacts}))
+  }
+}
+
+export function* watchSetRoomName(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.setRoomName)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixSetRoomName}))
+
+    try {
+      const result = yield call(Services.Matrix.setRoomName, action.payload.roomId, action.payload.name)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSetRoomName}))
+  }
+}
+
+export function* watchSetRoomAvatar(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Matrix.setRoomAvatar)
+    yield put(Actions.Process.start({type: Enums.ProcessType.MatrixSetRoomAvatar}))
+
+    try {
+      const result = yield call(Services.Matrix.setRoomAvatar, action.payload.roomId, action.payload.file)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+    yield put(Actions.Process.end({type: Enums.ProcessType.MatrixSetRoomAvatar}))
   }
 }

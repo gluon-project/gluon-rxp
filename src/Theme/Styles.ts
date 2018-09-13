@@ -84,6 +84,7 @@ const Styles = {
     borderRadius: 24,
     backgroundColor: Colors.transparent,
     marginRight: Metrics.baseMargin,
+    overflow: 'visible',
   }),
 
   listItemIconEmpty: RX.Styles.createViewStyle({
@@ -115,14 +116,16 @@ const Styles = {
   listItemTitle: RX.Styles.createTextStyle({
     color: Colors.light,
     fontSize: Fonts.size.medium,
-    fontWeight: '100',
+    fontWeight: '300',
     marginBottom: Metrics.smallMargin,
   }),
   listItemAmount: RX.Styles.createTextStyle({
+    fontWeight: '300',
     color: Colors.light,
     fontSize: Fonts.size.large,
   }),
   listItemSubTitle: RX.Styles.createTextStyle({
+    fontWeight: '100',
     color: Colors.info,
     fontSize: Fonts.size.small,
   }),
@@ -135,7 +138,8 @@ const Styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: Metrics.baseMargin,
-    marginTop: Metrics.baseMargin,
+    marginRight: Metrics.baseMargin,
+    marginLeft: Metrics.baseMargin,
     flexDirection: 'row',
   }),
   buttonIcon: RX.Styles.createTextStyle({
@@ -144,6 +148,7 @@ const Styles = {
     margin: Metrics.smallMargin,
   }),
   buttonLabel: RX.Styles.createTextStyle({
+    fontWeight: '300',
     color: Colors.buttonLabel,
     fontSize: Fonts.size.medium,
     flexDirection: 'column',
@@ -159,19 +164,18 @@ const Styles = {
   }),
   buttonSecondary: RX.Styles.createButtonStyle({
     backgroundColor: Colors.transparent,
+    borderWidth: Metrics.borderWidth,
+    borderColor: Colors.brand,
   }),
   buttonLabelSecondary: RX.Styles.createTextStyle({
     color: Colors.brand,
   }),
   buttonMain: RX.Styles.createButtonStyle({
     backgroundColor: Colors.cta,
-    marginBottom: Metrics.baseMargin,
-    marginRight: Metrics.baseMargin,
-    marginLeft: Metrics.baseMargin,
   }),
   sectionTitle: RX.Styles.createTextStyle({
     color: Colors.info,
-    fontSize: Fonts.size.sectionTitle,
+    fontSize: Fonts.size.small,
     marginTop: Metrics.baseMargin,
     marginBottom: Metrics.mediumMargin,
   }),
@@ -272,9 +276,9 @@ const Styles = {
     overflow: 'hidden',
   }),
   accountIconLarge: RX.Styles.createImageStyle({
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 84,
+    height: 84,
+    borderRadius: 42,
     marginBottom: Metrics.baseMargin,
     overflow: 'hidden',
   }),
@@ -413,25 +417,29 @@ const Styles = {
       borderColor: Colors.light,
       borderWidth: Metrics.borderWidth,
       overflow: 'hidden',
-      height: Metrics.buttonHeight - 10,
+      height: Metrics.buttonHeight - 12,
       margin: Metrics.baseMargin,
     }),
     button: RX.Styles.createButtonStyle({
       backgroundColor: Colors.transparent,
       flex: 1,
+      margin: 0,
     }),
     label: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.medium - 4,
+      fontWeight: '300',
+      fontSize: Fonts.size.medium,
       alignSelf: 'center',
     }),
     selectedButton: RX.Styles.createButtonStyle({
       backgroundColor: Colors.light,
       flex: 1,
+      margin: 0,
     }),
     selectedLabel: RX.Styles.createTextStyle({
+      fontWeight: '300',
       color: Colors.background,
-      fontSize: Fonts.size.medium - 4,
+      fontSize: Fonts.size.medium,
       alignSelf: 'center',
     }),
   },
@@ -561,7 +569,7 @@ const Styles = {
     }),
     warning: RX.Styles.createTextStyle({
       color: Colors.info,
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.small,
       marginBottom: Metrics.baseMargin,
       textAlign: 'center',
     }),
@@ -577,10 +585,12 @@ const Styles = {
   }),
   accountInfo: {
     wrapper: RX.Styles.createViewStyle({
-      margin: Metrics.baseMargin,
+      padding: Metrics.baseMargin,
       alignItems: 'center',
       justifyContent: 'center',
       flex: 1,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
     }),
     title: RX.Styles.createTextStyle({
       color: Colors.light,
@@ -630,8 +640,14 @@ const Styles = {
     }),
     messageBody: RX.Styles.createTextStyle({
       color: Colors.light,
-      fontSize: Fonts.size.small,
+      fontSize: Fonts.size.medium,
+      fontWeight: '300',
       marginBottom: Metrics.baseMargin,
+    }),
+    showClaimsLabel: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+      fontWeight: '300',
     }),
     inputRow: RX.Styles.createViewStyle({
       // height: 60,
@@ -643,6 +659,7 @@ const Styles = {
       // paddingBottom: Metrics.smallMargin,
       borderTopWidth: 1,
       borderColor: Colors.borderColor,
+      paddingTop: 4,
     }),
     messageSenderAvatarInput: RX.Styles.createViewStyle({
       width: 32,
@@ -697,7 +714,7 @@ const Styles = {
     groupTitle: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,
-      fontWeight: '100',
+      fontWeight: '300',
       textAlign: 'center',
       marginTop: Metrics.baseMargin,
       marginBottom: Metrics.smallMargin,
@@ -711,7 +728,8 @@ const Styles = {
     groupListItemTitle: RX.Styles.createTextStyle({
       color: Colors.light,
       textAlign: 'center',
-      fontSize: Fonts.size.medium,
+      fontSize: Fonts.size.special,
+      fontWeight: '500',
       marginBottom: Metrics.baseMargin,
     }),
     groupListItemAvatar: RX.Styles.createTextStyle({
@@ -720,20 +738,58 @@ const Styles = {
     }),
     info: RX.Styles.createTextStyle({
       color: Colors.info,
-      fontSize: Fonts.size.micro,
+      fontSize: Fonts.size.small,
       marginLeft: Metrics.smallMargin,
+    }),
+    addressInfo: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+    }),
+    addressInfoDid: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+    }),
+    groupedClaimSourceTitle: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      marginBottom: Metrics.smallMargin,
+      marginLeft: Metrics.smallMargin,
+    }),
+    groupedClaimSourceTitleRow: RX.Styles.createViewStyle({
+      flexDirection: 'row',
+      borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    groupedClaimDerailsRow: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
     }),
     detailsInfoRow: RX.Styles.createViewStyle({
       flexDirection: 'row',
       justifyContent: 'space-between',
       borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
       borderColor: Colors.borderColor,
       paddingTop: Metrics.baseMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
     }),
     detailsLabel: RX.Styles.createTextStyle({
       color: Colors.brand,
-      fontSize: Fonts.size.micro,
+      fontSize: Fonts.size.small,
       marginLeft: Metrics.smallMargin,
+    }),
+    detailsSeparator: RX.Styles.createTextStyle({
+      color: Colors.borderColor,
+      fontSize: Fonts.size.small,
+      marginLeft: Metrics.smallMargin,
+      marginRight: Metrics.smallMargin,
     }),
     detailsWrapper: RX.Styles.createViewStyle({
       borderTopWidth: Metrics.borderWidth,
@@ -765,6 +821,152 @@ const Styles = {
     alignItems: 'center',
     borderRadius: Metrics.borderRadiusMax,
   }),
+  sectionTitleWrapper: RX.Styles.createViewStyle({
+    marginTop: Metrics.baseMargin * 2,
+    paddingBottom: Metrics.smallMargin,
+    borderBottomWidth: Metrics.borderWidth,
+    borderColor: Colors.borderColor,
+    paddingLeft: Metrics.baseMargin,
+  }),
+  sectionTitleLabel: RX.Styles.createTextStyle({
+    color: Colors.info,
+    fontSize: Fonts.size.small,
+    marginLeft: Metrics.baseMargin,
+  }),
+  claimButton: {
+    button: RX.Styles.createViewStyle({
+      flex: 0,
+      minHeight: 60,
+      minWidth: 65,
+      borderRadius: Metrics.borderRadius,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.lightBackground,
+      marginRight: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    label: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+      marginTop: Metrics.smallMargin,
+      fontWeight: '100',
+    }),
+    selectedButton: RX.Styles.createViewStyle({
+      backgroundColor: Colors.transparent,
+    }),
+    selectedLabel: RX.Styles.createTextStyle({
+      color: Colors.brand,
+    }),
+  },
+  claimInputBox: {
+    wrapper: RX.Styles.createViewStyle({
+      backgroundColor: Colors.lightBackground,
+      borderRadius: Metrics.borderRadius,
+      marginLeft: Metrics.baseMargin,
+      marginRight: Metrics.baseMargin,
+      marginTop: Metrics.smallMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    titleRow: RX.Styles.createViewStyle({
+      marginTop: Metrics.baseMargin,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      marginLeft: Metrics.smallMargin,
+    }),
+    signerLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.small,
+    }),
+  },
+  section: {
+    row: RX.Styles.createViewStyle({
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.smallMargin * 2,
+      flexDirection: 'row',
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+    }),
+    title: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.small,
+      marginBottom: Metrics.smallMargin,
+    }),
+    padded: RX.Styles.createViewStyle({
+      paddingLeft: Metrics.baseMargin,
+    }),
+  },
+  box: {
+    wrapper: RX.Styles.createViewStyle({
+      backgroundColor: Colors.lightBackground,
+      borderRadius: Metrics.borderRadius,
+      padding: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+    requestWrapper: RX.Styles.createViewStyle({
+      justifyContent: 'center',
+      alignItems: 'center',
+    }),
+    button: RX.Styles.createButtonStyle({
+      height: Metrics.buttonHeight,
+      backgroundColor: Colors.brand,
+      alignSelf: 'stretch',
+      justifyContent: 'center',
+      alignItems: 'center',
+      // marginTop: Metrics.baseMargin,
+      flexDirection: 'row',
+    }),
+    buttonLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+    }),
+    titleLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      fontWeight: '200',
+      marginBottom: Metrics.smallMargin,
+    }),
+    titleLabelInfo: RX.Styles.createTextStyle({
+      color: Colors.info,
+      fontSize: Fonts.size.medium,
+      fontWeight: '200',
+      marginBottom: Metrics.smallMargin,
+    }),
+    accountLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.medium,
+      fontWeight: '300',
+      marginBottom: Metrics.smallMargin,
+      textAlign: 'center',
+    }),
+    amountWrapper: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: Metrics.baseMargin,
+      paddingTop: Metrics.baseMargin,
+    }),
+
+    amountLabel: RX.Styles.createTextStyle({
+      color: Colors.light,
+      fontSize: Fonts.size.special,
+      fontWeight: '500',
+    }),
+    footerRow: RX.Styles.createViewStyle({
+      borderTopWidth: Metrics.borderWidth,
+      borderBottomWidth: Metrics.borderWidth,
+      borderColor: Colors.borderColor,
+      paddingTop: Metrics.smallMargin,
+      paddingBottom: Metrics.baseMargin,
+      marginTop: Metrics.baseMargin,
+      marginBottom: Metrics.baseMargin,
+    }),
+  },
 }
 
 export default Styles

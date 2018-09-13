@@ -1,6 +1,7 @@
 import RX = require('reactxp')
 import * as Theme from '../Theme'
 import * as _ from 'lodash'
+import AccountIcon from './AccountIcon'
 
 interface Props extends RX.CommonProps {
   type?: ButtonType
@@ -9,6 +10,8 @@ interface Props extends RX.CommonProps {
   onPress?: (e: RX.Types.SyntheticEvent) => void
   inProgress?: boolean
   disabled?: boolean
+  account?: User
+  padded?: boolean
 }
 
 export enum ButtonType {
@@ -50,9 +53,16 @@ export default class CallToAction extends RX.Component<Props, null> {
         break
     }
     return (
-      <RX.Button style={[buttonStyle, this.props.disabled && {backgroundColor: Theme.Colors.borderColor}]}
+      <RX.Button style={[buttonStyle,
+        this.props.disabled && {backgroundColor: Theme.Colors.borderColor},
+        this.props.padded && {marginTop: Theme.Metrics.baseMargin},
+      ]}
         onPress={this.props.onPress} disabled={this.props.disabled}>
-        {!this.props.inProgress && <RX.Text style={buttonLabelStyle}>{this.props.title}</RX.Text>}
+        {this.props.account && <AccountIcon account={this.props.account} type={AccountIcon.type.Custom} size={20}/>}
+        {!this.props.inProgress && <RX.Text style={[
+          buttonLabelStyle,
+          this.props.account && {marginLeft: Theme.Metrics.smallMargin},
+        ]}>{this.props.title}</RX.Text>}
         {this.props.inProgress && <RX.ActivityIndicator
           color={this.props.type === ButtonType.Branded ? Theme.Colors.buttonLabelDark : Theme.Colors.buttonLabel}
           size='small'

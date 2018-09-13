@@ -39,10 +39,10 @@ class Navigation extends RX.Component<Props, null> {
     return (
         <ResponsiveLayout>
         <RX.View style={Theme.Styles.containerFull}>
-          {showLogin && <LoginScreen />}
-          {this.props.loadingInitialData && <LoadingScreen />}
+          {!this.props.loadingInitialData && showLogin && <LoginScreen />}
           {!this.props.loadingInitialData && !showLogin
             && <MasterDetailNavigator />}
+          {this.props.loadingInitialData && <LoadingScreen />}
         </RX.View>
         {this.props.modalMessage && <ModalMessage
           onClose={this.props.closeModalMessage}

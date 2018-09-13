@@ -5,10 +5,10 @@ const colors = {
   tabBarBackground: 'rgb(0,0,0)',
   backgroundSelected: 'rgba(0,0,0,0.5)',
   lightBackground: 'rgba(255,255,255,0.08)',
-  brand: '#BD10E0',
+  brand: 'rgb(189,16,224)',
   brandBackGround: 'rgba(189, 16, 224, 0.3)',
   cta: '#BD10E0',
-  info: 'rgba(255,255,255,0.4)',
+  info: 'rgba(255,255,255,0.5)',
   tint: '#BD10E0',
   light: 'white',
   buttonLabel: 'white',
@@ -32,6 +32,9 @@ const colors = {
   },
   tabBarIcon: '#C9CACC',
   tabBarButtonSelected: 'transparent',
+  pending: 'rgb(62,14,72)',
+  success: 'rgb(0,37,26)',
+  failed: 'rgb(73,0,0)',
 }
 
 export default colors

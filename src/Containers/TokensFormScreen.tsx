@@ -31,6 +31,7 @@ interface State {
   address?: string
   decimals?: number,
   exponent?: string,
+  totalSupply?: number,
   code?: string
   isNew?: boolean,
   type?: Enums.TokenType,
@@ -44,9 +45,10 @@ class TokensFormScreen extends RX.Component<Props, State> {
       name: '',
       address: '',
       decimals: 0,
+      totalSupply: 1000000,
       exponent: '2',
       code: '',
-      isNew: true,
+      isNew: false,
       type: Enums.TokenType.Erc223,
       network: null,
     }
@@ -74,7 +76,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         type: this.state.type,
-        reserveToken: this.props.reserveToken.address,
+        decimals: this.state.decimals,
+        // reserveToken: this.props.reserveToken.address,
         exponent: parseFloat(this.state.exponent),
       })
     } else {
@@ -84,8 +87,9 @@ class TokensFormScreen extends RX.Component<Props, State> {
         address: this.state.address,
         networkId: this.state.network,
         decimals: this.state.decimals,
+        totalSupply: this.state.totalSupply,
         exponent: parseFloat(this.state.exponent),
-        reserveToken: Config.tokens.gluonAddress,
+        // reserveToken: Config.tokens.gluonAddress,
       })
     }
   }
@@ -108,7 +112,9 @@ class TokensFormScreen extends RX.Component<Props, State> {
   private isValid = () => {
     if (this.state.isNew) {
       return (this.state.network === '4' || this.state.network === '1')
-        && this.state.name !== '' && this.state.code !== '' && this.state.decimals > -1 && parseFloat(this.state.exponent) > 0
+        && this.state.name !== '' && this.state.code !== ''
+        && this.state.totalSupply > 0
+        && this.state.decimals > -1 && parseFloat(this.state.exponent) > 0
     } else {
       return this.state.name !== '' && this.state.code !== '' && Services.Web3.ethSingleton.getWeb3().isAddress(this.state.address)
     }
@@ -124,7 +130,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
   handleTypeChange(isNew: boolean) {
     this.setState({isNew})
     if (!isNew) {
-      this.props.getAvailableTokens()
+      //this.props.getAvailableTokens()
     }
   }
 
@@ -132,13 +138,13 @@ class TokensFormScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          <SegmentedControl
+          {/* <SegmentedControl
             titles={['Create new', 'Add existing']}
             selectedIndex={this.state.isNew ? 0 : 1}
             handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
-            />
-          {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>}
-          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
+            /> */}
+          {/* {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>} */}
+          {/* {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
             {this.props.availableTokens.map((token, index) => <ListItem
               key={index}
               account={token}
@@ -148,7 +154,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               type={ListItem.type.Secondary}
               onPress={() => this.addExisting(token)}
             />)}
-          </RX.View>}
+          </RX.View>} */}
 
           {!this.state.isNew && <TextInput
             label='Address'
@@ -168,7 +174,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               />
           </RX.View>
 
-          {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
+          {/* {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveToken.decimals}
               xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
@@ -179,13 +185,13 @@ class TokensFormScreen extends RX.Component<Props, State> {
               exponent={parseFloat(this.state.exponent)}
               totalSupply={0}
               numTokens={0}
-              /></RX.View>}
+              /></RX.View>} */}
 
           {this.state.isNew && <TextInput
-            label='Exponent'
+            label='Total supply'
             keyboardType='numeric'
-            value={this.state.exponent.toString()}
-            onChangeText={(value) => this.setState({ exponent: value.replace(',', '.') })}
+            value={this.state.totalSupply.toString()}
+            onChangeText={(value) => this.setState({ totalSupply: parseInt(value, 10) })}
             />}
 
           <RX.View
@@ -193,6 +199,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
               marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
             }}>
             <CallToAction
+              padded
               type={CallToAction.type.Main}
               title={this.state.isNew ? 'Create token' : 'Add'}
               onPress={this.handleSave}

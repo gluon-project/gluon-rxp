@@ -34,9 +34,9 @@ export default class WalletDetails extends RX.Component<Props, null> {
         </RX.View>}
 
         {this.props.balances.length === 0 && <RX.View style={Theme.Styles.infoBox.wrapper}>
-            {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
+            {/* {RX.Platform.getType() === 'web' && <RX.Text style={Theme.Styles.about.warning}>
               No Web3 provider detected. Please use Metamask, Parity, Cipher or:
-            </RX.Text>}
+            </RX.Text>} */}
             <CallToAction
               type={CallToAction.type.Main}
               title='Login with uPort (Rinkeby)'
@@ -53,15 +53,7 @@ export default class WalletDetails extends RX.Component<Props, null> {
             </RX.Text> */}
           </RX.View>}
         {this.props.balances.length > 0 && <RX.View>
-            <ListItem
-              key='new'
-              isOff
-              title={`New token`}
-              subTitle={`Create or add existing`}
-              type={ListItem.type.Default}
-              selected={this.props.routeName === 'TokensForm'}
-              onPress={() => this.props.navigate('TokensForm')}
-            />
+
             {this.props.balances.map((account, key) => {
               return <ListItem
                 key={key}
@@ -74,6 +66,17 @@ export default class WalletDetails extends RX.Component<Props, null> {
                 onPress={() => this.props.handleSelectToken(account.token)}
               />
             })}
+
+            <CallToAction
+              padded
+              type={CallToAction.type.Main}
+              title={'Add token'}
+              onPress={() => {
+                this.props.navigate('TokensForm')
+              }}
+              disabled={this.props.routeName === 'TokensForm'}
+              />
+
           </RX.View>}
 
     </RX.View>

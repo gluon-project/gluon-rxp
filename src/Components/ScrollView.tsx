@@ -2,6 +2,7 @@ import RX = require('reactxp')
 import * as Theme from '../Theme'
 import * as Enums from '../Enums'
 import { VisualBox } from '../Components'
+import { isEqual } from 'lodash'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
@@ -47,6 +48,11 @@ export default class ScrollView extends RX.Component<Props, State> {
       || prevState.wrapperHeight !== this.state.wrapperHeight) {
         this.handleAutoScroll(this._ref)
       }
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return this.state.contentHeight !== nextState.contentHeight || this.state.wrapperHeight !== nextState.wrapperHeight
+    || !isEqual(this.props.children, nextProps.children)
   }
 
   render() {

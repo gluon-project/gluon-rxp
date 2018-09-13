@@ -4,6 +4,7 @@ import {
 } from 'redux-act'
 import { remove, findIndex } from 'lodash'
 import { resetToInitialState } from './AppReducer'
+import { logout } from './UserReducer'
 import Config from '../Config'
 
 export interface MatrixState {
@@ -22,7 +23,6 @@ export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: MatrixState) => {
   return initialState
 })
-export const logout = createAction('Matrix logout')
 reducer.on(logout, (state: MatrixState) => {
   return initialState
 })
@@ -75,3 +75,8 @@ export const register = createAction('Matrix register')
 export const sendTextMessage = createAction('Send text message')
 export const sendMessage = createAction('Send message')
 export const sendFile = createAction('Send file')
+export const createRoom = createAction('Matrix create room')
+export const leaveRoom = createAction('Matrix leave room')
+export const inviteToRoom = createAction('Matrix invite to room')
+export const setRoomName = createAction('Matrix set room name')
+export const setRoomAvatar = createAction('Matrix set room avatar')

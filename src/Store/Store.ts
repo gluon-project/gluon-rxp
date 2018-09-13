@@ -28,37 +28,46 @@ const updateReducers = (store: Store<any>) => {
     const config = {
       storage: configuredStorage,
       whitelist: [
+        'app',
+        'attachment',
+        'compactNavigation',
+        'contacts',
+        'feed',
+        'matrix',
+        'modalMessage',
         'osExtensions',
         'settings',
-        'nav',
-        'feed',
-        'attachment',
-        'contacts',
+        'transactions',
         'tokens',
-        'matrix',
+        'user',
+        'wideNavigation',
       ], // Reducers that should persist their states between app launches
     }
 
     // Begin a fresh store
-    persistStore(store, config, () => {callback(store)})
+    setTimeout(() => {
 
-    // Check to ensure latest reducer version
-    configuredStorage.getItem('reducerVersion').then((localVersion: string) => {
-      if (parseInt(localVersion, 10) !== reducerVersion) {
-        console.log('PURGING STORE', localVersion, 'vs.', reducerVersion)
-        // Purge store and refresh
-        persistStore(store, config, () => {
-          // Start a fresh store
-          persistStore(store, config, () => {callback(store)})
-        }).purge()
-        // Update reducer to current version number
-        configuredStorage.setItem('reducerVersion', reducerVersion.toString(), (e) => {
-          return
-        })
-      }
-    }).catch(() => configuredStorage.setItem('reducerVersion', reducerVersion.toString(), (e) => {
-      return
-    }))
+      persistStore(store, config, () => {callback(store)})
+
+      // Check to ensure latest reducer version
+      configuredStorage.getItem('reducerVersion').then((localVersion: string) => {
+        if (parseInt(localVersion, 10) !== reducerVersion) {
+          console.log('PURGING STORE', localVersion, 'vs.', reducerVersion)
+          // Purge store and refresh
+          persistStore(store, config, () => {
+            // Start a fresh store
+            persistStore(store, config, () => {callback(store)})
+          }).purge()
+          // Update reducer to current version number
+          configuredStorage.setItem('reducerVersion', reducerVersion.toString(), (e) => {
+            return
+          })
+        }
+      }).catch(() => configuredStorage.setItem('reducerVersion', reducerVersion.toString(), (e) => {
+        return
+      }))
+
+    }, 800)
   })
 }
 

@@ -2,6 +2,7 @@ import AboutDetails from './AboutDetails'
 import AccountIcon from './AccountIcon'
 import AttachmentCard from './AttachmentCard'
 import CallToAction from './CallToAction'
+import ClaimTypeButton from './ClaimTypeButton'
 import ContactListDetails from './ContactListDetails'
 import ClaimBox from './ClaimBox'
 import Graphs from './Graphs'
@@ -17,12 +18,14 @@ import RoomsDetails from './RoomsDetails'
 import ScrollView from './ScrollView'
 import SegmentedControl from './SegmentedControl'
 import SendDetails from './SendDetails'
+import SectionHeader from './SectionHeader'
 import TabBar from './TabBar'
 import TabBarButton from './TabBarButton'
 import TextInput from './TextInput'
 import ToggleSwitch from './ToggleSwitch'
 import VisualBox from './VisualBox'
 import WalletDetails from './WalletDetails'
+import FilePicker from './FilePicker'
 
 export {
   AboutDetails,
@@ -30,7 +33,9 @@ export {
   AttachmentCard,
   CallToAction,
   ClaimBox,
+  ClaimTypeButton,
   ContactListDetails,
+  FilePicker,
   Graphs,
   Icons,
   ImagePicker,
@@ -41,6 +46,7 @@ export {
   NavBar,
   RequestDetails,
   RoomsDetails,
+  SectionHeader,
   SegmentedControl,
   SendDetails,
   ScrollView,

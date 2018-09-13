@@ -6,16 +6,22 @@ export let fileFilter: any = null
 
 export const logout = () => {
   return new Promise<MatrixUser>((resolve, reject) => {
-    client.logout((err: any, resp: any) => {
-      console.log(err)
-      if (err) {
-        reject(err)
-      } else {
-        console.log(resp)
-        client.stopClient()
-        resolve(resp)
-      }
-    })
+    // client.logout((err: any, resp: any) => {
+    //   console.log(err)
+    //   if (err) {
+    //     reject(err)
+    //   } else {
+    //     console.log(resp)
+    //     client.stopClient()
+    //     resolve(resp)
+    //   }
+    // })
+    if (client) {
+      client.stopClient()
+    }
+
+    resolve(null)
+
   })
 }
 
@@ -47,6 +53,7 @@ export const login = (username: string, password: string, baseUrl: string) => {
             timelineSupport: true,
         })
         createFileFilter()
+        enableAutoJoin()
         // client.startClient()
         resolve(resp)
       }
@@ -72,6 +79,15 @@ export const getProfileInfo = () => {
   })
 }
 
+const enableAutoJoin = () => {
+  client.on('RoomMember.membership', function(event: any, member: any) {
+    if (member.membership === 'invite' && member.userId === client.credentials.userId) {
+        client.joinRoom(member.roomId).done(function() {
+            console.log('Auto-joined', member.roomId)
+        })
+    }
+  })
+}
 
 export const startClient = (options: MatrixUser) => {
   client = Matrix.createClient({
@@ -83,6 +99,7 @@ export const startClient = (options: MatrixUser) => {
     timelineSupport: true,
   })
   createFileFilter()
+  enableAutoJoin()
   // client.startClient()
   return true
 }
@@ -93,6 +110,30 @@ export const sendTextMessage = (roomId: string, message: string) => {
 
 export const sendMessage = (roomId: string, content: any) => {
   return client.sendMessage(roomId, content)
+}
+
+export const createRoom = (options: MatrixNewRoomOptions) => {
+  return client.createRoom(options)
+}
+
+export const leaveRoom = (roomId: string) => {
+  return client.leave(roomId)
+}
+
+export const setRoomName = (roomId: string, name: string) => {
+  return client.sendStateEvent(roomId, 'm.room.name', {name})
+}
+
+export const setRoomAvatar = (roomId: string, file: any) => {
+  return client.uploadContent(file)
+  .done(function(url: string) {
+    return client.sendStateEvent(roomId, 'm.room.avatar', {url})
+  })
+}
+
+export const invite = (roomId: string, userIds: string[]) => {
+  const promises = userIds.map(userId => client.invite(roomId, userId))
+  return Promise.all(promises)
 }
 
 export const uploadFile = (roomId: string, file: any) => {

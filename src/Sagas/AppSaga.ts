@@ -21,16 +21,24 @@ import Config from '../Config'
 import utils from '../Utils'
 
 import { startClient } from './MatrixSaga'
+import { restoreState } from './UportSaga'
 
 export function* watchStoreReady(): SagaIterator {
   yield take('persist/STOREREADY')
-  const web3Provider = uPort.getProvider()
-  if ((<any>window).web3 && (<any>window).web3.currentProvider) {
-    web3Provider.setProvider((<any>window).web3.currentProvider)
+  // yield  call(delay, 5000)
+  // const web3Provider = uPort.getProvider()
+  // TODO Re-enable metamask
+  // if ((<any>window).web3 && (<any>window).web3.currentProvider) {
+  //   web3Provider.setProvider((<any>window).web3.currentProvider)
+  // }
+  // yield call(Web3.ethSingleton.setProvider, web3Provider)
+
+  const matrixUser = yield select(Selectors.Matrix.getCurrentUser)
+  if (matrixUser) {
+    yield fork(startClient)
   }
-  yield call(Web3.ethSingleton.setProvider, web3Provider)
+
   const deploymentMetaData: CodePushDeploymentMetaData = yield call(() => CodePush.getCodePushUpdateMetadata())
-  yield  call(delay, 500)
   yield put(Actions.App.setVersion(deploymentMetaData.version))
 
   let deploymentKey
@@ -82,6 +90,9 @@ function* handleInitialUrl(): SagaIterator {
 function* handleRequest(uri: string): SagaIterator {
   const url = URL(uri, true)
   switch (url.pathname) {
+    case '/reset':
+      yield put(Actions.App.resetToInitialState())
+      break
     case '/token/':
       const tokenAddress = url.query.t
       const networkId = url.query.nid
@@ -147,27 +158,27 @@ function* handleRequest(uri: string): SagaIterator {
 }
 
 function* loadInitialState(): SagaIterator {
-  yield put(Actions.App.initialDataStartedLoading())
 
-  yield fork(startClient)
+  // yield fork(startClient)
+  // yield fork(restoreState)
 
   yield call(handleInitialUrl)
 
-  try {
-    const accounts = yield call(Web3.getAccounts)
-    if (accounts && accounts.length > 0) {
-      yield put(Actions.User.setAccounts(accounts))
-      yield put(Actions.User.setCurrent({
-        name: utils.address.short(accounts[0]),
-        address: accounts[0],
-        avatar: null,
-      }))
-      // yield call(delay, 500)
-      // yield put(Actions.User.refreshBalances())
-    }
-  } catch (e) {
-    yield put(Actions.App.handleError(e))
-  }
+  // try {
+  //   // const accounts = yield call(Web3.getAccounts)
+  //   // if (accounts && accounts.length > 0) {
+  //   //   yield put(Actions.User.setAccounts(accounts))
+  //   //   yield put(Actions.User.setCurrent({
+  //   //     name: utils.address.short(accounts[0]),
+  //   //     address: accounts[0],
+  //   //     avatar: null,
+  //   //   }))
+  //     // yield call(delay, 500)
+  //     // yield put(Actions.User.refreshBalances())
+  //   }
+  // } catch (e) {
+  //   yield put(Actions.App.handleError(e))
+  // }
   yield put(Actions.App.initialDataFinishedLoading())
 }
 

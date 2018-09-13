@@ -29,12 +29,14 @@ declare const __DEV__: boolean
 
 declare interface User {
   did?: string,
+  mnid?: string,
   shortId?: string,
   address?: string,
   networkId?: string,
   name?: string,
   avatar?: string,
   hidden?: boolean,
+  uniqueIssuers?: string[],
   claims?: {
     name?: VerifiableClaim,
     avatar?: VerifiableClaim,
@@ -185,6 +187,7 @@ interface TokenTransactionsMap {
 
 declare interface ImagePickerFile {
   dataUrl: any
+  contents?: string
 }
 
 // Matrix
@@ -224,6 +227,7 @@ declare interface MatrixMember {
   displayname: string,
   membership: 'invite' | 'join',
   avatarUrl: string,
+  account?: User,
 }
 declare interface MatrixRoom {
   id: string,
@@ -233,4 +237,13 @@ declare interface MatrixRoom {
   timeline: MatrixTimelineEvent[],
   state: MatrixRoomState,
   receipts: any[],
+}
+
+declare interface MatrixNewRoomOptions {
+  room_alias_name?: string,
+  visibility?: 'public' | 'private',
+  invite?: string[], //A list of user IDs to invite to this room
+  name?: string,
+  topic?: string,
+  file?: any,
 }

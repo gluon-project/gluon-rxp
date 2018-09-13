@@ -1,9 +1,11 @@
 import RX = require('reactxp')
 import { map } from 'lodash'
-import { CallToAction } from '../../Components'
+import { CallToAction, Icons } from '../../Components'
+import * as Theme from '../../Theme'
 
 interface Props extends RX.CommonProps {
   onChange?: (files: ImagePickerFile[]) => void
+  inProgress?: boolean
 }
 
 class ImagePicker extends RX.Component<Props, null> {
@@ -38,9 +40,9 @@ class ImagePicker extends RX.Component<Props, null> {
 
   handleFiles(e: any) {
     const promises = map(e.target.files, (file: any) => this.readFile(file))
-
+    const file = e.target.files[0]
     Promise.all(promises).then((fileData: any) => {
-      const result = map(fileData, (item) => ({dataUrl: item}))
+      const result = map(fileData, (item, key) => ({dataUrl: item, file}))
       this.props.onChange(result)
     })
 
@@ -48,7 +50,8 @@ class ImagePicker extends RX.Component<Props, null> {
 
   render() {
     return (
-      <RX.View>
+      <RX.View style={{flex: 1, backgroundColor: Theme.Colors.backgroundSelected,
+        height: 84, justifyContent: 'center', alignItems: 'center'}}>
         <input
           type='file'
           ref={this._onInputRef}
@@ -56,11 +59,11 @@ class ImagePicker extends RX.Component<Props, null> {
           accept='image/*'
           onChange={this.handleFiles}
         />
-        <CallToAction
-          type={CallToAction.type.Main}
-          title='Choose photo'
+        <RX.Button
           onPress={this.showImagePicker}
-          />
+          >
+            <Icons.PhotoIcon />
+          </RX.Button>
       </RX.View>
     )
   }

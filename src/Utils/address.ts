@@ -1,7 +1,7 @@
 import * as Services from '../Services'
 
 export const short = (address: string) => {
-  return `${address.slice(0, 8)}...${address.slice(-6)}`
+  return `${address.slice(0, 4)}...${address.slice(-4)}`
 }
 
 // param can be ETH address, mnid, or DID

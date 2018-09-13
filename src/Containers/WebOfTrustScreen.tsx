@@ -14,24 +14,39 @@ import * as Enums from '../Enums'
 import WebOfTrust from '../Components/Graphs/WebOfTrust'
 
 interface Props extends RX.CommonProps {
+  claims?: VerifiableClaim[]
+  navigateBack?: () => void
+  selectContact?: (did: string) => void
+  selectedContact?: string,
 }
 
 class WebOfTrustScreen extends RX.Component<Props, null> {
+  private handleSelectContact = (did: string) => {
+    this.props.selectContact(did)
+    this.props.navigateBack()
+  }
   render() {
     return (
-      <RX.View>
-        <WebOfTrust />
-      </RX.View>
+      <ScrollView>
+          <WebOfTrust
+          selectedContact={this.props.selectedContact}
+          handleSelectContact={this.handleSelectContact}
+          claims={this.props.claims}/>
+      </ScrollView>
     )
   }
 }
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
+    claims: Selectors.Contacts.getAllClaimsExtended(state),
+    selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
   return {
+    selectContact: (did: string) => dispatch(Actions.Contacts.selectContact(did)),
+    navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WebOfTrustScreen)

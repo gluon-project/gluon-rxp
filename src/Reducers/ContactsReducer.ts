@@ -2,12 +2,24 @@ import {
   createAction,
   createReducer,
 } from 'redux-act'
-import { remove } from 'lodash'
+import { remove, uniqBy } from 'lodash'
 import { resetToInitialState } from './AppReducer'
-import { logout } from './MatrixReducer'
+import { logout } from './UserReducer'
 import Config from '../Config'
 
 export interface ContactsState {
+  groupClaimsBy: {
+    claimType: string,
+    claimValue: string,
+    source: {
+      type: string,
+      id: string,
+    },
+    issuer: {
+      did: string,
+    },
+  }
+  roomForSharing: string,
   newClaimType: string,
   newClaimValue: string,
   editing: User,
@@ -18,6 +30,8 @@ export interface ContactsState {
 }
 
 const initialState: ContactsState = {
+  groupClaimsBy: null,
+  roomForSharing: null,
   editing: null,
   newClaimType: null,
   newClaimValue: null,
@@ -30,6 +44,22 @@ const initialState: ContactsState = {
 export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: ContactsState) => {
   return initialState
+})
+
+export const setGroupClaimsBy = createAction('Set Group Claims By')
+reducer.on(setGroupClaimsBy, (state: ContactsState, payload?: any) => {
+  return {
+    ...state,
+    groupClaimsBy: payload,
+  }
+})
+
+export const setRoomForSharing = createAction('Set Room For Sharing clam')
+reducer.on(setRoomForSharing, (state: ContactsState, payload?: string) => {
+  return {
+    ...state,
+    roomForSharing: payload,
+  }
 })
 
 export const addContact = createAction('Add contact')
@@ -56,7 +86,15 @@ export const addClaim = createAction('Add claim')
 reducer.on(addClaim, (state: ContactsState, payload?: VerifiableClaim) => {
   return {
     ...state,
-    claims: [ ...state.claims, payload ],
+    claims: uniqBy([ ...state.claims, payload ], (claim: VerifiableClaim) => claim.jwt),
+  }
+})
+
+export const addClaims = createAction('Add claims')
+reducer.on(addClaims, (state: ContactsState, payload?: VerifiableClaim[]) => {
+  return {
+    ...state,
+    claims: uniqBy([ ...state.claims, ...payload ], (claim: VerifiableClaim) => claim.jwt),
   }
 })
 
@@ -116,7 +154,18 @@ reducer.on(addMatrixClaim, (state: ContactsState, payload?: VerifiableClaim) => 
   }
 })
 
+export const deleteLocalClaims = createAction('Delete local claims')
+reducer.on(deleteLocalClaims, (state: ContactsState, payload?: any) => {
+  return {
+    ...state,
+    claims: [],
+    selectedContact: null,
+  }
+})
+
 export const signAnonymousClaim = createAction('Sign anonymous claim')
 export const signAnonymousClaimAndShareInRoom = createAction('Sign anonymous claim and share in room')
+export const signClaimAndShareInRoom = createAction('Sign claim and share in room')
 export const loadMatrixClaims = createAction('Load matrix claims')
 export const loadAndAppendMatrixClaims = createAction('Load matrix and append claims')
+export const saveClaimsLocally = createAction('Save claims localy')

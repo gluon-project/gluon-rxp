@@ -4,7 +4,7 @@ import * as Enums from '../Enums'
 import * as _ from 'lodash'
 
 export const getList = (state: CombinedState) => state.feed.list
-export const getSelectedToken = (state: CombinedState) => state.feed.selectedToken
+export const getSelectedToken = (state: CombinedState) => state.tokens.current
 
 export const getSelectedList = createSelector(
   [getList, getSelectedToken],

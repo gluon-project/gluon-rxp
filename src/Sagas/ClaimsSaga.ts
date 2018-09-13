@@ -67,13 +67,90 @@ export function* watchSignAnonymousClaimAndShareInRoom(): SagaIterator {
   }
 }
 
+export function* watchSignClaimAndShareInRoom(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Contacts.signClaimAndShareInRoom)
+    yield put(Actions.Process.start({type: Enums.ProcessType.SignClaim}))
+
+    try {
+      yield put(Actions.Contacts.setRoomForSharing(action.payload.roomId))
+      yield call(Services.uPort.signClaim, action.payload.unsigned)
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+  }
+}
+
+export function* handleSignedClaim(jwt: string): SagaIterator {
+
+  try {
+    const decodedClaim = yield call(decodeJWT, jwt)
+    const signedClaim: VerifiableClaim = {
+      ...decodedClaim.payload,
+      jwt,
+      source: {
+        type: 'local',
+      },
+    }
+
+    yield put(Actions.Contacts.addClaim(signedClaim))
+
+    const roomId = yield select(Selectors.Contacts.getRoomForSharing)
+    if (roomId) {
+      const claims: any[] = []
+      claims.push(jwt)
+      const file = {
+        fileName: 'claims.json',
+        fileContent: JSON.stringify({claims}),
+      }
+      yield put(Actions.Matrix.sendFile(file))
+    }
+
+  } catch (e) {
+    yield put(Actions.App.handleError(e))
+  }
+  yield put(Actions.Process.end({type: Enums.ProcessType.SignClaim}))
+
+}
+
+const decodeMultipleJWT = (jwts: string[]) => {
+  return jwts.map(jwt => {
+    return {
+      jwt,
+      decoded: decodeJWT(jwt),
+    }
+  })
+    .map(claim => {
+      return {
+        ...claim.decoded.payload,
+        source: {
+          type: 'local',
+        },
+        jwt: claim.jwt,
+      }
+    })
+}
+
+export function* watchSaveClaimsLocally(): SagaIterator {
+  while (true) {
+    const action = yield take(Actions.Contacts.saveClaimsLocally)
+    try {
+      const decodedClaims = yield call(decodeMultipleJWT, action.payload)
+      yield put(Actions.Contacts.addClaims(decodedClaims))
+
+    } catch (e) {
+      yield put(Actions.App.handleError(e))
+    }
+  }
+
+}
+
 export function* loadAndAppendMatrixClaims(action: any): SagaIterator {
   yield put(Actions.Process.start({type: Enums.ProcessType.LoadMatrixClaims}))
 
   try {
     const roomId = action.payload.roomId
     const url = action.payload.url
-    console.log({roomId, url})
     const claims = yield call(loadClaim, url, roomId)
 
     yield put(Actions.Contacts.appendMatrixClaims(claims))
