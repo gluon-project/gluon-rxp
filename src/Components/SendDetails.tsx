@@ -83,7 +83,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           title={this.props.token
             ? `${this.props.token.name}`
             : 'Select token'}
-            subTitle={'What will you send?'}
+            subTitle={this.props.isSend ? 'What will you send?' : 'What will you request?'}
           isOn={!!this.props.token}
           isOff={!this.props.token}
           onPress={() => this.props.navigate('Tokens')}
@@ -98,7 +98,7 @@ export default class SendDetails extends RX.Component<Props, null> {
             ? `${Utils.number.numberToString(this.props.amount, this.props.token ? this.props.token.decimals : 0)} ${this.props.token ?
               this.props.token.code : ''}`
             : 'Set amount'}
-            subTitle={'How much will you send?'}
+            subTitle={this.props.isSend ? 'How much will you send?' : 'How much you want to request?'}
           isOn={!!this.props.amount}
           isOff={!this.props.amount}
           onPress={() => this.props.navigate('Amount')}
@@ -121,7 +121,7 @@ export default class SendDetails extends RX.Component<Props, null> {
           type={ListItem.type.Default}
           selected={this.props.routeName === 'Rooms'}
           title={this.props.room ? this.props.room.name : 'Room'}
-          subTitle={'Where do you want to share?'}
+          subTitle={this.props.isSend ? 'Where do you want to share this transaction?' : 'Where do you want to request?'}
           onPress={() => this.props.navigate('Rooms')}
           account={this.props.room && {avatar: this.props.room.avatarUrl}}
           isOff={!this.props.room}
