@@ -280,7 +280,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
+    currentUser: Selectors.Contacts.getAccountByDid(state, state.user.current.did),
     claims: Selectors.Contacts.getSelectedContactClaims(state),
     selectedContact: Selectors.Contacts.getSelectedContact(state),
     groupClaimsBy: Selectors.Contacts.getGroupClaimsBy(state),

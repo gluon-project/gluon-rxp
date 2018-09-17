@@ -66,7 +66,7 @@ class SendMasterScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
+    currentUser: Selectors.Contacts.getAccountByDid(state, state.user.current.did),
     transaction: state.transactions.new,
     amount: state.transactions.new.amount,
     attachment: Selectors.Attachment.getNew(state),

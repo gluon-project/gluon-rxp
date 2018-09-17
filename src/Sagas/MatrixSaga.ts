@@ -286,7 +286,7 @@ export function* watchRequest(): SagaIterator {
           body: `${sender.name} requests ${transaction.amount ?
             Utils.number.numberToString(transaction.amount, token.decimals) : ''} ${token ? token.code : ''}`,
           formatted_body: `<strong><a href="${url}">${sender.name} is requesting \
-${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></strong>`,
+${transaction.amount ? Utils.number.numberToString(transaction.amount, token.decimals) : ''} ${token ? token.code : ''}</a></strong>`,
           format: 'org.matrix.custom.html',
           msgtype: 'm.text',
           request: transaction,
@@ -297,6 +297,9 @@ ${transaction.amount ? transaction.amount : ''} ${token ? token.code : ''}</a></
         const claims: any[] = []
         if (sender.claims && sender.claims.name) {
           claims.push(sender.claims.name.jwt)
+        }
+        if (sender.claims && sender.claims.mnid) {
+          claims.push(sender.claims.mnid.jwt)
         }
         if (sender.claims && sender.claims.matrixId) {
           claims.push(sender.claims.matrixId.jwt)

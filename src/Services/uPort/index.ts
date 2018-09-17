@@ -8,7 +8,8 @@ import { createJWT, SimpleSigner } from 'did-jwt'
 import * as MNID from 'mnid'
 
 const credentials = new Credentials({
-  address: Config.uport.app.address,
+  // address: Config.uport.app.address,
+  did: Config.uport.app.address,
   privateKey: Config.uport.app.privateKey,
 })
 
@@ -32,7 +33,7 @@ const getProvider = () => new Web3(uportConnect.getProvider())
 
 const signAnonymousClaim = (claim: any): VerifiableClaim => {
   return createJWT(claim, {
-    issuer: Config.uport.app.address,
+    issuer: Config.uport.app.did,
     signer: SimpleSigner(Config.uport.app.privateKey),
   })
 }
@@ -43,7 +44,7 @@ const signClaim = (claim: any) => {
   return uportConnect.credentials.signJWT({
     unsignedClaim: claim.unsignedClaim,
     sub: claim.sub,
-    riss: claim.riss,
+    // riss: claim.riss,
     callback: uportConnect.genCallback(id),
     type: 'verReq',
   }).then((jwt: string) => uportConnect.send(jwt, id))

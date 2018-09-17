@@ -67,6 +67,9 @@ to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${re
         if (sender.claims && sender.claims.name) {
           claims.push(sender.claims.name.jwt)
         }
+        if (sender.claims && sender.claims.mnid) {
+          claims.push(sender.claims.mnid.jwt)
+        }
         if (sender.claims && sender.claims.matrixId) {
           claims.push(sender.claims.matrixId.jwt)
         }
@@ -75,6 +78,9 @@ to <strong><a href="https://rinkeby.etherscan.io/address/${sender.address}">${re
         }
         if (receiver.claims && receiver.claims.name) {
           claims.push(receiver.claims.name.jwt)
+        }
+        if (receiver.claims && receiver.claims.mnid) {
+          claims.push(receiver.claims.mnid.jwt)
         }
         if (receiver.claims && receiver.claims.matrixId) {
           claims.push(receiver.claims.matrixId.jwt)

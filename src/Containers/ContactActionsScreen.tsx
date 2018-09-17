@@ -88,26 +88,16 @@ class ClaimActionsScreen extends RX.Component<Props, null> {
                   saveClaimsLocally={this.props.saveClaimsLocally}
                   navigate={this.props.navigate}
                   setGroupClaimsBy={this.props.setGroupClaimsBy}
+                  setModalMessage={this.props.setModalMessage}
                   />)}
               </RX.View>
             </RX.View>)}
 
           {this.props.selectedContactAcount && <RX.View style={{flex: 1, justifyContent: 'center',
           alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
-            <RX.Button onPress={this.handleRequest} style={{flex: 1, justifyContent: 'center',
-          alignItems: 'center', padding: Theme.Metrics.baseMargin}}>
-              <AccountIcon account={{...this.props.selectedContactAcount, avatar: null}}
-              type={AccountIconType.Large}/>
-              <RX.Text style={[Theme.Styles.contact.addressInfoDid, {marginTop: Theme.Metrics.smallMargin}]}>
+            <RX.Text style={[Theme.Styles.contact.addressInfoDid, {marginTop: Theme.Metrics.smallMargin}]}>
                 {this.props.selectedContactAcount.did}
               </RX.Text>
-              <RX.Text style={[Theme.Styles.contact.addressInfo, {marginTop: Theme.Metrics.smallMargin}]}>
-                {Utils.address.short(this.props.selectedContactAcount.address)}
-              </RX.Text>
-              <RX.Text style={[Theme.Styles.contact.detailsLabel, {marginTop: Theme.Metrics.smallMargin}]}>
-                Copy address
-              </RX.Text>
-            </RX.Button>
           </RX.View>}
 
           </RX.View>
@@ -146,6 +136,7 @@ interface GroupItemProps extends RX.CommonProps {
   saveClaimsLocally?: (jwts: string[]) => void
   navigate?: (routeName: string) => void
   setGroupClaimsBy?: (options: any) => void
+  setModalMessage?: (config: ModalMessageConfig) => void
 }
 interface GroupItemState {
   showActions: boolean
@@ -171,6 +162,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
     // this.getGroupedClaims()
     const numberOfUniqSigners = keys(countBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)).length
     const claimsBySigner = groupBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)
+    console.log({claimsBySigner})
     const signers: User[] = []
     forEach(claimsBySigner, (claims: VerifiableClaim[]) => {
       signers.push(claims[0].issuer)
@@ -188,7 +180,36 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
         {claimType === 'Avatar' && <RX.View style={Theme.Styles.contact.groupListItemAvatar}>
           <AccountIcon  account={{avatar: this.props.title}} type={AccountIcon.type.Large} />
         </RX.View>}
-        {claimType !== 'Avatar' && <RX.Text style={Theme.Styles.contact.groupListItemTitle}>{this.props.title}</RX.Text>}
+        {claimType === 'Mnid' && <RX.View style={Theme.Styles.contact.groupListItemAvatar}>
+          <RX.Text style={Theme.Styles.contact.addressInfoDid}>
+            {this.props.title}
+          </RX.Text>
+
+          <RX.View style={[Theme.Styles.row, {justifyContent: 'center'}]}>
+            <AccountIcon  account={{address: utils.address.universalIdToNetworkAddress(this.props.title)}} type={AccountIcon.type.Small} />
+            <RX.Text style={Theme.Styles.contact.groupListItemTitle}>
+              {utils.address.short(utils.address.universalIdToNetworkAddress(this.props.title))}
+            </RX.Text>
+          </RX.View>
+
+          <RX.Button
+          onPress={() => this.props.setModalMessage({
+            type: Enums.MessageType.Success,
+            title: 'Address',
+            message: 'Copy address',
+            inputText: utils.address.universalIdToNetworkAddress(this.props.title),
+            ctaTitle: 'Close',
+          } as ModalMessageConfig)}
+          style={{flex: 1, justifyContent: 'center',
+          alignItems: 'center'}}>
+              <RX.Text style={[Theme.Styles.contact.detailsLabel]}>
+                Copy address
+              </RX.Text>
+            </RX.Button>
+
+        </RX.View>}
+        {claimType !== 'Avatar' && claimType !== 'Mnid'
+        && <RX.Text style={Theme.Styles.contact.groupListItemTitle}>{this.props.title}</RX.Text>}
 
         <RX.Button
           onPress={() => {
@@ -273,7 +294,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
 const mapStateToProps = (state: CombinedState): Props => {
   const selectedContact = Selectors.Contacts.getSelectedContact(state)
   return {
-    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
+    currentUser: Selectors.Contacts.getAccountByDid(state, state.user.current.did),
     claims: Selectors.Contacts.getSelectedContactClaims(state),
     selectedContact,
     selectedContactAcount: Selectors.Contacts.getAccountByDid(state, selectedContact),

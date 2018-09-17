@@ -41,6 +41,7 @@ declare interface User {
     name?: VerifiableClaim,
     avatar?: VerifiableClaim,
     matrixId?: VerifiableClaim,
+    mnid?: VerifiableClaim,
   }
 }
 
