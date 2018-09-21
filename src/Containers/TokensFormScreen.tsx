@@ -138,11 +138,11 @@ class TokensFormScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          {/* <SegmentedControl
+          <SegmentedControl
             titles={['Create new', 'Add existing']}
             selectedIndex={this.state.isNew ? 0 : 1}
             handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
-            /> */}
+            />
           {/* {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>} */}
           {/* {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
             {this.props.availableTokens.map((token, index) => <ListItem

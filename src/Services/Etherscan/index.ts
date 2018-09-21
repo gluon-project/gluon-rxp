@@ -13,11 +13,13 @@ import erc20abi from '../Web3/erc20abi'
 import gluonTokenAbi from '../Web3/gluon-token-abi'
 import communityTokenAbi from '../Web3/community-token-abi'
 import communityTokenFactoryAbi from '../Web3/community-token-factory-abi'
+import ethCommunityTokenAbi from '../Web3/eth-community-token-abi'
 abiDecoder.addABI(erc20abi)
 abiDecoder.addABI(erc223abi)
 abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
 abiDecoder.addABI(communityTokenFactoryAbi)
+abiDecoder.addABI(ethCommunityTokenAbi)
 
 const toIPFSHash = (str: string) => {
   // remove leading 0x
@@ -167,7 +169,7 @@ const fetchAvailableTokens = () => {
   const endPoint = Config.etherscan.endPoint.rinkeby
   return fetch(
     `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
-address=${Config.tokens.communityTokenFactoryAddress}&apikey=${Config.etherscan.apiKey}`,
+address=${Config.tokens.communityTokenFactoryAddressRinkeby}&apikey=${Config.etherscan.apiKey}`,
   )
   .then((response: any) => response.json())
   .then((responseJson: any) => {

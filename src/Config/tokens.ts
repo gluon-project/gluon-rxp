@@ -2,12 +2,12 @@ import * as Enums from '../Enums'
 
 export const etherAddress = '0x0000000000000000000000000000000000000000'
 export const gluonAddress = '0x099bd590c2e795eb9c5c4797da73a2e6f757decd'
-export const communityTokenFactoryAddress = '0x2484d47c306f9ec5e47d09e1616849a80ac3d6eb'
+export const communityTokenFactoryAddressRinkeby = '0x96319f39a17fe10fd0be22cbd0ec6cf0c5103900'
 
 export default {
   etherAddress,
   gluonAddress,
-  communityTokenFactoryAddress,
+  communityTokenFactoryAddressRinkeby,
   defaultList: [
     {
       name: 'Ether',

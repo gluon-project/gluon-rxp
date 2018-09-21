@@ -2,7 +2,7 @@ import Config from '../../Config'
 import gluonTokenAbi from './gluon-token-abi'
 import communityTokenAbi from './community-token-abi'
 import communityTokenFactoryAbi from './community-token-factory-abi'
-import erc223TokenFactoryAbi from './erc223TokenFactoryAbi'
+import ethCommunityTokenAbi from './eth-community-token-abi'
 import erc223abi from './erc223abi'
 import erc20abi from './erc20abi'
 import Uport from '../uPort'
@@ -18,7 +18,7 @@ var abiDecoder = require('../../../src/Services/Web3/abi-decoder.js')
 abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
 abiDecoder.addABI(communityTokenFactoryAbi)
-abiDecoder.addABI(erc223TokenFactoryAbi)
+abiDecoder.addABI(ethCommunityTokenAbi)
 
 const DEFAULT_GAS_PRICE = '10000000000'
 
@@ -53,16 +53,7 @@ const ethSingleton =  {
     return ethSingleton.getNetworkId()
     .then((networkId: string) => {
       return web3.eth.contract(communityTokenFactoryAbi).at(
-        networkId === '4' ? Config.tokens.communityTokenFactoryAddress : '',
-      )
-    })
-  },
-
-  getErc223Factory: (): any => {
-    return ethSingleton.getNetworkId()
-    .then((networkId: string) => {
-      return web3.eth.contract(erc223TokenFactoryAbi).at(
-        networkId === '4' ? '0x4597c2b6b11a244179f45acf565c66deb3cd99a1' : '0x5AECaF7d9712851dd5Db865c4242F54D9366b3e1',
+        networkId === '4' ? Config.tokens.communityTokenFactoryAddressRinkeby : '',
       )
     })
   },
@@ -88,6 +79,10 @@ const ethSingleton =  {
 
   getErc20: (address: string): any => {
     return web3.eth.contract(erc20abi).at(address)
+  },
+
+  getFactory: (): any => {
+    return web3.eth.contract(communityTokenFactoryAbi).at(Config.tokens.communityTokenFactoryAddressRinkeby)
   },
 }
 // TODO Re-enable metamask
@@ -541,28 +536,49 @@ const findTokenContractAddress = (logs: any[]): string => {
   return filtered[0].events[1].value
 }
 
-const createNewToken = (token: Token, creator: User): Promise<Token> => {
-  return ethSingleton.getErc223Factory()
-  .then((tokenFactory: any) => {
-    return new Promise<Token>((resolve, reject) => {
-      tokenFactory.createERC223Token(
-        token.totalSupply,
-        token.name,
-        token.decimals,
-        token.code,
-        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
-        handlePendingTransaction((txHash, response) => {
-          return {
-            ...token,
-            address: findTokenContractAddress(response.logs),
-            type: Enums.TokenType.Erc223,
-          }
-        }, resolve, reject),
-      )
-    })
-  })
-}
+// const createNewToken = (token: Token, creator: User): Promise<Token> => {
+//   return ethSingleton.getCommunityTokenFactory()
+//   .then((tokenFactory: any) => {
+//     return new Promise<Token>((resolve, reject) => {
+//       tokenFactory.createERC20Token(
+//         token.name,
+//         token.decimals,
+//         token.code,
+//         token.totalSupply,
+//         { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
+//         handlePendingTransaction((txHash, response) => {
+//           return {
+//             ...token,
+//             address: findTokenContractAddress(response.logs),
+//             type: Enums.TokenType.Erc20,
+//           }
+//         }, resolve, reject),
+//       )
+//     })
+//   })
+// }
 
+const createNewToken = (token: Token, creator: User): Promise<Token> => {
+  const tokenFactory = ethSingleton.getFactory()
+
+  return new Promise<Token>((resolve, reject) => {
+    tokenFactory.createERC20Token(
+      token.name,
+      token.decimals,
+      token.code,
+      token.totalSupply,
+      { from: creator.address },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...token,
+          address: findTokenContractAddress(response.logs),
+          type: Enums.TokenType.Erc20,
+        }
+      }, resolve, reject),
+    )
+  })
+
+}
 const getAccount = (): string => {
   // return ethSingleton.getEth() && ethSingleton.getEth().defaultAccount
   return ethSingleton.getEth() && ethSingleton.getEth().accounts[0]

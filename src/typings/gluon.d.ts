@@ -91,6 +91,7 @@ declare interface Transaction {
   receiver?: string,
   amount?: string,
   token?: string,
+  networkId?: string,
   date?: string,
   room?: string,
   attachment?: string,

@@ -14,6 +14,7 @@ interface Props extends RX.CommonProps {
   balances?: Balance[]
   selectedToken?: string,
   setToken?: (token: string) => void
+  setNetworkId?: (networkId: string) => void
   uiTraits?: UITraits
   currentUser?: User
   refreshBalances?: () => void
@@ -24,6 +25,7 @@ interface Props extends RX.CommonProps {
 class TokensScreen extends RX.Component<Props, null> {
   handleSelectToken(token: Token) {
     this.props.setToken(token.address)
+    this.props.setNetworkId(token.networkId)
     if (this.props.uiTraits.horizontalIsCompact) {
       this.props.navigateBack()
     }
@@ -83,6 +85,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
     navigateBack: () => dispatch(Actions.Navigation.navigateBack()),
     setToken: (token: string) => dispatch(Actions.Transactions.setToken(token)),
+    setNetworkId: (networkId: string) => dispatch(Actions.Transactions.setNetworkId(networkId)),
     refreshBalances: () => dispatch(Actions.User.refreshBalances()),
     startLogin: () => dispatch(Actions.User.startLogin()),
   }
