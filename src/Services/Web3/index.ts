@@ -28,6 +28,12 @@ const ethSingleton =  {
 
   setProvider: (provider: any) => {
     web3 = provider
+    web3.version.getNetwork((err: any, networkId: string) => {
+      if (err) {
+        console.log({err})
+      }
+      console.log({networkId})
+    })
   },
 
   getWeb3: (): any => {
@@ -92,10 +98,12 @@ const ethSingleton =  {
 //   w3.setProvider((<any>window).web3.currentProvider)
 //   ethSingleton.setProvider(w3)
 // }
-const w3 = Uport.getProvider()
-ethSingleton.setProvider(w3)
 
 const getNewBalances = (address: string, tokens: Token[]) => {
+  if (!ethSingleton.getEth()) {
+    return false
+  }
+
   let promises: Promise<Balance>[] = []
 
   tokens.forEach(token => {

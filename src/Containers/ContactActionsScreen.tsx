@@ -182,7 +182,7 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
         </RX.View>}
         {claimType === 'Mnid' && <RX.View style={Theme.Styles.contact.groupListItemAvatar}>
           <RX.Text style={Theme.Styles.contact.addressInfoDid}>
-            {this.props.title}
+            {utils.address.mnidToNetworkName(this.props.title)}
           </RX.Text>
 
           <RX.View style={[Theme.Styles.row, {justifyContent: 'center'}]}>

@@ -592,6 +592,10 @@ const Styles = {
       borderBottomWidth: Metrics.borderWidth,
       borderColor: Colors.borderColor,
     }),
+    wrapperNoBorder: RX.Styles.createViewStyle({
+      borderBottomWidth: 0,
+      borderColor: Colors.transparent,
+    }),
     title: RX.Styles.createTextStyle({
       color: Colors.light,
       fontSize: Fonts.size.medium,

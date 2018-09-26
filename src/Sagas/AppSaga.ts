@@ -162,6 +162,16 @@ function* loadInitialState(): SagaIterator {
   // yield fork(startClient)
   // yield fork(restoreState)
 
+  // Set correct network on uPort provider
+  const currentUser = yield select(Selectors.User.getCurrent)
+  if (currentUser) {
+    yield call(uPort.setNetworkForMnid, currentUser.mnid)
+  }
+
+  const w3 = uPort.getProvider()
+  Web3.ethSingleton.setProvider(w3)
+  yield put(Actions.User.refreshBalances())
+
   yield call(handleInitialUrl)
 
   // try {

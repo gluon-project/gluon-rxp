@@ -5,6 +5,7 @@ const Web3 = require('web3')
 import { Connect } from 'uport-connect'
 import { Credentials } from 'uport'
 import { createJWT, SimpleSigner } from 'did-jwt'
+import { network } from 'uport-transports'
 import * as MNID from 'mnid'
 
 const credentials = new Credentials({
@@ -21,12 +22,25 @@ const uportConnect = new Connect(Config.uport.app.name, {
 
 uportConnect.credentials = credentials
 
-const requestCredentials = (network: string) => {
+const setNetworkForMnid = (mnid: any) => {
+  const decoded = MNID.decode(mnid)
+  switch (decoded.network) {
+    case '0x1':
+      uportConnect.network = network.config.network('mainnet')
+      break
+    case '0x4':
+      uportConnect.network = network.config.network('rinkeby')
+      break
+  }
+}
+
+const requestCredentials = (networkName: string) => {
+  uportConnect.network = network.config.network(networkName)
   return uportConnect.requestDisclosure({
     requested: ['name', 'avatar', 'matrixUser'],
     notifications: true,
     accountType: 'keypair',
-    networkId: network,
+    networkId: uportConnect.network.id,
   })
 }
 const getProvider = () => new Web3(uportConnect.getProvider())
@@ -63,6 +77,7 @@ const logout = () => {
 
 export default {
   uportConnect,
+  setNetworkForMnid,
   logout,
   signClaim,
   MNID,

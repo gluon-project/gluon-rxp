@@ -52,12 +52,8 @@ class LoginScreen extends RX.Component<Props, null> {
                 />
             </RX.View>
             <CallToAction
-                title='Login with uPort (mainnet)'
+                title='Login with uPort'
                 onPress={() => this.props.startLogin('0x1')}
-              />
-            <CallToAction
-                title='Login with uPort (rinkeby)'
-                onPress={() => this.props.startLogin('0x4')}
               />
 
           </RX.View>}

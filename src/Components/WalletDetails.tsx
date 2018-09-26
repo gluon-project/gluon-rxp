@@ -29,7 +29,7 @@ export default class WalletDetails extends RX.Component<Props, null> {
             {this.props.currentUser.name}
           </RX.Text>
           {this.props.currentUser.address !== this.props.currentUser.name && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
-            {Utils.address.short(this.props.currentUser.address)}
+            {Utils.address.short(this.props.currentUser.address)}  {Utils.address.mnidToNetworkName(this.props.currentUser.mnid)}
           </RX.Text>}
         </RX.View>}
 
