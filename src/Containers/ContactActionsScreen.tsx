@@ -162,7 +162,6 @@ class GroupItem extends RX.Component<GroupItemProps, GroupItemState> {
     // this.getGroupedClaims()
     const numberOfUniqSigners = keys(countBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)).length
     const claimsBySigner = groupBy(this.props.claims, (claim: VerifiableClaim) => claim.iss)
-    console.log({claimsBySigner})
     const signers: User[] = []
     forEach(claimsBySigner, (claims: VerifiableClaim[]) => {
       signers.push(claims[0].issuer)

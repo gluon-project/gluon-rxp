@@ -48,7 +48,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
       totalSupply: 1000000,
       exponent: '2',
       code: '',
-      isNew: false,
+      isNew: true,
       type: Enums.TokenType.Erc223,
       network: null,
     }
