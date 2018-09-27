@@ -13,11 +13,13 @@ import erc20abi from '../Web3/erc20abi'
 import gluonTokenAbi from '../Web3/gluon-token-abi'
 import communityTokenAbi from '../Web3/community-token-abi'
 import communityTokenFactoryAbi from '../Web3/community-token-factory-abi'
+import ethCommunityTokenAbi from '../Web3/eth-community-token-abi'
 abiDecoder.addABI(erc20abi)
 abiDecoder.addABI(erc223abi)
 abiDecoder.addABI(gluonTokenAbi)
 abiDecoder.addABI(communityTokenAbi)
 abiDecoder.addABI(communityTokenFactoryAbi)
+abiDecoder.addABI(ethCommunityTokenAbi)
 
 const toIPFSHash = (str: string) => {
   // remove leading 0x
@@ -142,7 +144,9 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
 }
 
 const fetchTransactions = (token: Token) => {
-  const endPoint = token.networkId === '1' ? Config.etherscan.endPoint.mainnet : Config.etherscan.endPoint.rinkeby
+  const nid = `0x${token.networkId}`
+  const endPoint = Config.networks[nid].etherscanApiEndpoint
+
   return fetch(
     `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
 address=${token.address}&apikey=${Config.etherscan.apiKey}`,
@@ -163,11 +167,12 @@ address=${token.address}&apikey=${Config.etherscan.apiKey}`,
   })
 }
 
-const fetchAvailableTokens = () => {
-  const endPoint = Config.etherscan.endPoint.rinkeby
+const fetchAvailableTokens = (networkId: string) => {
+  const nid = `0x${networkId}`
+  const endPoint = Config.networks[nid].etherscanApiEndpoint
   return fetch(
     `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
-address=${Config.tokens.communityTokenFactoryAddress}&apikey=${Config.etherscan.apiKey}`,
+address=${Config.networks[nid].factoryAddress}&apikey=${Config.etherscan.apiKey}`,
   )
   .then((response: any) => response.json())
   .then((responseJson: any) => {

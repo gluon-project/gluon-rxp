@@ -48,8 +48,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
       totalSupply: 1000000,
       exponent: '2',
       code: '',
-      isNew: false,
-      type: Enums.TokenType.Erc223,
+      isNew: true,
+      type: Enums.TokenType.Erc20,
       network: null,
     }
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -88,7 +88,8 @@ class TokensFormScreen extends RX.Component<Props, State> {
         networkId: this.state.network,
         decimals: this.state.decimals,
         totalSupply: this.state.totalSupply,
-        exponent: parseFloat(this.state.exponent),
+        exponent: parseInt(this.state.exponent, 10),
+        type: this.state.type,
         // reserveToken: Config.tokens.gluonAddress,
       })
     }
@@ -130,7 +131,7 @@ class TokensFormScreen extends RX.Component<Props, State> {
   handleTypeChange(isNew: boolean) {
     this.setState({isNew})
     if (!isNew) {
-      //this.props.getAvailableTokens()
+      this.props.getAvailableTokens()
     }
   }
 
@@ -138,23 +139,23 @@ class TokensFormScreen extends RX.Component<Props, State> {
     return (
       <RX.View style={Theme.Styles.scrollContainerNoMargins}>
         <ScrollView>
-          {/* <SegmentedControl
+          <SegmentedControl
             titles={['Create new', 'Add existing']}
             selectedIndex={this.state.isNew ? 0 : 1}
             handleSelection={(index) => this.handleTypeChange(index === 0 ? true : false)}
-            /> */}
-          {/* {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>} */}
-          {/* {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
+            />
+          {this.props.isGettingAvailableTokens && <RX.ActivityIndicator size='small' color='white'/>}
+          {!this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}>
             {this.props.availableTokens.map((token, index) => <ListItem
               key={index}
               account={token}
               title={`${token.name}`}
               details={`${token.code}`}
-              subTitle={`Supply ${token.totalSupply}, pool: ${token.poolBalance}`}
+              subTitle={`Supply ${token.totalSupply}${token.type === Enums.TokenType.EthCommunity ? ', pool: ' + token.poolBalance : ''}`}
               type={ListItem.type.Secondary}
               onPress={() => this.addExisting(token)}
             />)}
-          </RX.View>} */}
+          </RX.View>}
 
           {!this.state.isNew && <TextInput
             label='Address'
@@ -174,20 +175,27 @@ class TokensFormScreen extends RX.Component<Props, State> {
               />
           </RX.View>
 
-          {/* {this.state.isNew && <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
-              priceDecimals={this.props.reserveToken.decimals}
+          {this.state.isNew && this.state.network === '4' && <SegmentedControl
+            titles={['Fixed supply', 'Continuous supply']}
+            selectedIndex={this.state.type === Enums.TokenType.Erc20 ? 0 : 1}
+            handleSelection={(index) => this.setState({type: (index === 0 ? Enums.TokenType.Erc20 : Enums.TokenType.EthCommunity)})}
+            />}
+
+          {this.state.isNew && this.state.type === Enums.TokenType.EthCommunity &&
+            <RX.View style={{marginTop: Theme.Metrics.baseMargin}}><Graphs.BondingCurveGraph
+              priceDecimals={18}
               xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               height={this.props.uiTraits.horizontalIsCompact ? 120 : 300}
-              priceCode={this.props.reserveToken.code}
+              priceCode={'ETH'}
               supplyCode={this.state.code}
               isMint={true}
               exponent={parseFloat(this.state.exponent)}
               totalSupply={0}
               numTokens={0}
-              /></RX.View>} */}
+              /></RX.View>}
 
-          {this.state.isNew && <TextInput
+          {this.state.isNew && this.state.type === Enums.TokenType.Erc20 && <TextInput
             label='Total supply'
             keyboardType='numeric'
             value={this.state.totalSupply.toString()}

@@ -133,6 +133,103 @@ export default [
     'type': 'function',
   },
   {
+    'constant': false,
+    'inputs': [
+      {
+        'name': '_name',
+        'type': 'string',
+      },
+      {
+        'name': '_decimals',
+        'type': 'uint8',
+      },
+      {
+        'name': '_symbol',
+        'type': 'string',
+      },
+      {
+        'name': 'exponent',
+        'type': 'uint8',
+      },
+    ],
+    'name': 'createEthCommunityToken',
+    'outputs': [
+      {
+        'name': '',
+        'type': 'address',
+      },
+    ],
+    'payable': false,
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
+    'constant': false,
+    'inputs': [
+      {
+        'name': '_name',
+        'type': 'string',
+      },
+      {
+        'name': '_decimals',
+        'type': 'uint8',
+      },
+      {
+        'name': '_symbol',
+        'type': 'string',
+      },
+      {
+        'name': 'exponent',
+        'type': 'uint8',
+      },
+      {
+        'name': 'numTokens',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'createEthCommunityTokenAndMint',
+    'outputs': [
+      {
+        'name': '',
+        'type': 'address',
+      },
+    ],
+    'payable': true,
+    'stateMutability': 'payable',
+    'type': 'function',
+  },
+  {
+    'constant': false,
+    'inputs': [
+      {
+        'name': '_name',
+        'type': 'string',
+      },
+      {
+        'name': '_decimals',
+        'type': 'uint8',
+      },
+      {
+        'name': '_symbol',
+        'type': 'string',
+      },
+      {
+        'name': '_totalSupply',
+        'type': 'uint256',
+      },
+    ],
+    'name': 'createERC20Token',
+    'outputs': [
+      {
+        'name': '',
+        'type': 'address',
+      },
+    ],
+    'payable': false,
+    'stateMutability': 'nonpayable',
+    'type': 'function',
+  },
+  {
     'constant': true,
     'inputs': [],
     'name': 'getNumberOfCreatedTokens',

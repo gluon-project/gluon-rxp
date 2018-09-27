@@ -111,7 +111,7 @@ class TransactionBox extends RX.Component<Props, null> {
             alignItems: 'center',
             }]}>
             <RX.Link
-              url={`https://rinkeby.etherscan.io/tx/${transaction.hash}`}
+              url={`https://${transaction.networkId === '4' && 'rinkeby.'}etherscan.io/tx/${transaction.hash}`}
               style={Theme.Styles.box.buttonLabel}>Confirmed</RX.Link>
           </RX.View>}
 

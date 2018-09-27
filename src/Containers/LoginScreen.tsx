@@ -9,7 +9,7 @@ import * as Enums from '../Enums'
 
 interface Props extends RX.CommonProps {
   navigate?: (routeName: string) => void
-  startLogin?: () => void
+  startLogin?: (networkId: string) => void
   currentUser?: User,
   currentMatrixUser?: MatrixUser,
   matrixLogin?: (username: string, password: string, baseUrl: string) => void
@@ -53,7 +53,7 @@ class LoginScreen extends RX.Component<Props, null> {
             </RX.View>
             <CallToAction
                 title='Login with uPort'
-                onPress={this.props.startLogin}
+                onPress={() => this.props.startLogin('mainnet')}
               />
 
           </RX.View>}
@@ -98,7 +98,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     matrixRegister: (username: string, password: string, baseUrl: string) =>
     dispatch(Actions.Matrix.register({username, password, baseUrl})),
     navigate: (routeName: string) => dispatch(Actions.Navigation.navigate(routeName)),
-    startLogin: () => dispatch(Actions.User.startLogin()),
+    startLogin: (networkId: string) => dispatch(Actions.User.startLogin(networkId)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

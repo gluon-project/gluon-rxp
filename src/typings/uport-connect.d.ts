@@ -2,6 +2,10 @@ declare module 'uport-connect' {
   export const Connect: any
 }
 
+declare module 'uport-transports' {
+  export const network: any
+}
+
 declare module 'web3' {
   const web3: any
   export default web3

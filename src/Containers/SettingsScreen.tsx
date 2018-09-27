@@ -5,6 +5,7 @@ import {
   AccountIcon,
   ScrollView,
   FilePicker,
+  SectionHeader,
 } from '../Components'
 import { CombinedState } from '../Reducers'
 import * as AppReducer from '../Reducers/AppReducer'
@@ -31,6 +32,7 @@ interface Props extends RX.CommonProps {
   currentUser?: User,
   claims?: VerifiableClaim[]
   saveClaimsLocally?: (jwts: string[]) => void
+  startLogin?: (networkId: string) => void
 }
 
 class SettingsScreen extends RX.Component<Props, null> {
@@ -64,7 +66,7 @@ class SettingsScreen extends RX.Component<Props, null> {
     return (
       <ScrollView>
         <RX.View style={Theme.Styles.containerFull}>
-          {this.props.currentUser && <RX.View style={Theme.Styles.accountInfo.wrapper}>
+          {this.props.currentUser && <RX.View style={[Theme.Styles.accountInfo.wrapper, Theme.Styles.accountInfo.wrapperNoBorder]}>
             <AccountIcon
               account={this.props.currentUser}
               type={AccountIcon.type.Large}
@@ -73,13 +75,29 @@ class SettingsScreen extends RX.Component<Props, null> {
               {this.props.currentUser.name}
             </RX.Text>
             {this.props.currentUser.address !== this.props.currentUser.name && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
-              {Utils.address.short(this.props.currentUser.address)}
+              {Utils.address.short(this.props.currentUser.address)} {Utils.address.mnidToNetworkName(this.props.currentUser.mnid)}
             </RX.Text>}
             {this.props.currentMatrixUser && <RX.Text style={Theme.Styles.accountInfo.subTitle}>
               {this.props.currentMatrixUser.user_id}
             </RX.Text>}
 
           </RX.View>}
+
+          <SectionHeader title='Networks' padded/>
+
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'Switch to Mainnet'}
+            onPress={() => this.props.startLogin('mainnet')}
+          />
+
+          <CallToAction
+            type={CallToAction.type.Main}
+            title={'Switch to Rinkeby'}
+            onPress={() => this.props.startLogin('rinkeby')}
+          />
+
+          <SectionHeader title='Claims' padded/>
 
           <CallToAction
             type={CallToAction.type.Main}
@@ -98,7 +116,7 @@ class SettingsScreen extends RX.Component<Props, null> {
             onPress={this.handleDeleteClaims}
           />
 
-          <RX.View style={{height: Theme.Metrics.baseMargin}} />
+          <SectionHeader title='Access' padded/>
 
           {this.props.currentMatrixUser && <CallToAction
               type={CallToAction.type.Secondary}
@@ -145,6 +163,7 @@ const mapDispatchToProps = (dispatch: any): Props => {
     logout: () => dispatch(Actions.User.logout()),
     saveClaimsLocally: (jwts: string[]) => dispatch(Actions.Contacts.saveClaimsLocally(jwts)),
     deleteLocalClaims: () => dispatch(Actions.Contacts.deleteLocalClaims()),
+    startLogin: (networkId: string) => dispatch(Actions.User.startLogin(networkId)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)

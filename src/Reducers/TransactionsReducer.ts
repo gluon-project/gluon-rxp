@@ -75,6 +75,17 @@ reducer.on(setToken, (state: TransactionState, payload?: string) => {
   }
 })
 
+export const setNetworkId = createAction('Set Network Id')
+reducer.on(setNetworkId, (state: TransactionState, payload?: string) => {
+  return {
+    ...state,
+    new: {
+      ...state.new,
+      networkId: payload,
+    },
+  }
+})
+
 export const setAmount = createAction('Set Amount')
 reducer.on(setAmount, (state: TransactionState, payload?: string) => {
   return {

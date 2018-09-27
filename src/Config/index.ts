@@ -5,6 +5,7 @@ import ipfs from './ipfs'
 import scraper from './scraper'
 import tokens from './tokens'
 import uport from './uport'
+import networks from './networks'
 
 export default {
   codepush,
@@ -14,4 +15,5 @@ export default {
   scraper,
   tokens,
   uport,
+  networks,
 }

@@ -38,7 +38,7 @@ export default class ContactListDetails extends RX.Component<Props, null> {
             type={ListItem.type.Default}
             title={this.props.currentUser.name}
             account={this.props.currentUser}
-            subTitle={`${this.props.currentUser.uniqueIssuers.length} signers`}
+            subTitle={`${this.props.currentUser.uniqueIssuers && this.props.currentUser.uniqueIssuers.length} signers`}
             selected={this.props.selectedContact === this.props.currentUser.did}
             onPress={() => this.handleSelectContact(this.props.currentUser.did)}
           />}

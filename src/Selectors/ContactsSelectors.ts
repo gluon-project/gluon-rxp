@@ -133,6 +133,13 @@ export const getList = createSelector(getAllClaims, (allClaims) => {
       contactsByDid[claim.sub].claims.avatar = claim
     }
 
+    if (key.toLowerCase() === 'mnid') {
+      contactsByDid[claim.sub].mnid = value
+      contactsByDid[claim.sub].address = Utils.address.universalIdToNetworkAddress(value)
+      contactsByDid[claim.sub].shortId = Utils.address.short(Utils.address.universalIdToNetworkAddress(value))
+      contactsByDid[claim.sub].claims.mnid = claim
+    }
+
   })
 
   _.forEach(contactsByDid, (contact: User) => {

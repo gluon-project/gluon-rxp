@@ -87,7 +87,7 @@ export function* handleLoginResponse(action: any): SagaIterator {
         name: result.name,
         address: result.address,
         mnid: result.mnid,
-        did: `did:uport:${result.mnid}`,
+        did: result.did,
         avatar: result.avatar ? result.avatar.uri : null,
       }
       yield put(Actions.User.setUportDid(result.did))
@@ -97,6 +97,12 @@ export function* handleLoginResponse(action: any): SagaIterator {
       }
       yield put(Actions.User.setAccounts([result.address]))
       yield put(Actions.User.setCurrent(user))
+      yield put(Actions.Contacts.signAnonymousClaim({
+        sub: user.did,
+        claim: {
+          mnid: result.mnid,
+        },
+      }))
       yield put(Actions.Contacts.signAnonymousClaim({
         sub: user.did,
         claim: {
@@ -130,7 +136,7 @@ export function* restoreState(): SagaIterator {
         name: result.name,
         address: result.address,
         mnid: result.mnid,
-        did: `did:uport:${result.mnid}`,
+        did: result.did,
         avatar: result.avatar ? result.avatar.uri : null,
       }
       yield put(Actions.User.setUportDid(result.did))

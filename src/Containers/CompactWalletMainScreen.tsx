@@ -64,7 +64,7 @@ const styles = {
 const mapStateToProps = (state: CombinedState): Props => {
   return {
     currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
-    balances: state.user.balances,
+    balances: Selectors.User.getBalances(state),
     uiTraits: state.app.uiTraits,
     selectedToken: Selectors.Tokens.getCurrentToken(state),
   }

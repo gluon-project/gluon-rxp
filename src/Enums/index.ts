@@ -43,7 +43,7 @@ export enum VisualType {
 }
 
 export enum TokenType {
-  Erc223,
+  EthCommunity,
   Erc20,
   ETH,
 }

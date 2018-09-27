@@ -41,6 +41,7 @@ declare interface User {
     name?: VerifiableClaim,
     avatar?: VerifiableClaim,
     matrixId?: VerifiableClaim,
+    mnid?: VerifiableClaim,
   }
 }
 
@@ -90,6 +91,7 @@ declare interface Transaction {
   receiver?: string,
   amount?: string,
   token?: string,
+  networkId?: string,
   date?: string,
   room?: string,
   attachment?: string,

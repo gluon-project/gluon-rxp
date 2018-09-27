@@ -45,7 +45,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     contacts: Selectors.Contacts.getList(state),
     selectedContact: Selectors.Contacts.getSelectedContact(state),
     isLoadingMatrixClaims: Selectors.Process.isRunningProcess(state, Enums.ProcessType.LoadMatrixClaims),
-    currentUser: Selectors.Contacts.getAccountByAddress(state, state.transactions.new.sender),
+    currentUser: Selectors.Contacts.getAccountByDid(state, state.user.current.did),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {
