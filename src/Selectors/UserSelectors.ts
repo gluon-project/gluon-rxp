@@ -4,12 +4,16 @@ import * as ContactSelectors from './ContactsSelectors'
 import * as TokensSelectors from './TokensSelectors'
 import * as Enums from '../Enums'
 import * as _ from 'lodash'
+import { uPort } from '../Services'
 import utils from '../Utils'
 
 export const getAccounts = (state: CombinedState) => state.user.accounts
 export const getCurrent = (state: CombinedState) => state.user.current
 export const getUportDid = (state: CombinedState) => state.user.uportDid
-export const getBalances = (state: CombinedState) => state.user.balances
+export const getBalances = (state: CombinedState) => {
+  const networkId = utils.address.networkIdForMnid(state.user.current.mnid)
+  return _.filter(state.user.balances, (balance: Balance) => !balance.token.networkId || balance.token.networkId === networkId)
+}
 export const getBalanceByAddress = (state: CombinedState, address: string): Balance => {
   return _.find(state.user.balances, {token: {address: address}})
 }

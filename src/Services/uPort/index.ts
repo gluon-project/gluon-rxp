@@ -20,6 +20,16 @@ const uportConnect = new Connect(Config.uport.app.name, {
   // network: 'mainnet',
 })
 
+const uportConnectMainnet = new Connect(Config.uport.app.name, {
+  network: 'mainnet',
+  useStore: false,
+})
+
+const uportConnectRinkeby = new Connect(Config.uport.app.name, {
+  network: 'rinkeby',
+  useStore: false,
+})
+
 uportConnect.credentials = credentials
 
 const setNetworkForMnid = (mnid: any) => {
@@ -44,6 +54,8 @@ const requestCredentials = (networkName: string) => {
   })
 }
 const getProvider = () => new Web3(uportConnect.getProvider())
+const getProviderMainnet = () => new Web3(uportConnectMainnet.getProvider())
+const getProviderRinkeby = () => new Web3(uportConnectRinkeby.getProvider())
 
 const signAnonymousClaim = (claim: any): VerifiableClaim => {
   return createJWT(claim, {
@@ -85,6 +97,6 @@ export default {
   signAnonymousClaim,
   requestCredentials,
   getProvider,
-  rinkebyProvider: getProvider(),
-  mainnetProvider: getProvider(),
+  rinkebyProvider: getProviderRinkeby(),
+  mainnetProvider: getProviderMainnet(),
 }

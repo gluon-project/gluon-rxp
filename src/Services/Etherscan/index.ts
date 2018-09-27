@@ -144,7 +144,9 @@ const ethTransactionToGluonTransaction = (ethTx: any, token: Token): Transaction
 }
 
 const fetchTransactions = (token: Token) => {
-  const endPoint = token.networkId === '1' ? Config.etherscan.endPoint.mainnet : Config.etherscan.endPoint.rinkeby
+  const nid = `0x${token.networkId}`
+  const endPoint = Config.networks[nid].etherscanApiEndpoint
+
   return fetch(
     `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
 address=${token.address}&apikey=${Config.etherscan.apiKey}`,
@@ -165,11 +167,12 @@ address=${token.address}&apikey=${Config.etherscan.apiKey}`,
   })
 }
 
-const fetchAvailableTokens = () => {
-  const endPoint = Config.etherscan.endPoint.rinkeby
+const fetchAvailableTokens = (networkId: string) => {
+  const nid = `0x${networkId}`
+  const endPoint = Config.networks[nid].etherscanApiEndpoint
   return fetch(
     `${endPoint}module=logs&action=getLogs&fromBlock=0&toBlock=latest&\
-address=${Config.tokens.communityTokenFactoryAddressRinkeby}&apikey=${Config.etherscan.apiKey}`,
+address=${Config.networks[nid].factoryAddress}&apikey=${Config.etherscan.apiKey}`,
   )
   .then((response: any) => response.json())
   .then((responseJson: any) => {

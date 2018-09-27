@@ -1,36 +1,5 @@
 import * as Services from '../Services'
-
-interface Network {
-  name: string,
-  explorerUrl: string,
-}
-
-interface NetworksMap {
-  [tokenId: string]: Network
-}
-
-export const networks = {
-  '0x1': {
-    name: 'Mainnet',
-    explorerUrl: 'https://etherscan.io',
-  },
-  '0x3': {
-    name: 'Ropsten',
-    explorerUrl: 'https://ropsten.io',
-  },
-  '0x2a': {
-    name: 'Kovan',
-    explorerUrl: 'https://kovan.etherscan.io',
-  },
-  '0x16B2': {
-    name: 'Infuranet',
-    explorerUrl: 'https://explorer.infuranet.io',
-  },
-  '0x4': {
-    name: 'Rinkeby',
-    explorerUrl: 'https://rinkeby.etherscan.io',
-  },
-} as NetworksMap
+import Config from '../Config'
 
 export const short = (address: string) => {
   return `${address.slice(0, 4)}...${address.slice(-4)}`
@@ -68,5 +37,19 @@ export const mnidToNetworkName = (mnid: string) => {
 
   const decoded = Services.uPort.MNID.decode(mnid)
 
-  return  networks[decoded.network] ? networks[decoded.network].name : 'Unknown'
+  return  Config.networks[decoded.network] ? Config.networks[decoded.network].name : 'Unknown'
+}
+
+export const networkIdForMnid = (mnid: any) => {
+  const decoded = Services.uPort.MNID.decode(mnid)
+  let nid = '1'
+  switch (decoded.network) {
+    case '0x1':
+      nid = '1'
+      break
+    case '0x4':
+      nid = '4'
+      break
+  }
+  return nid
 }

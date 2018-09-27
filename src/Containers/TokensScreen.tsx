@@ -73,7 +73,7 @@ class TokensScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    balances: state.user.balances,
+    balances: Selectors.User.getBalances(state),
     selectedToken: state.transactions.new.token,
     uiTraits: state.app.uiTraits,
     currentUser: state.user.current,

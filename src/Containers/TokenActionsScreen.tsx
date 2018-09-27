@@ -119,7 +119,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
             onPress={this.handleRequest}
             padded
             />
-          {/* {this.props.balance && this.props.balance.token.type === Enums.TokenType.Erc223 && <RX.View style={{
+          {this.props.balance && this.props.balance.token.type === Enums.TokenType.EthCommunity && <RX.View style={{
             marginBottom: this.props.uiTraits.horizontalIsCompact ? 600 : 0,
           }}>
 
@@ -128,7 +128,7 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               selectedIndex={this.state.isMint ? 0 : 1}
               handleSelection={(index) => this.setState({isMint: index === 0 ? true : false})}
               />
-            {/* <Graphs.BondingCurveGraph
+            {<Graphs.BondingCurveGraph
               priceDecimals={this.props.reserveTokenBalance.token.decimals}
               xTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
               yTicks={this.props.uiTraits.horizontalIsCompact ? 3 : 4}
@@ -174,13 +174,14 @@ class TokenActionsScreen extends RX.Component<Props, State> {
               </RX.View>
 
             <CallToAction
+              padded
               type={CallToAction.type.Main}
               title={this.state.isMint ? 'Buy' : 'Sell'}
               onPress={this.handleConfirm}
               disabled={!this.isValid() || this.props.isProcessingMint || this.props.isProcessingBurn}
               inProgress={this.props.isProcessingMint || this.props.isProcessingBurn}
             />
-          </RX.View>} */}
+          </RX.View>}
           {/* {this.props.transactions.map((transaction: Transaction, key: any) => <RX.View key={transaction.hash}>
             <RX.Text>{transaction.hash}</RX.Text>
           </RX.View>)} */}

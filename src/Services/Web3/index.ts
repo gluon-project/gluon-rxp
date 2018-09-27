@@ -28,12 +28,6 @@ const ethSingleton =  {
 
   setProvider: (provider: any) => {
     web3 = provider
-    web3.version.getNetwork((err: any, networkId: string) => {
-      if (err) {
-        console.log({err})
-      }
-      console.log({networkId})
-    })
   },
 
   getWeb3: (): any => {
@@ -58,38 +52,31 @@ const ethSingleton =  {
   getCommunityTokenFactory: (): any => {
     return ethSingleton.getNetworkId()
     .then((networkId: string) => {
-      return web3.eth.contract(communityTokenFactoryAbi).at(
-        networkId === '4' ? Config.tokens.communityTokenFactoryAddressRinkeby : '',
-      )
+      return web3.eth.contract(communityTokenFactoryAbi).at(Config.networks[`0x${networkId}`].factoryAddress)
     })
   },
 
-  getCommunityToken: (address: string, networkId?: string): any => {
+  getCommunityTokenFactoryForNetwork: (networkId?: string): any => {
     if (!networkId) {
-      return web3.eth.contract(communityTokenAbi).at(address)
+      return web3.eth.contract(communityTokenFactoryAbi).at(Config.networks[`0x${networkId}`].factoryAddress)
     } else if (networkId === '1') {
-      return Uport.mainnetProvider.eth.contract(communityTokenAbi).at(address)
+      return Uport.mainnetProvider.eth.contract(communityTokenFactoryAbi).at(Config.networks[`0x${networkId}`].factoryAddress)
     } else if (networkId === '4') {
-      return Uport.rinkebyProvider.eth.contract(communityTokenAbi).at(address)
+      return Uport.rinkebyProvider.eth.contract(communityTokenFactoryAbi).at(Config.networks[`0x${networkId}`].factoryAddress)
     }
   },
-  getErc223: (address: string, networkId?: string): any => {
-    return web3.eth.contract(erc223abi).at(address)
-    // if (!networkId) {
-    // } else if (networkId === '1') {
-    //   return Uport.mainnetProvider.eth.contract(erc223abi).at(address)
-    // } else if (networkId === '4') {
-    //   return Uport.rinkebyProvider.eth.contract(erc223abi).at(address)
-    // }
+
+
+  getEthCommunityToken: (address: string, networkId?: string): any => {
+    if (!networkId) {
+      return web3.eth.contract(ethCommunityTokenAbi).at(address)
+    } else if (networkId === '1') {
+      return Uport.mainnetProvider.eth.contract(ethCommunityTokenAbi).at(address)
+    } else if (networkId === '4') {
+      return Uport.rinkebyProvider.eth.contract(ethCommunityTokenAbi).at(address)
+    }
   },
 
-  getErc20: (address: string): any => {
-    return web3.eth.contract(erc20abi).at(address)
-  },
-
-  getFactory: (): any => {
-    return web3.eth.contract(communityTokenFactoryAbi).at(Config.tokens.communityTokenFactoryAddressRinkeby)
-  },
 }
 // TODO Re-enable metamask
 // if ((<any>window).web3 && (<any>window).web3.currentProvider) {
@@ -122,7 +109,7 @@ const getNewBalances = (address: string, tokens: Token[]) => {
       })
       promises.push(promise)
     } else {
-      const tokenContract = ethSingleton.getCommunityToken(token.address)
+      const tokenContract = ethSingleton.getEthCommunityToken(token.address, token.networkId)
 
       const subPromises: Promise<any>[] = []
 
@@ -177,8 +164,8 @@ const getNewBalances = (address: string, tokens: Token[]) => {
 }
 
 const priceToMint = (token: Token, amount: string): Promise<string> => {
-  if (token.type === Enums.TokenType.Erc223) {
-    const tokenContract = ethSingleton.getCommunityToken(token.address)
+  if (token.type === Enums.TokenType.EthCommunity) {
+    const tokenContract = ethSingleton.getEthCommunityToken(token.address, token.networkId)
     return new Promise<any>((resolve, reject) => {
       tokenContract.priceToMint.call(amount, function (err: any, val: any) {
         if (err) {
@@ -195,8 +182,8 @@ const priceToMint = (token: Token, amount: string): Promise<string> => {
 }
 
 const rewardForBurn = (token: Token, amount: string): Promise<string> => {
-  if (token.type === Enums.TokenType.Erc223) {
-    const tokenContract = ethSingleton.getCommunityToken(token.address)
+  if (token.type === Enums.TokenType.EthCommunity) {
+    const tokenContract = ethSingleton.getEthCommunityToken(token.address, token.networkId)
     return new Promise<any>((resolve, reject) => {
       tokenContract.rewardForBurn.call(amount, function (err: any, val: any) {
         if (err) {
@@ -211,16 +198,16 @@ const rewardForBurn = (token: Token, amount: string): Promise<string> => {
   }
 }
 
-const getTokenListInfo = (address: string[]): Promise<Token[]> => {
-  let promises = address.map(item => getTokenInfo(item) as Promise<Token>)
+const getTokenListInfo = (address: string[], networkId: string): Promise<Token[]> => {
+  let promises = address.map(item => getTokenInfo(item, networkId) as Promise<Token>)
   return Promise.all(promises)
 }
 
 const getTokenInfo = (address: string, networkId?: string) => {
   let promises: Promise<any>[] = []
 
-  const tokenContract = ethSingleton.getErc223(address, networkId)
-  // const tokenFactoryContract = ethSingleton.getCommunityTokenFactory()
+  const tokenContract = ethSingleton.getEthCommunityToken(address, networkId)
+  const tokenFactoryContract = ethSingleton.getCommunityTokenFactoryForNetwork(networkId)
 
   // name
   promises.push(new Promise<string>((resolve, reject) => {
@@ -266,53 +253,31 @@ const getTokenInfo = (address: string, networkId?: string) => {
     })
   }))
 
-  // // exponent
-  // promises.push(new Promise<number>((resolve, reject) => {
-  //   tokenContract.exponent.call(function (err: any, value: number) {
-  //     if (err) {
-  //       reject(err)
-  //     } else {
-  //       resolve(value)
-  //     }
-  //   })
-  // }))
-
-  // // poolBalance
-  // promises.push(new Promise<string>((resolve, reject) => {
-  //   tokenContract.poolBalance.call(function (err: any, value: string) {
-  //     if (err) {
-  //       reject(err)
-  //     } else {
-  //       resolve(value)
-  //     }
-  //   })
-  // }))
-
-  // // reserveToken
-  // promises.push(new Promise<string>((resolve, reject) => {
-  //   tokenContract.reserveToken.call(function (err: any, value: string) {
-  //     if (err) {
-  //       reject(err)
-  //     } else {
-  //       resolve(value)
-  //     }
-  //   })
-  // }))
-
-  // // isCommunityToken
-  // promises.push(new Promise<number>((resolve, reject) => {
-  //   tokenFactoryContract.then((contract: any) => contract.isCommunityToken.call(address, function (err: any, value: number) {
-  //     if (err) {
-  //       reject(err)
-  //     } else {
-  //       resolve(value)
-  //     }
-  //   }))
-  // }))
-
-  // MAX_UINT256 - ERC20 returns 0. This is a hacky way of checking if token is ERC20
+  // exponent
   promises.push(new Promise<number>((resolve, reject) => {
-    tokenContract.MAX_UINT256.call(function (err: any, value: number) {
+    tokenContract.exponent.call(function (err: any, value: number) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // poolBalance
+  promises.push(new Promise<string>((resolve, reject) => {
+    tokenContract.poolBalance.call(function (err: any, value: string) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  }))
+
+  // isCommunityToken
+  promises.push(new Promise<number>((resolve, reject) => {
+    tokenFactoryContract.isCommunityToken.call(address, function (err: any, value: number) {
       if (err) {
         reject(err)
       } else {
@@ -330,11 +295,11 @@ const getTokenInfo = (address: string, networkId?: string) => {
       code: data[1],
       decimals: data[2].toNumber(),
       totalSupply: data[3].toString(),
-      // exponent: data[4].toNumber(),
-      // poolBalance: data[5].toString(),
-      // reserveToken: data[6].toString(),
-      type: data[4].toString() === '0' ? Enums.TokenType.Erc20 : Enums.TokenType.Erc223,
-      networkId: data[5].toString(),
+      exponent: data[4].toNumber(),
+      poolBalance: data[5].toString(),
+      type: data[6] ? Enums.TokenType.EthCommunity : Enums.TokenType.Erc20,
+      networkId: data[7].toString(),
+      reserveToken: data[6] ? Config.tokens.etherAddress : null,
     } as Token
   })
 }
@@ -393,7 +358,7 @@ const loadTransactionInfo = (txHash: string): Promise<Transaction> => {
 }
 
 const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.token)
+  const contract = ethSingleton.getEthCommunityToken(transaction.token)
   console.log(transaction)
   return new Promise<Transaction>((resolve, reject) => {
     contract.mint(
@@ -411,7 +376,7 @@ const mintTokens = (transaction: MintTransaction): Promise<Transaction> => {
 }
 
 const burnTokens = (transaction: BurnTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.token)
+  const contract = ethSingleton.getEthCommunityToken(transaction.token)
 
   return new Promise<Transaction>((resolve, reject) => {
     contract.burn(
@@ -433,69 +398,47 @@ const uintToBytes = (uint: number) => {
   return '0x' + '0'.repeat(64 - hexInt.length) + hexInt
 }
 
-const mintCommunityTokens = (transaction: MintTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.reserveToken)
+// const mintCommunityTokens = (transaction: MintTransaction): Promise<Transaction> => {
+//   const contract = ethSingleton.getEth().contract(gluonTokenAbi).at(transaction.reserveToken)
 
-  return new Promise<Transaction>((resolve, reject) => {
-    contract.transfer(
-      transaction.token,
-      transaction.price,
-      uintToBytes(parseInt(transaction.numTokens, 10)),
-      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
-      handlePendingTransaction((txHash, response) => {
-        return {
-          ...transaction,
-          hash: txHash,
-          date: moment().toISOString(),
-        }
-      }, resolve, reject),
-    )
-  })
-}
+//   return new Promise<Transaction>((resolve, reject) => {
+//     contract.transfer(
+//       transaction.token,
+//       transaction.price,
+//       uintToBytes(parseInt(transaction.numTokens, 10)),
+//       { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+//       handlePendingTransaction((txHash, response) => {
+//         return {
+//           ...transaction,
+//           hash: txHash,
+//           date: moment().toISOString(),
+//         }
+//       }, resolve, reject),
+//     )
+//   })
+// }
 
-const burnCommunityTokens = (transaction: BurnTransaction): Promise<Transaction> => {
-  const contract = ethSingleton.getEth().contract(communityTokenAbi).at(transaction.token)
+// const burnCommunityTokens = (transaction: BurnTransaction): Promise<Transaction> => {
+//   const contract = ethSingleton.getEth().contract(communityTokenAbi).at(transaction.token)
 
-  return new Promise<Transaction>((resolve, reject) => {
-    contract.burn(
-      transaction.numTokens,
-      '0x0',
-      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
-      handlePendingTransaction((txHash, response) => {
-        return {
-          ...transaction,
-          hash: txHash,
-          date: moment().toISOString(),
-        }
-      }, resolve, reject),
-    )
-  })
-}
-
-const sendTransactionErc223 = (transaction: Transaction): Promise<Transaction> => {
-  const token = ethSingleton.getErc20(transaction.token)
-  // const hex = transaction.attachment && transaction.attachment ? bs58.decode(transaction.attachment).toString('hex') : '00'
-  const hex = '00'
-
-  return new Promise<Transaction>((resolve, reject) => {
-    token.transfer(
-      transaction.receiver,
-      transaction.amount,
-      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
-      handlePendingTransaction((txHash, response) => {
-        return {
-          ...transaction,
-          hash: txHash,
-          date: moment().toISOString(),
-          pending: response ? false : true,
-        }
-      }, resolve, reject, true),
-    )
-  })
-}
+//   return new Promise<Transaction>((resolve, reject) => {
+//     contract.burn(
+//       transaction.numTokens,
+//       '0x0',
+//       { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+//       handlePendingTransaction((txHash, response) => {
+//         return {
+//           ...transaction,
+//           hash: txHash,
+//           date: moment().toISOString(),
+//         }
+//       }, resolve, reject),
+//     )
+//   })
+// }
 
 const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> => {
-  const token = ethSingleton.getErc20(transaction.token)
+  const token = ethSingleton.getEthCommunityToken(transaction.token, transaction.networkId)
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(
@@ -544,49 +487,72 @@ const findTokenContractAddress = (logs: any[]): string => {
   return filtered[0].events[1].value
 }
 
-// const createNewToken = (token: Token, creator: User): Promise<Token> => {
-//   return ethSingleton.getCommunityTokenFactory()
-//   .then((tokenFactory: any) => {
-//     return new Promise<Token>((resolve, reject) => {
-//       tokenFactory.createERC20Token(
-//         token.name,
-//         token.decimals,
-//         token.code,
-//         token.totalSupply,
-//         { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
-//         handlePendingTransaction((txHash, response) => {
-//           return {
-//             ...token,
-//             address: findTokenContractAddress(response.logs),
-//             type: Enums.TokenType.Erc20,
-//           }
-//         }, resolve, reject),
-//       )
-//     })
-//   })
-// }
-
-const createNewToken = (token: Token, creator: User): Promise<Token> => {
-  const tokenFactory = ethSingleton.getFactory()
-
-  return new Promise<Token>((resolve, reject) => {
-    tokenFactory.createERC20Token(
-      token.name,
-      token.decimals,
-      token.code,
-      token.totalSupply,
-      { from: creator.address },
-      handlePendingTransaction((txHash, response) => {
-        return {
-          ...token,
-          address: findTokenContractAddress(response.logs),
-          type: Enums.TokenType.Erc20,
-        }
-      }, resolve, reject),
-    )
+const createNewErc20Token = (token: Token, creator: User): Promise<Token> => {
+  return ethSingleton.getCommunityTokenFactory()
+  .then((tokenFactory: any) => {
+    return new Promise<Token>((resolve, reject) => {
+      tokenFactory.createERC20Token(
+        token.name,
+        token.decimals,
+        token.code,
+        token.totalSupply,
+        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
+        handlePendingTransaction((txHash, response) => {
+          return {
+            ...token,
+            address: findTokenContractAddress(response.logs),
+            type: Enums.TokenType.Erc20,
+          }
+        }, resolve, reject),
+      )
+    })
   })
-
 }
+
+const createNewEthCommunityToken = (token: Token, creator: User): Promise<Token> => {
+  return ethSingleton.getCommunityTokenFactory()
+  .then((tokenFactory: any) => {
+    return new Promise<Token>((resolve, reject) => {
+      tokenFactory.createEthCommunityToken(
+        token.name,
+        token.decimals,
+        token.code,
+        token.exponent,
+        { from: creator.address, gasPrice: DEFAULT_GAS_PRICE },
+        handlePendingTransaction((txHash, response) => {
+          return {
+            ...token,
+            address: findTokenContractAddress(response.logs),
+            type: Enums.TokenType.EthCommunity,
+            reserveToken: Config.tokens.etherAddress,
+          }
+        }, resolve, reject),
+      )
+    })
+  })
+}
+
+// const createNewToken = (token: Token, creator: User): Promise<Token> => {
+//   const tokenFactory = ethSingleton.getFactory()
+
+//   return new Promise<Token>((resolve, reject) => {
+//     tokenFactory.createERC20Token(
+//       token.name,
+//       token.decimals,
+//       token.code,
+//       token.totalSupply,
+//       { from: creator.address },
+//       handlePendingTransaction((txHash, response) => {
+//         return {
+//           ...token,
+//           address: findTokenContractAddress(response.logs),
+//           type: Enums.TokenType.Erc20,
+//         }
+//       }, resolve, reject),
+//     )
+//   })
+
+// }
 const getAccount = (): string => {
   // return ethSingleton.getEth() && ethSingleton.getEth().defaultAccount
   return ethSingleton.getEth() && ethSingleton.getEth().accounts[0]
@@ -601,11 +567,10 @@ export default {
   getNewBalances,
   mintTokens,
   burnTokens,
-  mintCommunityTokens,
-  burnCommunityTokens,
+  // mintCommunityTokens,
+  // burnCommunityTokens,
   priceToMint,
   rewardForBurn,
-  sendTransactionErc223,
   sendTransactionErc20,
   sendTransactionETH,
   ethSingleton,
@@ -613,6 +578,7 @@ export default {
   getAccounts,
   getTokenInfo,
   getTokenListInfo,
-  createNewToken,
+  createNewErc20Token,
+  createNewEthCommunityToken,
   loadTransactionInfo,
 }

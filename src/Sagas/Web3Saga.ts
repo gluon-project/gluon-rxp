@@ -36,9 +36,7 @@ export function* watchStartSavingTransaction(): SagaIterator {
         yield put(Actions.Navigation.navigate('Tokens'))
       } else {
         msgtype = 'm.eth.erc20.tranferTo'
-        if (token.type === Enums.TokenType.Erc223) {
-          newTransaction = yield call(Web3.sendTransactionErc223, transaction)
-        } else if (token.type === Enums.TokenType.Erc20) {
+        if (token.type === Enums.TokenType.EthCommunity || token.type === Enums.TokenType.Erc20) {
           newTransaction = yield call(Web3.sendTransactionErc20, transaction)
         }
       }
@@ -160,9 +158,15 @@ export function* watchCreateNewToken(): SagaIterator {
     yield put(Actions.Process.start({type: Enums.ProcessType.CreateNewToken}))
     const currentUser = yield select(Selectors.User.getCurrent)
     try {
-      const newToken = yield call(Web3.createNewToken, token, currentUser)
-      console.log({newToken})
-      yield put(Actions.Tokens.addToken(newToken))
+      if (token.type === Enums.TokenType.Erc20) {
+        const newToken = yield call(Web3.createNewErc20Token, token, currentUser)
+        yield put(Actions.Tokens.addToken(newToken))
+        console.log({newToken})
+      } else if (token.type === Enums.TokenType.EthCommunity) {
+        const newToken = yield call(Web3.createNewEthCommunityToken, token, currentUser)
+        yield put(Actions.Tokens.addToken(newToken))
+        console.log({newToken})
+      }
       yield put(Actions.User.refreshBalances())
       // yield put(Actions.Feed.fetchTransactions())
     } catch (e) {
@@ -240,17 +244,10 @@ export function* watchMintTokens(): SagaIterator {
       const tokenAddress = yield select(Selectors.Tokens.getCurrentToken)
       const transaction: MintTransaction = yield select(Selectors.Tokens.getMintTransaction)
       const token: Token = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
-      if (token.reserveToken === Config.tokens.etherAddress) {
+      if (token.type === Enums.TokenType.EthCommunity) {
         const tx = yield call(Web3.mintTokens, {
           ...transaction,
           token: tokenAddress,
-          sender: currentUser.address,
-        } as MintTransaction)
-      } else {
-        const tx = yield call(Web3.mintCommunityTokens, {
-          ...transaction,
-          token: tokenAddress,
-          reserveToken: token.reserveToken,
           sender: currentUser.address,
         } as MintTransaction)
       }
@@ -274,17 +271,10 @@ export function* watchBurnTokens(): SagaIterator {
       const tokenAddress = yield select(Selectors.Tokens.getCurrentToken)
       const transaction: BurnTransaction = yield select(Selectors.Tokens.getBurnTransaction)
       const token: Token = yield select(Selectors.Tokens.getTokenByAddress, tokenAddress)
-      if (token.reserveToken === Config.tokens.etherAddress) {
+      if (token.type === Enums.TokenType.EthCommunity) {
         const tx = yield call(Web3.burnTokens, {
           ...transaction,
           token: tokenAddress,
-          sender: currentUser.address,
-        } as BurnTransaction)
-      } else {
-        const tx = yield call(Web3.burnCommunityTokens, {
-          ...transaction,
-          token: tokenAddress,
-          reserveToken: token.reserveToken,
           sender: currentUser.address,
         } as BurnTransaction)
       }
@@ -304,8 +294,9 @@ export function* watchGetAvailableTokens(): SagaIterator {
     const action = yield take(Actions.Tokens.getAvailableTokens)
     yield put(Actions.Process.start({type: Enums.ProcessType.GetAvailableTokens}))
     try {
-      const tokenAddresses: string[] = yield call(Etherscan.fetchAvailableTokens)
-      const tokens = yield call(Web3.getTokenListInfo, tokenAddresses)
+      const networkId = yield call(Web3.ethSingleton.getNetworkId)
+      const tokenAddresses: string[] = yield call(Etherscan.fetchAvailableTokens, networkId)
+      const tokens = yield call(Web3.getTokenListInfo, tokenAddresses, networkId)
       yield put(Actions.Tokens.setAvailableTokens(tokens))
     } catch (e) {
       yield put(Actions.App.handleError(e))
