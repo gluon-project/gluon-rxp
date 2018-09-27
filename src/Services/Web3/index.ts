@@ -66,7 +66,6 @@ const ethSingleton =  {
     }
   },
 
-
   getEthCommunityToken: (address: string, networkId?: string): any => {
     if (!networkId) {
       return web3.eth.contract(ethCommunityTokenAbi).at(address)
@@ -74,6 +73,16 @@ const ethSingleton =  {
       return Uport.mainnetProvider.eth.contract(ethCommunityTokenAbi).at(address)
     } else if (networkId === '4') {
       return Uport.rinkebyProvider.eth.contract(ethCommunityTokenAbi).at(address)
+    }
+  },
+
+  getErc20Token: (address: string, networkId?: string): any => {
+    if (!networkId) {
+      return web3.eth.contract(erc20abi).at(address)
+    } else if (networkId === '1') {
+      return Uport.mainnetProvider.eth.contract(erc20abi).at(address)
+    } else if (networkId === '4') {
+      return Uport.rinkebyProvider.eth.contract(erc20abi).at(address)
     }
   },
 
@@ -438,7 +447,7 @@ const uintToBytes = (uint: number) => {
 // }
 
 const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> => {
-  const token = ethSingleton.getEthCommunityToken(transaction.token, transaction.networkId)
+  const token = ethSingleton.getErc20Token(transaction.token, transaction.networkId)
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(
