@@ -123,7 +123,7 @@ reducer.on(UserActions.setCurrent, (state: TransactionState, payload?: User) => 
   return {
     ...state,
     new: {
-      ...state.new,
+      ...emptyTransaction,
       sender: payload.address,
     },
   }

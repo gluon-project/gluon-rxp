@@ -5,6 +5,7 @@ import * as _ from 'lodash'
 import Utils from '../Utils'
 import * as S from 'string'
 import { decodeJWT } from 'did-jwt'
+import uPort from '../Services/uPort'
 
 interface DidToUserMap {
   [did: string]: User
@@ -20,6 +21,10 @@ export const getRoomForSharing = (state: CombinedState) => state.contacts.roomFo
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
 export const getMatrixClaims = (state: CombinedState) => state.contacts.matrixClaims
 export const getLocalClaims = (state: CombinedState) => state.contacts.claims
+
+export const getCurrentUserNetworkId = (state: CombinedState) => {
+  return uPort.MNID.decode(state.user.current.mnid).network
+}
 
 export const getAllClaims = createSelector(getLocalClaims, getMatrixClaims,
   (localClaims, matrixClaims) => localClaims.concat(matrixClaims))
@@ -89,7 +94,7 @@ export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] =>
   })
   return uniqClaims
 }
-export const getList = createSelector(getAllClaims, (allClaims) => {
+export const getList = createSelector(getAllClaims, getCurrentUserNetworkId, (allClaims, networkId) => {
 
   const contactsByDid: DidToUserMap = {}
   const contacts: User[] = []
@@ -133,7 +138,7 @@ export const getList = createSelector(getAllClaims, (allClaims) => {
       contactsByDid[claim.sub].claims.avatar = claim
     }
 
-    if (key.toLowerCase() === 'mnid') {
+    if (key.toLowerCase() === 'mnid' && uPort.MNID.decode(value).network === networkId) {
       contactsByDid[claim.sub].mnid = value
       contactsByDid[claim.sub].address = Utils.address.universalIdToNetworkAddress(value)
       contactsByDid[claim.sub].shortId = Utils.address.short(Utils.address.universalIdToNetworkAddress(value))
@@ -147,6 +152,10 @@ export const getList = createSelector(getAllClaims, (allClaims) => {
   })
 
   return contacts
+})
+
+export const getListForTransfer = createSelector(getList, getCurrentUserNetworkId, (list, networkId) => {
+  return _.filter(list, (item: User) => item.mnid && uPort.MNID.decode(item.mnid).network === networkId)
 })
 
 export const getAccountByAddress = (state: CombinedState, address: string): User => {

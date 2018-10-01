@@ -447,7 +447,7 @@ const uintToBytes = (uint: number) => {
 // }
 
 const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> => {
-  const token = ethSingleton.getErc20Token(transaction.token, transaction.networkId)
+  const token = ethSingleton.getErc20Token(transaction.token)
 
   return new Promise<Transaction>((resolve, reject) => {
     token.transfer(

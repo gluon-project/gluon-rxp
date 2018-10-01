@@ -170,7 +170,9 @@ function* loadInitialState(): SagaIterator {
 
   const w3 = uPort.getProvider()
   Web3.ethSingleton.setProvider(w3)
-  yield put(Actions.User.refreshBalances())
+  if (currentUser) {
+    yield put(Actions.User.refreshBalances())
+  }
 
   yield call(handleInitialUrl)
 

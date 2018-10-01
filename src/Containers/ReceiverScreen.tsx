@@ -56,7 +56,7 @@ class ReceiverScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    contacts: Selectors.Contacts.getList(state),
+    contacts: Selectors.Contacts.getListForTransfer(state),
     selectedReceiver: state.transactions.new.receiver,
     uiTraits: state.app.uiTraits,
   }
