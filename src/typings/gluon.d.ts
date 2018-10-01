@@ -47,6 +47,15 @@ declare interface User {
 
 // Claims
 
+declare interface DataSource {
+  type: string, // 'local', 'matrix', etc.
+  id?: string, // 'folder', 'roomId', etc.
+  account?: {
+    name?: string,
+    avatar?: string,
+  },
+}
+
 declare interface VerifiableClaim {
   iss: string,
   sub?: string,
@@ -54,14 +63,7 @@ declare interface VerifiableClaim {
   exp?: number,
   claim: any,
   jwt: string,
-  source: {
-    type: string, // 'local', 'matrix', etc.
-    id?: string, // 'folder', 'roomId', etc.
-    account?: {
-      name?: string,
-      avatar?: string,
-    },
-  },
+  source: DataSource,
   issuer?: User,
   subject?: User,
   claimType?: string,

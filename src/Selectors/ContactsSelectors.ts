@@ -21,6 +21,7 @@ export const getRoomForSharing = (state: CombinedState) => state.contacts.roomFo
 export const getSelectedContact = (state: CombinedState) => state.contacts.selectedContact
 export const getMatrixClaims = (state: CombinedState) => state.contacts.matrixClaims
 export const getLocalClaims = (state: CombinedState) => state.contacts.claims
+export const getHiddenDataSources = (state: CombinedState) => state.contacts.hiddenDataSources
 
 export const getCurrentUserNetworkId = (state: CombinedState) => {
   return uPort.MNID.decode(state.user.current.mnid).network
@@ -94,12 +95,24 @@ export const getAllClaimsExtended = (state: CombinedState): VerifiableClaim[] =>
   })
   return uniqClaims
 }
-export const getList = createSelector(getAllClaims, getCurrentUserNetworkId, (allClaims, networkId) => {
+
+export const getClaimsForWOT = (state: CombinedState): VerifiableClaim[] => {
+  const allClaims = getAllClaimsExtended(state)
+  return _.filter(allClaims, (claim: VerifiableClaim) => {
+    return !!!_.find(state.contacts.hiddenDataSources, claim.source)
+  })
+}
+
+export const getList = createSelector(getAllClaims, getCurrentUserNetworkId, getHiddenDataSources,
+    (allClaims, networkId, hiddenDataSources) => {
 
   const contactsByDid: DidToUserMap = {}
   const contacts: User[] = []
 
   _.forEach(allClaims, claim => {
+    if (_.find(hiddenDataSources, claim.source)) {
+      return
+    }
     const keys = _.keys(claim.claim)
     const key = keys[0]
     const value = typeof claim.claim[key] === 'string' ? claim.claim[key] : JSON.stringify(claim.claim[key])
@@ -193,3 +206,18 @@ export const getAccountByDid = (state: CombinedState, did: string): User => {
 }
 export const getSelectedContactClaims = (state: CombinedState) => _.filter(getAllClaimsExtended(state),
   (claim: VerifiableClaim) => claim.sub === state.contacts.selectedContact)
+
+export const getAvailableDataSources = createSelector(getAllClaimsExtended, (allClaims: VerifiableClaim[]) => {
+  const sources: DataSource[] = []
+  _.forEach(allClaims, (claim: VerifiableClaim) => {
+    if (!_.find(sources, claim.source)) {
+      sources.push(claim.source)
+    }
+  })
+  return sources
+})
+
+export const getSelectedDataSources = createSelector(getAvailableDataSources, getHiddenDataSources,
+  (availableDataSources: DataSource[], hiddenDataSources: DataSource[]) => {
+    return _.filter(availableDataSources, (source) => !_.find(hiddenDataSources, source))
+})

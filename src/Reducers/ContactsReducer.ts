@@ -2,7 +2,7 @@ import {
   createAction,
   createReducer,
 } from 'redux-act'
-import { remove, uniqBy } from 'lodash'
+import { remove, uniqBy, find, without } from 'lodash'
 import { resetToInitialState } from './AppReducer'
 import { logout } from './UserReducer'
 import Config from '../Config'
@@ -11,10 +11,7 @@ export interface ContactsState {
   groupClaimsBy: {
     claimType: string,
     claimValue: string,
-    source: {
-      type: string,
-      id: string,
-    },
+    source: DataSource,
     issuer: {
       did: string,
     },
@@ -27,6 +24,7 @@ export interface ContactsState {
   list: User[],
   claims: VerifiableClaim[],
   matrixClaims: VerifiableClaim[],
+  hiddenDataSources: DataSource[],
 }
 
 const initialState: ContactsState = {
@@ -39,11 +37,28 @@ const initialState: ContactsState = {
   list: Config.contacts.defaultList,
   claims: Config.contacts.defaultClaimsList,
   matrixClaims: [],
+  hiddenDataSources: [],
 }
 
 export const reducer = createReducer({}, initialState)
 reducer.on(resetToInitialState, (state: ContactsState) => {
   return initialState
+})
+
+export const toggleHiddenDataSource = createAction('Toggle hidden datasource')
+reducer.on(toggleHiddenDataSource, (state: ContactsState, payload?: DataSource) => {
+  let currentHiddenDataSources = [...state.hiddenDataSources]
+  if (find(currentHiddenDataSources, payload)) {
+    remove(currentHiddenDataSources, (source: DataSource) => {
+      return source.type === payload.type && source.id === payload.id
+    })
+  } else {
+    currentHiddenDataSources.push(payload)
+  }
+  return {
+    ...state,
+    hiddenDataSources: currentHiddenDataSources,
+  }
 })
 
 export const setGroupClaimsBy = createAction('Set Group Claims By')

@@ -18,6 +18,7 @@ interface Props extends RX.CommonProps {
   uiTraits?: UITraits,
   contacts?: User[],
   isLoadingMatrixClaims?: boolean
+  selectedDataSources?: DataSource[]
 }
 
 class CompactContactsMasterScreen extends RX.Component<Props, null> {
@@ -33,6 +34,7 @@ class CompactContactsMasterScreen extends RX.Component<Props, null> {
             selectContact={this.props.selectContact}
             isLoadingMatrixClaims={this.props.isLoadingMatrixClaims}
             currentUser={this.props.currentUser}
+            selectedDataSources={this.props.selectedDataSources}
             />
         </ScrollView>
       </RX.View>
@@ -46,6 +48,7 @@ const mapStateToProps = (state: CombinedState): Props => {
     selectedContact: Selectors.Contacts.getSelectedContact(state),
     isLoadingMatrixClaims: Selectors.Process.isRunningProcess(state, Enums.ProcessType.LoadMatrixClaims),
     currentUser: Selectors.Contacts.getAccountByDid(state, state.user.current.did),
+    selectedDataSources: Selectors.Contacts.getSelectedDataSources(state),
   }
 }
 const mapDispatchToProps = (dispatch: any): Props => {

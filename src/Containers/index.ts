@@ -19,6 +19,7 @@ import ContactSelectionScreen from './ContactSelectionScreen'
 import ContactClaimGroupsScreen from './ContactClaimGroupsScreen'
 import ContactClaimDetailsScreen from './ContactClaimDetailsScreen'
 import ClaimListBox from './ClaimListBox'
+import DataSourcesScreen from './DataSourcesScreen'
 import FeedItem from './FeedItem'
 import FeedScreen from './FeedScreen'
 import LoadingScreen from './LoadingScreen'
@@ -64,6 +65,7 @@ export {
   CompactSendMainScreen,
   CompactWalletMainScreen,
   ClaimListBox,
+  DataSourcesScreen,
   FeedItem,
   ContactsMasterScreen,
   FeedScreen,

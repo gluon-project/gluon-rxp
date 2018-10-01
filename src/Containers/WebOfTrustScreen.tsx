@@ -39,7 +39,7 @@ class WebOfTrustScreen extends RX.Component<Props, null> {
 
 const mapStateToProps = (state: CombinedState): Props => {
   return {
-    claims: Selectors.Contacts.getAllClaimsExtended(state),
+    claims: Selectors.Contacts.getClaimsForWOT(state),
     selectedContact: Selectors.Contacts.getSelectedContact(state),
   }
 }

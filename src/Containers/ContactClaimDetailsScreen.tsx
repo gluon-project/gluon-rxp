@@ -23,10 +23,7 @@ interface Props extends RX.CommonProps {
   groupClaimsBy?: {
     claimType: string,
     claimValue: string,
-    source: {
-      type: string,
-      id: string,
-    },
+    source: DataSource,
     issuer: {
       did: string,
     },

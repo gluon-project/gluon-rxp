@@ -12,6 +12,7 @@ interface Props extends RX.CommonProps {
   isLoadingMatrixClaims?: boolean
   currentUser?: User,
   routeName?: string
+  selectedDataSources?: DataSource[]
 }
 
 export default class ContactListDetails extends RX.Component<Props, null> {
@@ -33,6 +34,15 @@ export default class ContactListDetails extends RX.Component<Props, null> {
       contact.did !== this.props.currentUser.did})
     return (
       <RX.View style={Theme.Styles.container}>
+        <ListItem
+          type={ListItem.type.Default}
+          title={this.props.selectedDataSources.length + ' data sources'}
+          isOn
+          subTitle={this.props.selectedDataSources.map((source: DataSource) => source.account.name).join(', ')}
+          selected={this.props.routeName === 'DataSources'}
+          onPress={() => this.props.navigate('DataSources')}
+        />
+
         {this.props.currentUser &&
           <ListItem
             type={ListItem.type.Default}

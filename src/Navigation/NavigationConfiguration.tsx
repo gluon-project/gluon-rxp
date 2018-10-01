@@ -94,6 +94,7 @@ const About2 = { screen: Screens.About2Screen, navigationOptions: { title: 'What
 const About3 = { screen: Screens.About3Screen, navigationOptions: { title: 'Who can use Gluon?' } }
 const About4 = { screen: Screens.About4Screen, navigationOptions: { title: 'How Gluon works?' } }
 const WebOfTrust = { screen: Screens.WebOfTrustScreen, navigationOptions: { title: 'WebOfTrust' } }
+const DataSources = { screen: Screens.DataSourcesScreen, navigationOptions: { title: 'Data Sources' } }
 
 const Tokens = {screen: Screens.TokensScreen, navigationOptions: {title: 'Tokens'}}
 const TokensForm = {screen: Screens.TokensFormScreen, navigationOptions: {title: 'Add Token'}}
@@ -128,7 +129,7 @@ export const WideNavigationConfiguration = {
   },
   ContactsTab: {
     masterScreen: Screens.ContactsMasterScreen,
-    screen: StackNavigator({ ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection,
+    screen: StackNavigator({ DataSources, ContactActions, ContactForm, NewContactForm, RoomSelection, ContactSelection,
       ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
@@ -192,7 +193,7 @@ export const CompactNavigationConfiguration = {
     ),
   },
   ContactsTab: {
-    screen: StackNavigator({ CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection,
+    screen: StackNavigator({ DataSources, CompactContactsMainScreen, ContactActions, ContactForm, RoomSelection,
       ContactSelection, ContactClaimGroups, ContactClaimDetails, WebOfTrust }, navigationOptions),
   },
   WalletTab: {
