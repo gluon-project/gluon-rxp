@@ -36,8 +36,10 @@ export function* watchStartSavingTransaction(): SagaIterator {
         yield put(Actions.Navigation.navigate('Tokens'))
       } else {
         msgtype = 'm.eth.erc20.tranferTo'
-        if (token.type === Enums.TokenType.EthCommunity || token.type === Enums.TokenType.Erc20) {
+        if (token.type === Enums.TokenType.Erc20) {
           newTransaction = yield call(Web3.sendTransactionErc20, transaction)
+        } else if (token.type === Enums.TokenType.EthCommunity) {
+          newTransaction = yield call(Web3.sendTransactionEthCommunity, transaction)
         }
       }
       if (transaction.room) {

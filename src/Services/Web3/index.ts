@@ -466,6 +466,27 @@ const sendTransactionErc20 = (transaction: Transaction): Promise<Transaction> =>
   })
 }
 
+const sendTransactionEthCommunity = (transaction: Transaction): Promise<Transaction> => {
+  const token = ethSingleton.getEthCommunityToken(transaction.token)
+
+  return new Promise<Transaction>((resolve, reject) => {
+    token.transfer(
+      transaction.receiver,
+      transaction.amount,
+      '',
+      { from: transaction.sender, gasPrice: DEFAULT_GAS_PRICE },
+      handlePendingTransaction((txHash, response) => {
+        return {
+          ...transaction,
+          hash: txHash,
+          date: moment().toISOString(),
+          pending: response ? false : true,
+        }
+      }, resolve, reject, true),
+    )
+  })
+}
+
 const sendTransactionETH = (transaction: Transaction): Promise<Transaction> => {
 
   return new Promise<Transaction>((resolve, reject) => {
@@ -581,6 +602,7 @@ export default {
   priceToMint,
   rewardForBurn,
   sendTransactionErc20,
+  sendTransactionEthCommunity,
   sendTransactionETH,
   ethSingleton,
   getAccount,
